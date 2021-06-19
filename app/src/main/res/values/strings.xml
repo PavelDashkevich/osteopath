@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">Osteopath</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="header_contacts">Контактные данные</string>
+    <string name="header_customer_name">Фамилия, имя</string>
+    <string name="header_customer_birth_date">Дата рождения</string>
+    <string name="header_customer_phone">Телефон</string>
+    <string name="header_customer_instagram">Instagram</string>
+    <string name="header_customer_category">Категория</string>
+    <string name="category_work">в работе</string>
+    <string name="category_work_end">работа завершена</string>
+    <string name="category_no_help">не удалось помочь</string>
+    <string name="fragment_title_customers">Клиенты</string>
+    <string name="content_description_customers_add">Добавить клиента</string>
+    <string name="hint_customer_list_empty">Список клиентов пуст. \nДля добавления нажмите эту кнопку</string>
+</resources>

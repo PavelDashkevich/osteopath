@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/gl_vertical_left"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="16dp"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/gl_vertical_right"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="16dp"/>
+    
+    <TextView
+        android:id="@+id/tv_header"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="@id/gl_vertical_left"
+        app:layout_constraintRight_toRightOf="@id/gl_vertical_right"
+        app:layout_constraintTop_toTopOf="parent"
+        android:text="@string/header_contacts"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:paddingVertical="16dp"/>
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/et_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="@id/gl_vertical_left"
+        app:layout_constraintRight_toRightOf="@id/gl_vertical_right"
+        app:layout_constraintTop_toBottomOf="@id/tv_header"
+        android:hint="@string/header_customer_name"
+        android:layout_marginTop="8dp"/>
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/et_birth_date"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="@id/gl_vertical_left"
+        app:layout_constraintRight_toLeftOf="@id/ib_set_birth_date"
+        app:layout_constraintTop_toBottomOf="@id/et_name"
+        android:hint="@string/header_customer_birth_date"
+        android:layout_marginTop="8dp"/>
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/ib_set_birth_date"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:src="@drawable/ic_baseline_today_24"
+        app:layout_constraintTop_toBottomOf="@id/et_name"
+        app:layout_constraintRight_toRightOf="@id/gl_vertical_right"
+        android:layout_marginTop="8dp"
+        android:backgroundTintMode="screen"/>
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/et_phone"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="@id/gl_vertical_left"
+        app:layout_constraintRight_toLeftOf="@id/ib_call"
+        app:layout_constraintTop_toBottomOf="@id/et_birth_date"
+        android:hint="@string/header_customer_phone"
+        android:layout_marginTop="8dp"/>
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/ib_call"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:src="@drawable/ic_baseline_call_24"
+        app:layout_constraintTop_toBottomOf="@id/et_birth_date"
+        app:layout_constraintRight_toRightOf="@id/gl_vertical_right"
+        android:layout_marginTop="8dp"
+        android:backgroundTintMode="screen"/>
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/et_social_instagram"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="@id/gl_vertical_left"
+        app:layout_constraintRight_toLeftOf="@id/gl_vertical_right"
+        app:layout_constraintTop_toBottomOf="@id/et_phone"
+        android:hint="@string/header_customer_instagram"
+        android:layout_marginTop="8dp"/>
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/b_end"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="et_name,et_birth_date,et_phone,et_social_instagram"/>
+
+    <TextView
+        android:id="@+id/tv_category"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="@id/gl_vertical_left"
+        app:layout_constraintRight_toRightOf="@id/gl_vertical_right"
+        app:layout_constraintTop_toBottomOf="@id/b_end"
+        android:text="@string/header_customer_category"
+        android:textSize="14sp"
+        android:paddingTop="24dp"
+        android:paddingBottom="16dp"/>
+
+    <RadioGroup
+        android:id="@+id/rg_category"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="@id/gl_vertical_left"
+        app:layout_constraintRight_toRightOf="@id/gl_vertical_right"
+        app:layout_constraintTop_toBottomOf="@id/tv_category">
+
+        <RadioButton
+            android:id="@+id/rb_work"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/category_work"
+            android:drawableRight="@drawable/ic_circle_mark"
+            android:drawableTint="#FFEB3B"
+            android:drawablePadding="8dp"/>
+
+        <RadioButton
+            android:id="@+id/rb_work_end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/category_work_end"
+            android:drawableRight="@drawable/ic_circle_mark"
+            android:drawableTint="#6DFC56"
+            android:drawablePadding="8dp"/>
+
+        <RadioButton
+            android:id="@+id/rb_no_help"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/category_no_help"
+            android:drawableRight="@drawable/ic_circle_mark"
+            android:drawableTint="#FF4E4E"
+            android:drawablePadding="8dp"/>
+    </RadioGroup>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
