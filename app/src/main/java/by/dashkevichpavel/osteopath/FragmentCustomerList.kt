@@ -6,10 +6,15 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.widget.Toolbar
-import androidx.navigation.fragment.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.setupWithNavController
+import android.widget.ProgressBar
+import android.widget.TextView
+import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import by.dashkevichpavel.osteopath.persistence.entity.CustomerEntity
+import by.dashkevichpavel.osteopath.viewmodel.CustomerListViewModel
+import by.dashkevichpavel.osteopath.viewmodel.OsteoViewModelFactory
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -26,6 +31,17 @@ class FragmentCustomerList : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
 
+    private val viewModel: CustomerListViewModel by viewModels {
+        OsteoViewModelFactory(requireContext().applicationContext)
+    }
+
+    private lateinit var rvCustomers: RecyclerView
+    private lateinit var fabAddCustomer: FloatingActionButton
+    private lateinit var tvEmptyListHint: TextView
+    private lateinit var pbLoadingProgress: ProgressBar
+
+    private lateinit var adapter: CustomerAdapter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -40,6 +56,54 @@ class FragmentCustomerList : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_customer_list, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        setupViewElements(view)
+
+        viewModel.isCustomersLoading.observe(viewLifecycleOwner, this::updateLoadingProgress)
+        viewModel.customerList.observe(viewLifecycleOwner, this::updateCustomersList)
+        viewModel.loadCustomers()
+    }
+
+    private fun setupViewElements(view: View) {
+        fabAddCustomer = view.findViewById(R.id.fab_customer_add)
+        tvEmptyListHint = view.findViewById(R.id.tv_empty_list_hint)
+        rvCustomers = view.findViewById(R.id.rv_customer_list)
+        pbLoadingProgress = view.findViewById(R.id.pb_loading)
+    }
+
+    private fun setupRecyclerView() {
+        Log.d("OsteoApp", "setupRecyclerView()")
+        rvCustomers.layoutManager = LinearLayoutManager(requireContext())
+        adapter = CustomerAdapter(viewModel.customerList.value as MutableList<CustomerEntity>)
+        rvCustomers.adapter = adapter
+    }
+
+    private fun updateLoadingProgress(isLoading: Boolean) {
+        Log.d("OsteoApp", "updateLoadingProgress($isLoading)")
+        pbLoadingProgress.visibility = if (isLoading) View.VISIBLE else View.GONE
+
+        if (isLoading) {
+            tvEmptyListHint.visibility = View.GONE
+        }
+    }
+
+    private fun updateCustomersList(newCustomers: List<CustomerEntity>) {
+        Log.d("OsteoApp", "updateCustomersList(), list size = ${newCustomers.size}")
+
+        if (viewModel.isCustomersLoading.value == true) {
+            return
+        }
+
+        tvEmptyListHint.visibility =
+            if (newCustomers.isEmpty()) {
+                View.VISIBLE
+            } else {
+                View.GONE
+            }
+
+        setupRecyclerView()
     }
 
     companion object {
