@@ -14,4 +14,6 @@
     <string name="fragment_title_customers">Клиенты</string>
     <string name="content_description_customers_add">Добавить клиента</string>
     <string name="hint_customer_list_empty">Список клиентов пуст. \nДля добавления нажмите эту кнопку</string>
+    <string name="customer_menu_item_search">Поиск</string>
+    <string name="customer_menu_item_filter">Фильтр</string>
 </resources>

@@ -2,13 +2,17 @@ package by.dashkevichpavel.osteopath
 
 import android.os.Bundle
 import android.util.Log
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.viewModels
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.NavigationUI
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import by.dashkevichpavel.osteopath.persistence.entity.CustomerEntity
@@ -26,7 +30,7 @@ private const val ARG_PARAM2 = "param2"
  * Use the [FragmentCustomerList.newInstance] factory method to
  * create an instance of this fragment.
  */
-class FragmentCustomerList : Fragment() {
+class FragmentCustomerList : Fragment(R.layout.fragment_customer_list) {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -39,6 +43,7 @@ class FragmentCustomerList : Fragment() {
     private lateinit var fabAddCustomer: FloatingActionButton
     private lateinit var tvEmptyListHint: TextView
     private lateinit var pbLoadingProgress: ProgressBar
+    private lateinit var tbActions: Toolbar
 
     private lateinit var adapter: CustomerAdapter
 
@@ -48,22 +53,22 @@ class FragmentCustomerList : Fragment() {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
-    }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_customer_list, container, false)
+        setHasOptionsMenu(true)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         setupViewElements(view)
+        setupToolbar()
 
         viewModel.isCustomersLoading.observe(viewLifecycleOwner, this::updateLoadingProgress)
         viewModel.customerList.observe(viewLifecycleOwner, this::updateCustomersList)
         viewModel.loadCustomers()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.customer_list_menu, menu)
+        super.onCreateOptionsMenu(menu, inflater)
     }
 
     private fun setupViewElements(view: View) {
@@ -71,6 +76,12 @@ class FragmentCustomerList : Fragment() {
         tvEmptyListHint = view.findViewById(R.id.tv_empty_list_hint)
         rvCustomers = view.findViewById(R.id.rv_customer_list)
         pbLoadingProgress = view.findViewById(R.id.pb_loading)
+        tbActions = view.findViewById(R.id.tb_actions)
+    }
+
+    private fun setupToolbar() {
+        tbActions.title = "Клиенты"
+        tbActions.inflateMenu(R.menu.customer_list_menu)
     }
 
     private fun setupRecyclerView() {
