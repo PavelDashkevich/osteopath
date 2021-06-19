@@ -7,6 +7,7 @@ import by.dashkevichpavel.osteopath.persistence.entity.CustomerEntity
 
 @Dao
 interface CustomerDao {
-    @Query("SELECT * FROM ${DbContract.Customer.TABLE_NAME}")
+    @Query("""SELECT * FROM ${DbContract.Customer.TABLE_NAME} 
+        ORDER BY ${DbContract.Customer.COLUMN_NAME_NAME}""")
     suspend fun getAll(): List<CustomerEntity>
 }

@@ -8,6 +8,8 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
+    <color name="divider">#FFAAAAAA</color>
+
     <color name="customer_status_work">#FFFFEB3B</color>
     <color name="customer_status_work_done">#FF6DFC56</color>
     <color name="customer_status_no_help">#FFFF4E4E</color>

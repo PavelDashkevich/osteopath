@@ -27,10 +27,9 @@
         app:srcCompat="@drawable/ic_corner_mark"/>
 
     <View
-        android:id="@+id/v_delimiter"
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:foregroundTint="#CCCCCC"
-        app:layout_constraintTop_toBottomOf="@id/tv_customer_name"/>
+        android:layout_height="0.3dp"
+        app:layout_constraintBottom_toBottomOf="@id/tv_customer_name"
+        android:background="@color/divider"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
