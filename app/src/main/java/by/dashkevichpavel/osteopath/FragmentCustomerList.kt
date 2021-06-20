@@ -1,11 +1,16 @@
 package by.dashkevichpavel.osteopath
 
+import android.animation.LayoutTransition
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
 import android.widget.ProgressBar
 import android.widget.TextView
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
@@ -19,6 +24,7 @@ import by.dashkevichpavel.osteopath.persistence.entity.CustomerEntity
 import by.dashkevichpavel.osteopath.viewmodel.CustomerListViewModel
 import by.dashkevichpavel.osteopath.viewmodel.OsteoViewModelFactory
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import java.lang.IllegalArgumentException
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -44,6 +50,8 @@ class FragmentCustomerList : Fragment(R.layout.fragment_customer_list) {
     private lateinit var tvEmptyListHint: TextView
     private lateinit var pbLoadingProgress: ProgressBar
     private lateinit var tbActions: Toolbar
+    private lateinit var svSearch: SearchView
+    private lateinit var optionsMenu: Menu
 
     private lateinit var adapter: CustomerAdapter
 
@@ -67,8 +75,34 @@ class FragmentCustomerList : Fragment(R.layout.fragment_customer_list) {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        Log.d("OsteoApp", "onCreateOptionsMenu()")
+
         inflater.inflate(R.menu.customer_list_menu, menu)
+
+        optionsMenu = menu
+        setupSearch()
+
         super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu) {
+        Log.d("OsteoApp", "onPrepareOptionsMenu()")
+
+        super.onPrepareOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.mi_filter) {
+            try {
+                findNavController().navigate(R.id.action_fragmentCustomerList_to_fragmentCustomerListFilter)
+            } catch (e: IllegalArgumentException) {
+                Log.d("OsteoApp", "onOptionsItemSelected(): exception: ${e.message}")
+            }
+
+            return true
+        }
+
+        return super.onOptionsItemSelected(item)
     }
 
     private fun setupViewElements(view: View) {
@@ -80,8 +114,32 @@ class FragmentCustomerList : Fragment(R.layout.fragment_customer_list) {
     }
 
     private fun setupToolbar() {
-        tbActions.title = "Клиенты"
-        tbActions.inflateMenu(R.menu.customer_list_menu)
+        (activity as AppCompatActivity).setSupportActionBar(tbActions)
+    }
+
+    private fun setupSearch() {
+        Log.d("OsteoApp", "setupSearch()")
+        val searchItem = optionsMenu.findItem(R.id.mi_search)
+
+        svSearch = searchItem.actionView as SearchView
+        svSearch.queryHint = "Искать по имени"
+
+        svSearch.setOnQueryTextListener(
+            object : SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(query: String?): Boolean {
+                    Toast.makeText(context, "Query: $query", Toast.LENGTH_SHORT).show()
+                    return false
+                }
+
+                override fun onQueryTextChange(newText: String?): Boolean {
+                    //Toast.makeText(context, "Query: $newText", Toast.LENGTH_SHORT).show()
+                    return true
+                }
+            }
+        )
+
+        val searchBar = svSearch.findViewById<LinearLayout>(R.id.search_bar)
+        searchBar.layoutTransition = LayoutTransition()
     }
 
     private fun setupRecyclerView() {

@@ -124,7 +124,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/category_work"
-            android:drawableRight="@drawable/ic_circle_mark"
+            android:drawableEnd="@drawable/ic_circle_mark"
             android:drawableTint="@color/customer_status_work"
             android:drawablePadding="8dp"/>
 
@@ -132,8 +132,8 @@
             android:id="@+id/rb_work_done"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/category_work_end"
-            android:drawableRight="@drawable/ic_circle_mark"
+            android:text="@string/category_work_done"
+            android:drawableEnd="@drawable/ic_circle_mark"
             android:drawableTint="@color/customer_status_work_done"
             android:drawablePadding="8dp"/>
 
@@ -142,7 +142,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/category_no_help"
-            android:drawableRight="@drawable/ic_circle_mark"
+            android:drawableEnd="@drawable/ic_circle_mark"
             android:drawableTint="@color/customer_status_no_help"
             android:drawablePadding="8dp"/>
     </RadioGroup>
