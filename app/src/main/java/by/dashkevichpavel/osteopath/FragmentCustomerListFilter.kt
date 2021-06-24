@@ -38,7 +38,10 @@ class FragmentCustomerListFilter : Fragment(R.layout.fragment_customer_list_filt
     private var allCheckBoxes = mutableListOf<AppCompatCheckBox>()
     private lateinit var optionsMenu: Menu
 
+    private lateinit var filterSharedPreferences: CustomerFilterSharedPreferences
+
     override fun onCreate(savedInstanceState: Bundle?) {
+        Log.d("OsteoApp", "FragmentCustomerListFilter: onCreate()")
         super.onCreate(savedInstanceState)
         arguments?.let {
             param1 = it.getString(ARG_PARAM1)
@@ -49,8 +52,10 @@ class FragmentCustomerListFilter : Fragment(R.layout.fragment_customer_list_filt
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        Log.d("OsteoApp", "FragmentCustomerListFilter: onViewCreated()")
         setupViewElements(view)
         setupToolbar()
+        setupCheckboxes()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -80,6 +85,12 @@ class FragmentCustomerListFilter : Fragment(R.layout.fragment_customer_list_filt
         return super.onOptionsItemSelected(item)
     }
 
+    override fun onStop() {
+        Log.d("OsteoApp", "FragmentCustomerListFilter: onStop()")
+        filterSharedPreferences.saveValues()
+        super.onStop()
+    }
+
     private fun setupViewElements(view: View) {
         tbActions = view.findViewById(R.id.tb_actions)
         cbByAgeChildren = view.findViewById(R.id.cb_by_age_children)
@@ -99,8 +110,35 @@ class FragmentCustomerListFilter : Fragment(R.layout.fragment_customer_list_filt
         (activity as AppCompatActivity).setSupportActionBar(tbActions)
     }
 
+    private fun setupCheckboxes() {
+        Log.d("OsteoApp", "FragmentCustomerListFilter: setupCheckboxes()")
+        filterSharedPreferences = CustomerFilterSharedPreferences(requireActivity())
+        filterSharedPreferences.loadValues()
+        filterSharedPreferences.mapIdsToKeys(
+            cbByAgeChildren.id,
+            cbByAgeAdults.id,
+            cbByCategoryWork.id,
+            cbByCategoryWorkDone.id,
+            cbByCategoryNoHelp.id
+        )
+
+        Log.d("OsteoApp", "FragmentCustomerListFilter: setupCheckboxes(): allCheckBoxes.size = ${allCheckBoxes.size}")
+
+        allCheckBoxes.forEach { checkBox ->
+            Log.d("OsteoApp", "FragmentCustomerListFilter: setupCheckboxes(): id = ${checkBox.id}")
+            checkBox.isChecked = filterSharedPreferences.getValueByViewId(checkBox.id)
+            checkBox.setOnClickListener {
+                filterSharedPreferences.saveValue(checkBox.id, checkBox.isChecked)
+            }
+        }
+    }
+
     private fun changeCheckBoxesState(toChecked: Boolean) {
-        allCheckBoxes.forEach { checkBox -> checkBox.isChecked = toChecked }
+        Log.d("OsteoApp", "FragmentCustomerListFilter: changeCheckBoxesState()")
+        allCheckBoxes.forEach { checkBox ->
+            checkBox.isChecked = toChecked
+            filterSharedPreferences.saveValue(checkBox.id, checkBox.isChecked)
+        }
     }
 
     companion object {

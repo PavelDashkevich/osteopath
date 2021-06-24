@@ -3,6 +3,7 @@ package by.dashkevichpavel.osteopath.persistence
 import android.content.Context
 import by.dashkevichpavel.osteopath.persistence.entity.CustomerEntity
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 
 class OsteoDbRepository(applicationContext: Context) {
@@ -11,6 +12,8 @@ class OsteoDbRepository(applicationContext: Context) {
     suspend fun getAllCustomers(): List<CustomerEntity> = withContext(Dispatchers.IO) {
         return@withContext osteoDb.customerDao.getAll()
     }
+
+    fun getAllCustomersAsFlow(): Flow<List<CustomerEntity>> = osteoDb.customerDao.getAllAsFlow()
 }
 
 object OsteoDbRepositorySingleton {

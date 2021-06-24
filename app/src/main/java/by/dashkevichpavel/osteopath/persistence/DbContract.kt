@@ -19,6 +19,7 @@ object DbContract {
 
         const val COLUMN_NAME_ID = BaseColumns._ID
         const val COLUMN_NAME_NAME = "name"
+        const val COLUMN_NAME_BIRTH_DATE = "birth_date"
         const val COLUMN_NAME_PHONE = "phone"
         const val COLUMN_NAME_EMAIL = "email"
         const val COLUMN_NAME_INSTAGRAM = "instagram"

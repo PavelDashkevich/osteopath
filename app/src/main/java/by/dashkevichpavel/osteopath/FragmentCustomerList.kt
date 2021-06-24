@@ -1,9 +1,11 @@
 package by.dashkevichpavel.osteopath
 
 import android.animation.LayoutTransition
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import android.view.inputmethod.InputMethodManager
 import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
 import android.widget.ProgressBar
@@ -13,11 +15,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.viewModels
-import androidx.navigation.NavController
-import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.NavigationUI
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import by.dashkevichpavel.osteopath.persistence.entity.CustomerEntity
@@ -26,21 +24,12 @@ import by.dashkevichpavel.osteopath.viewmodel.OsteoViewModelFactory
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.lang.IllegalArgumentException
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
 /**
  * A simple [Fragment] subclass.
  * Use the [FragmentCustomerList.newInstance] factory method to
  * create an instance of this fragment.
  */
 class FragmentCustomerList : Fragment(R.layout.fragment_customer_list) {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-
     private val viewModel: CustomerListViewModel by viewModels {
         OsteoViewModelFactory(requireContext().applicationContext)
     }
@@ -52,15 +41,12 @@ class FragmentCustomerList : Fragment(R.layout.fragment_customer_list) {
     private lateinit var tbActions: Toolbar
     private lateinit var svSearch: SearchView
     private lateinit var optionsMenu: Menu
-
     private lateinit var adapter: CustomerAdapter
+
+    private lateinit var filterSharedPreferences: CustomerFilterSharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
 
         setHasOptionsMenu(true)
     }
@@ -69,9 +55,13 @@ class FragmentCustomerList : Fragment(R.layout.fragment_customer_list) {
         setupViewElements(view)
         setupToolbar()
 
+        filterSharedPreferences = CustomerFilterSharedPreferences(requireContext())
+        filterSharedPreferences.loadValues()
+        viewModel.setFilter(filterSharedPreferences.filterValues)
+
         viewModel.isCustomersLoading.observe(viewLifecycleOwner, this::updateLoadingProgress)
-        viewModel.customerList.observe(viewLifecycleOwner, this::updateCustomersList)
-        viewModel.loadCustomers()
+        viewModel.filteredCustomerList.observe(viewLifecycleOwner, this::updateCustomersList)
+        viewModel.startCustomersTableChangeListening()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -83,12 +73,6 @@ class FragmentCustomerList : Fragment(R.layout.fragment_customer_list) {
         setupSearch()
 
         super.onCreateOptionsMenu(menu, inflater)
-    }
-
-    override fun onPrepareOptionsMenu(menu: Menu) {
-        Log.d("OsteoApp", "onPrepareOptionsMenu()")
-
-        super.onPrepareOptionsMenu(menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -105,6 +89,16 @@ class FragmentCustomerList : Fragment(R.layout.fragment_customer_list) {
         return super.onOptionsItemSelected(item)
     }
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        saveStateOfSearchView()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        saveStateOfSearchView()
+    }
+
     private fun setupViewElements(view: View) {
         fabAddCustomer = view.findViewById(R.id.fab_customer_add)
         tvEmptyListHint = view.findViewById(R.id.tv_empty_list_hint)
@@ -117,6 +111,13 @@ class FragmentCustomerList : Fragment(R.layout.fragment_customer_list) {
         (activity as AppCompatActivity).setSupportActionBar(tbActions)
     }
 
+    private fun hideKeyboard(): Boolean {
+        val imm: InputMethodManager = svSearch.context
+            .getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+
+        return imm.hideSoftInputFromWindow(svSearch.windowToken, 0)
+    }
+
     private fun setupSearch() {
         Log.d("OsteoApp", "setupSearch()")
         val searchItem = optionsMenu.findItem(R.id.mi_search)
@@ -127,25 +128,49 @@ class FragmentCustomerList : Fragment(R.layout.fragment_customer_list) {
         svSearch.setOnQueryTextListener(
             object : SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String?): Boolean {
-                    Toast.makeText(context, "Query: $query", Toast.LENGTH_SHORT).show()
+                    viewModel.setQueryString(query ?: "")
                     return false
                 }
 
                 override fun onQueryTextChange(newText: String?): Boolean {
-                    //Toast.makeText(context, "Query: $newText", Toast.LENGTH_SHORT).show()
                     return true
                 }
             }
         )
 
+        svSearch.setOnCloseListener {
+            viewModel.setQueryString("")
+            false
+        }
+
         val searchBar = svSearch.findViewById<LinearLayout>(R.id.search_bar)
         searchBar.layoutTransition = LayoutTransition()
+
+        restoreStateOfSearchView()
+    }
+
+    private fun saveStateOfSearchView() {
+        viewModel.searchViewStateIconified = svSearch.isIconified
+        viewModel.searchViewStateFocused = svSearch.isFocused
+        viewModel.searchViewStateQueryString = svSearch.query
+        viewModel.searchViewStateKeyboardShown = hideKeyboard()
+    }
+
+    private fun restoreStateOfSearchView() {
+        svSearch.isIconified = viewModel.searchViewStateIconified
+        if (!svSearch.isIconified) {
+            svSearch.setQuery(viewModel.searchViewStateQueryString, false)
+
+            if (!viewModel.searchViewStateKeyboardShown) {
+                svSearch.clearFocus()
+            }
+        }
     }
 
     private fun setupRecyclerView() {
         Log.d("OsteoApp", "setupRecyclerView()")
         rvCustomers.layoutManager = LinearLayoutManager(requireContext())
-        adapter = CustomerAdapter(viewModel.customerList.value as MutableList<CustomerEntity>)
+        adapter = CustomerAdapter(viewModel.filteredCustomerList.value as MutableList<CustomerEntity>)
         rvCustomers.adapter = adapter
     }
 
@@ -161,10 +186,6 @@ class FragmentCustomerList : Fragment(R.layout.fragment_customer_list) {
     private fun updateCustomersList(newCustomers: List<CustomerEntity>) {
         Log.d("OsteoApp", "updateCustomersList(), list size = ${newCustomers.size}")
 
-        if (viewModel.isCustomersLoading.value == true) {
-            return
-        }
-
         tvEmptyListHint.visibility =
             if (newCustomers.isEmpty()) {
                 View.VISIBLE
@@ -173,25 +194,5 @@ class FragmentCustomerList : Fragment(R.layout.fragment_customer_list) {
             }
 
         setupRecyclerView()
-    }
-
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment BlankFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            FragmentCustomerList().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
     }
 }

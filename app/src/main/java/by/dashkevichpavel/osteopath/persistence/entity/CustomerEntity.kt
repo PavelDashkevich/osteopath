@@ -5,6 +5,7 @@ import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
 import by.dashkevichpavel.osteopath.persistence.DbContract
+import java.util.*
 
 @Entity(
     tableName = DbContract.Customer.TABLE_NAME,
@@ -17,6 +18,9 @@ data class CustomerEntity (
 
     @ColumnInfo(name = DbContract.Customer.COLUMN_NAME_NAME)
     var name: String,
+
+    @ColumnInfo(name = DbContract.Customer.COLUMN_NAME_BIRTH_DATE)
+    var birthDate: Date = Date(0),
 
     @ColumnInfo(name = DbContract.Customer.COLUMN_NAME_PHONE)
     var phone: String = "",
