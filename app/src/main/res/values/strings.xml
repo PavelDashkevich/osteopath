@@ -22,4 +22,5 @@
     <string name="header_filter_by_category">По категории</string>
     <string name="customer_filter_menu_item_select_all">Установить все</string>
     <string name="customer_filter_menu_item_deselect_all">Сбросить все</string>
+    <string name="hint_customer_filter_or_search_result">По заданным условиям\nни одного клиента не найдено.</string>
 </resources>

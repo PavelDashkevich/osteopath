@@ -32,6 +32,7 @@ class FragmentCustomerList : Fragment(R.layout.fragment_customer_list) {
     private lateinit var rvCustomers: RecyclerView
     private lateinit var fabAddCustomer: FloatingActionButton
     private lateinit var tvEmptyListHint: TextView
+    private lateinit var tvEmptyResultsHint: TextView
     private lateinit var pbLoadingProgress: ProgressBar
     private lateinit var tbActions: Toolbar
     private lateinit var svSearch: SearchView
@@ -96,6 +97,7 @@ class FragmentCustomerList : Fragment(R.layout.fragment_customer_list) {
     private fun setupViewElements(view: View) {
         fabAddCustomer = view.findViewById(R.id.fab_customer_add)
         tvEmptyListHint = view.findViewById(R.id.tv_empty_list_hint)
+        tvEmptyResultsHint = view.findViewById(R.id.tv_empty_filter_or_search_result)
         rvCustomers = view.findViewById(R.id.rv_customer_list)
         pbLoadingProgress = view.findViewById(R.id.pb_loading)
         tbActions = view.findViewById(R.id.tb_actions)
@@ -173,20 +175,28 @@ class FragmentCustomerList : Fragment(R.layout.fragment_customer_list) {
         pbLoadingProgress.visibility = if (isLoading) View.VISIBLE else View.GONE
 
         if (isLoading) {
-            tvEmptyListHint.visibility = View.GONE
+            hideEmptyListHints()
         }
     }
 
     private fun updateCustomersList(newCustomers: List<CustomerEntity>) {
         Log.d("OsteoApp", "updateCustomersList(), list size = ${newCustomers.size}")
 
-        tvEmptyListHint.visibility =
-            if (newCustomers.isEmpty()) {
-                View.VISIBLE
+        hideEmptyListHints()
+
+        if (newCustomers.isEmpty()) {
+            if (viewModel.isSearchOrFilterResult) {
+                tvEmptyResultsHint.visibility = View.VISIBLE
             } else {
-                View.GONE
+                tvEmptyListHint.visibility = View.VISIBLE
             }
+        }
 
         setupRecyclerView()
+    }
+
+    private fun hideEmptyListHints() {
+        tvEmptyResultsHint.visibility = View.GONE
+        tvEmptyListHint.visibility = View.GONE
     }
 }

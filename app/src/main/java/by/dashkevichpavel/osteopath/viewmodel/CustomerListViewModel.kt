@@ -20,6 +20,7 @@ class CustomerListViewModel(
 
     var filteredCustomerList = MutableLiveData<List<CustomerEntity>>(mutableListOf())
     var isCustomersLoading = MutableLiveData(false)
+    var isSearchOrFilterResult: Boolean = false
 
     private val model = CustomerListProcessor(this, repository, viewModelScope)
 
@@ -31,7 +32,8 @@ class CustomerListViewModel(
         model.setQueryString(newSearchQuery)
     }
 
-    override fun onCustomersProcessed(customers: List<CustomerEntity>) {
+    override fun onCustomersProcessed(customers: List<CustomerEntity>, isSearchOrFilterResult: Boolean) {
         filteredCustomerList.value = customers
+        this.isSearchOrFilterResult = isSearchOrFilterResult
     }
 }

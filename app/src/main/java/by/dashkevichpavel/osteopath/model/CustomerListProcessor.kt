@@ -52,6 +52,7 @@ class CustomerListProcessor(
 
     private fun updateFilteredCustomersList() {
         var newFilteredList: List<CustomerEntity> = allCustomers
+        var isSearchOrFilterResult = false
 
         // filter by category ang by age
         if (!filterValues.isFilterOff()) {
@@ -98,6 +99,8 @@ class CustomerListProcessor(
                     }
                 }
             }
+
+            isSearchOrFilterResult = true
         }
 
         // filter by search query
@@ -105,12 +108,14 @@ class CustomerListProcessor(
             newFilteredList = newFilteredList.filter { customer ->
                 customer.name.contains(searchQuery, true)
             }
+
+            isSearchOrFilterResult = true
         }
 
-        handler.onCustomersProcessed(newFilteredList)
+        handler.onCustomersProcessed(newFilteredList, isSearchOrFilterResult)
     }
 }
 
 interface CustomerListProcessorSubscriber {
-    fun onCustomersProcessed(customers: List<CustomerEntity>)
+    fun onCustomersProcessed(customers: List<CustomerEntity>, isSearchOrFilterResult: Boolean)
 }
