@@ -24,11 +24,6 @@ import by.dashkevichpavel.osteopath.viewmodel.OsteoViewModelFactory
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.lang.IllegalArgumentException
 
-/**
- * A simple [Fragment] subclass.
- * Use the [FragmentCustomerList.newInstance] factory method to
- * create an instance of this fragment.
- */
 class FragmentCustomerList : Fragment(R.layout.fragment_customer_list) {
     private val viewModel: CustomerListViewModel by viewModels {
         OsteoViewModelFactory(requireContext().applicationContext)
@@ -55,13 +50,12 @@ class FragmentCustomerList : Fragment(R.layout.fragment_customer_list) {
         setupViewElements(view)
         setupToolbar()
 
+        viewModel.isCustomersLoading.observe(viewLifecycleOwner, this::updateLoadingProgress)
+        viewModel.filteredCustomerList.observe(viewLifecycleOwner, this::updateCustomersList)
+
         filterSharedPreferences = CustomerFilterSharedPreferences(requireContext())
         filterSharedPreferences.loadValues()
         viewModel.setFilter(filterSharedPreferences.filterValues)
-
-        viewModel.isCustomersLoading.observe(viewLifecycleOwner, this::updateLoadingProgress)
-        viewModel.filteredCustomerList.observe(viewLifecycleOwner, this::updateCustomersList)
-        viewModel.startCustomersTableChangeListening()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
