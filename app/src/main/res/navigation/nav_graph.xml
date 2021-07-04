@@ -7,23 +7,28 @@
 
     <fragment
         android:id="@+id/fragmentCustomerList"
-        android:name="by.dashkevichpavel.osteopath.FragmentCustomerList"
+        android:name="by.dashkevichpavel.osteopath.viewcontroller.customerlist.FragmentCustomerList"
         android:label="@string/fragment_title_customers"
         tools:layout="@layout/fragment_customer_list" >
         <action
             android:id="@+id/action_fragmentCustomerList_to_fragmentCustomer"
-            app:destination="@id/fragmentCustomer" />
+            app:destination="@id/fragmentCustomerProfile" />
         <action
             android:id="@+id/action_fragmentCustomerList_to_fragmentCustomerListFilter"
             app:destination="@id/fragmentCustomerListFilter"/>
     </fragment>
     <fragment
-        android:id="@+id/fragmentCustomer"
-        android:name="by.dashkevichpavel.osteopath.FragmentCustomer"
-        android:label="FragmentCustomer" />
+        android:id="@+id/fragmentCustomerProfile"
+        android:name="by.dashkevichpavel.osteopath.viewcontroller.customerprofile.FragmentCustomerProfile"
+        android:label="FragmentCustomer" >
+        <argument
+            android:name="customerId"
+            app:argType="integer"
+            android:defaultValue="0" />
+    </fragment>
     <fragment
         android:id="@+id/fragmentCustomerListFilter"
-        android:name="by.dashkevichpavel.osteopath.FragmentCustomerListFilter"
+        android:name="by.dashkevichpavel.osteopath.viewcontroller.customerlistfilter.FragmentCustomerListFilter"
         android:label="fragment_customer_list_filter"
         tools:layout="@layout/fragment_customer_list_filter" />
 </navigation>

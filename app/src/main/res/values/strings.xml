@@ -1,7 +1,5 @@
 <resources>
     <string name="app_name">Osteopath</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="header_contacts">Контактные данные</string>
     <string name="header_customer_name">Фамилия, имя</string>
     <string name="header_customer_birth_date">Дата рождения</string>
@@ -23,4 +21,7 @@
     <string name="customer_filter_menu_item_select_all">Установить все</string>
     <string name="customer_filter_menu_item_deselect_all">Сбросить все</string>
     <string name="hint_customer_filter_or_search_result">По заданным условиям\nни одного клиента не найдено.</string>
+    <string name="customer_profile_new_customer">Новый клиент</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

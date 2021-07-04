@@ -13,6 +13,8 @@ class OsteoViewModelFactory(
         when (modelClass) {
             CustomerListViewModel::class.java ->
                 CustomerListViewModel(OsteoDbRepositorySingleton.getInstance(applicationContext))
+            CustomerProfileViewModel::class.java ->
+                CustomerProfileViewModel(OsteoDbRepositorySingleton.getInstance(applicationContext))
             else ->
                 throw IllegalArgumentException("$modelClass is not registered ViewModel")
         } as T

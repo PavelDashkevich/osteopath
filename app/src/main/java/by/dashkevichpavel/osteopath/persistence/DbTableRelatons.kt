@@ -10,8 +10,8 @@ data class CustomerAndDisfunctions(
     val customer: CustomerEntity,
 
     @Relation(
-        parentColumn = DbContract.Customer.COLUMN_NAME_ID,
-        entityColumn = DbContract.Disfunction.COLUMN_NAME_CUSTOMER_ID
+        parentColumn = DbContract.Customers.COLUMN_NAME_ID,
+        entityColumn = DbContract.Disfunctions.COLUMN_NAME_CUSTOMER_ID
     )
     val disfunctions: List<DisfunctionEntity>
 )

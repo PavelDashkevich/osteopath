@@ -1,4 +1,4 @@
-package by.dashkevichpavel.osteopath
+package by.dashkevichpavel.osteopath.viewcontroller.customerlistfilter
 
 import android.content.Context
 import android.util.Log

@@ -1,4 +1,4 @@
-package by.dashkevichpavel.osteopath
+package by.dashkevichpavel.osteopath.viewcontroller.customerlist
 
 import android.animation.LayoutTransition
 import android.content.Context
@@ -10,24 +10,29 @@ import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
 import android.widget.ProgressBar
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.Toolbar
+import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import by.dashkevichpavel.osteopath.viewcontroller.customerlistfilter.CustomerFilterSharedPreferences
+import by.dashkevichpavel.osteopath.R
 import by.dashkevichpavel.osteopath.persistence.entity.CustomerEntity
+import by.dashkevichpavel.osteopath.viewcontroller.customerprofile.FragmentCustomerProfile
 import by.dashkevichpavel.osteopath.viewmodel.CustomerListViewModel
 import by.dashkevichpavel.osteopath.viewmodel.OsteoViewModelFactory
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.lang.IllegalArgumentException
 
-class FragmentCustomerList : Fragment(R.layout.fragment_customer_list) {
-    private val viewModel: CustomerListViewModel by viewModels {
-        OsteoViewModelFactory(requireContext().applicationContext)
-    }
+class FragmentCustomerList :
+    Fragment(R.layout.fragment_customer_list),
+    CustomerClickListener {
+    private val viewModel: CustomerListViewModel by viewModels(
+        factoryProducer = { OsteoViewModelFactory(requireContext().applicationContext) }
+    )
 
     private lateinit var rvCustomers: RecyclerView
     private lateinit var fabAddCustomer: FloatingActionButton
@@ -37,19 +42,40 @@ class FragmentCustomerList : Fragment(R.layout.fragment_customer_list) {
     private lateinit var tbActions: Toolbar
     private lateinit var svSearch: SearchView
     private lateinit var optionsMenu: Menu
-    private lateinit var adapter: CustomerAdapter
+    private lateinit var adapter: CustomerItemAdapter
 
     private lateinit var filterSharedPreferences: CustomerFilterSharedPreferences
 
+    private var isMenuCreated: Boolean = false
+
+    override fun onAttach(context: Context) {
+        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
+        super.onAttach(context)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
+        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
+
         super.onCreate(savedInstanceState)
 
         setHasOptionsMenu(true)
     }
 
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
+        return super.onCreateView(inflater, container, savedInstanceState)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
+
         setupViewElements(view)
         setupToolbar()
+        setupFab()
 
         viewModel.isCustomersLoading.observe(viewLifecycleOwner, this::updateLoadingProgress)
         viewModel.filteredCustomerList.observe(viewLifecycleOwner, this::updateCustomersList)
@@ -59,18 +85,47 @@ class FragmentCustomerList : Fragment(R.layout.fragment_customer_list) {
         viewModel.setFilter(filterSharedPreferences.filterValues)
     }
 
+    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
+        super.onViewStateRestored(savedInstanceState)
+    }
+
+    override fun onStart() {
+        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
+        super.onStart()
+    }
+
+    override fun onResume() {
+        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
+        super.onResume()
+    }
+
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        Log.d("OsteoApp", "onCreateOptionsMenu()")
+        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
 
         inflater.inflate(R.menu.customer_list_menu, menu)
 
         optionsMenu = menu
         setupSearch()
 
+        isMenuCreated = true
+
         super.onCreateOptionsMenu(menu, inflater)
     }
 
+    override fun onPrepareOptionsMenu(menu: Menu) {
+        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
+        super.onPrepareOptionsMenu(menu)
+    }
+
+    override fun onPause() {
+        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
+        super.onPause()
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
+
         if (item.itemId == R.id.mi_filter) {
             try {
                 findNavController().navigate(R.id.action_fragmentCustomerList_to_fragmentCustomerListFilter)
@@ -85,13 +140,37 @@ class FragmentCustomerList : Fragment(R.layout.fragment_customer_list) {
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
+        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
+
         super.onSaveInstanceState(outState)
         saveStateOfSearchView()
     }
 
     override fun onStop() {
+        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
+
         super.onStop()
         saveStateOfSearchView()
+    }
+
+    override fun onDestroyView() {
+        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
+        super.onDestroyView()
+    }
+
+    override fun onDestroy() {
+        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
+        super.onDestroy()
+    }
+
+    override fun onDestroyOptionsMenu() {
+        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
+        super.onDestroyOptionsMenu()
+    }
+
+    override fun onDetach() {
+        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
+        super.onDetach()
     }
 
     private fun setupViewElements(view: View) {
@@ -115,7 +194,6 @@ class FragmentCustomerList : Fragment(R.layout.fragment_customer_list) {
     }
 
     private fun setupSearch() {
-        Log.d("OsteoApp", "setupSearch()")
         val searchItem = optionsMenu.findItem(R.id.mi_search)
 
         svSearch = searchItem.actionView as SearchView
@@ -146,6 +224,8 @@ class FragmentCustomerList : Fragment(R.layout.fragment_customer_list) {
     }
 
     private fun saveStateOfSearchView() {
+        if (!isMenuCreated) { return }
+
         viewModel.searchViewStateIconified = svSearch.isIconified
         viewModel.searchViewStateFocused = svSearch.isFocused
         viewModel.searchViewStateQueryString = svSearch.query
@@ -164,14 +244,15 @@ class FragmentCustomerList : Fragment(R.layout.fragment_customer_list) {
     }
 
     private fun setupRecyclerView() {
-        Log.d("OsteoApp", "setupRecyclerView()")
         rvCustomers.layoutManager = LinearLayoutManager(requireContext())
-        adapter = CustomerAdapter(viewModel.filteredCustomerList.value as MutableList<CustomerEntity>)
+        adapter = CustomerItemAdapter(
+            viewModel.filteredCustomerList.value as MutableList<CustomerEntity>,
+            this
+        )
         rvCustomers.adapter = adapter
     }
 
     private fun updateLoadingProgress(isLoading: Boolean) {
-        Log.d("OsteoApp", "updateLoadingProgress($isLoading)")
         pbLoadingProgress.visibility = if (isLoading) View.VISIBLE else View.GONE
 
         if (isLoading) {
@@ -180,8 +261,6 @@ class FragmentCustomerList : Fragment(R.layout.fragment_customer_list) {
     }
 
     private fun updateCustomersList(newCustomers: List<CustomerEntity>) {
-        Log.d("OsteoApp", "updateCustomersList(), list size = ${newCustomers.size}")
-
         hideEmptyListHints()
 
         if (newCustomers.isEmpty()) {
@@ -199,4 +278,20 @@ class FragmentCustomerList : Fragment(R.layout.fragment_customer_list) {
         tvEmptyResultsHint.visibility = View.GONE
         tvEmptyListHint.visibility = View.GONE
     }
+
+    private fun setupFab() {
+        fabAddCustomer.setOnClickListener {
+            val bundle = bundleOf(FragmentCustomerProfile.ARG_KEY_CUSTOMER_ID to 0)
+            findNavController().navigate(R.id.action_fragmentCustomerList_to_fragmentCustomer, bundle)
+        }
+    }
+
+    override fun onCustomerClick(customerId: Int) {
+        val bundle = bundleOf(FragmentCustomerProfile.ARG_KEY_CUSTOMER_ID to customerId)
+        findNavController().navigate(R.id.action_fragmentCustomerList_to_fragmentCustomer, bundle)
+    }
+}
+
+interface CustomerClickListener {
+    fun onCustomerClick(customerId: Int)
 }

@@ -4,23 +4,24 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
+import by.dashkevichpavel.osteopath.model.DisfunctionStatus
 import by.dashkevichpavel.osteopath.persistence.DbContract
 
 @Entity(
-    tableName = DbContract.Disfunction.TABLE_NAME,
-    indices = [Index(DbContract.Disfunction.COLUMN_NAME_ID)]
+    tableName = DbContract.Disfunctions.TABLE_NAME,
+    indices = [Index(DbContract.Disfunctions.COLUMN_NAME_ID)]
 )
 data class DisfunctionEntity(
     @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = DbContract.Disfunction.COLUMN_NAME_ID)
-    val id: Int,
+    @ColumnInfo(name = DbContract.Disfunctions.COLUMN_NAME_ID)
+    val id: Int = 0,
 
-    @ColumnInfo(name = DbContract.Disfunction.COLUMN_NAME_DESCRIPTION)
-    var description: String,
+    @ColumnInfo(name = DbContract.Disfunctions.COLUMN_NAME_DESCRIPTION)
+    var description: String = "",
 
-    @ColumnInfo(name = DbContract.Disfunction.COLUMN_NAME_DISFUNCTION_STATUS_ID)
-    var disfunctionStatusId: Int,
+    @ColumnInfo(name = DbContract.Disfunctions.COLUMN_NAME_DISFUNCTION_STATUS_ID)
+    var disfunctionStatusId: Int = DisfunctionStatus.WORK.id,
 
-    @ColumnInfo(name = DbContract.Disfunction.COLUMN_NAME_CUSTOMER_ID)
-    var customerId: Int
+    @ColumnInfo(name = DbContract.Disfunctions.COLUMN_NAME_CUSTOMER_ID)
+    var customerId: Int = 0
 )

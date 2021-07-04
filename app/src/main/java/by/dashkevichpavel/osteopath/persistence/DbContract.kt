@@ -5,8 +5,8 @@ import android.provider.BaseColumns
 object DbContract {
     const val DATABASE_NAME = "osteopath.db"
 
-    object Disfunction {
-        const val TABLE_NAME = "disfunction"
+    object Disfunctions {
+        const val TABLE_NAME = "disfunctions"
 
         const val COLUMN_NAME_ID = BaseColumns._ID
         const val COLUMN_NAME_DESCRIPTION = "description"
@@ -14,8 +14,8 @@ object DbContract {
         const val COLUMN_NAME_CUSTOMER_ID = "customer_id"
     }
 
-    object Customer {
-        const val TABLE_NAME = "customer"
+    object Customers {
+        const val TABLE_NAME = "customers"
 
         const val COLUMN_NAME_ID = BaseColumns._ID
         const val COLUMN_NAME_NAME = "name"
@@ -27,9 +27,20 @@ object DbContract {
         const val COLUMN_NAME_CUSTOMER_STATUS_ID = "customer_status_id"
     }
 
-    object Session {
-        const val TABLE_NAME = "session"
+    object Sessions {
+        const val TABLE_NAME = "sessions"
 
-        // TODO add table fields
+        const val COLUMN_NAME_ID = BaseColumns._ID
+        const val COLUMN_NAME_CUSTOMER_ID = "customer_id"
+        const val COLUMN_NAME_DATE_TIME = "date_time"
+        const val COLUMN_NAME_IS_DONE = "is_done"
+    }
+
+    object DisfunctionsInSession {
+        const val TABLE_NAME = "disfunctions_in_session"
+
+        const val COLUMN_NAME_ID = BaseColumns._ID
+        const val COLUMN_NAME_SESSION_ID = "session_id"
+        const val COLUMN_NAME_DISFUNCTION_ID = "disfunction_id"
     }
 }

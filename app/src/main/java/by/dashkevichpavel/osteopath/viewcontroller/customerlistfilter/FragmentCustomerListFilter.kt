@@ -1,29 +1,16 @@
-package by.dashkevichpavel.osteopath
+package by.dashkevichpavel.osteopath.viewcontroller.customerlistfilter
 
-import android.animation.LayoutTransition
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.*
-import android.widget.LinearLayout
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatCheckBox
-import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import java.lang.IllegalArgumentException
+import by.dashkevichpavel.osteopath.R
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [FragmentCustomerListFilter.newInstance] factory method to
- * create an instance of this fragment.
- */
 class FragmentCustomerListFilter : Fragment(R.layout.fragment_customer_list_filter) {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
@@ -40,30 +27,71 @@ class FragmentCustomerListFilter : Fragment(R.layout.fragment_customer_list_filt
 
     private lateinit var filterSharedPreferences: CustomerFilterSharedPreferences
 
+    override fun onAttach(context: Context) {
+        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
+        super.onAttach(context)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
-        Log.d("OsteoApp", "FragmentCustomerListFilter: onCreate()")
+        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
 
         setHasOptionsMenu(true)
     }
 
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
+        return super.onCreateView(inflater, container, savedInstanceState)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        Log.d("OsteoApp", "FragmentCustomerListFilter: onViewCreated()")
+        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
         setupViewElements(view)
         setupToolbar()
         setupCheckboxes()
     }
 
+    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
+        super.onViewStateRestored(savedInstanceState)
+    }
+
+    override fun onStart() {
+        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
+        super.onStart()
+    }
+
+    override fun onResume() {
+        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
+        super.onResume()
+    }
+
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
         inflater.inflate(R.menu.customer_list_filter, menu)
 
         optionsMenu = menu
 
         super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu) {
+        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
+        super.onPrepareOptionsMenu(menu)
+    }
+
+    override fun onPause() {
+        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
+        super.onPause()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
+        super.onSaveInstanceState(outState)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -86,9 +114,29 @@ class FragmentCustomerListFilter : Fragment(R.layout.fragment_customer_list_filt
     }
 
     override fun onStop() {
-        Log.d("OsteoApp", "FragmentCustomerListFilter: onStop()")
+        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
         filterSharedPreferences.saveValues()
         super.onStop()
+    }
+
+    override fun onDestroyView() {
+        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
+        super.onDestroyView()
+    }
+
+    override fun onDestroyOptionsMenu() {
+        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
+        super.onDestroyOptionsMenu()
+    }
+
+    override fun onDestroy() {
+        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
+        super.onDestroy()
+    }
+
+    override fun onDetach() {
+        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
+        super.onDetach()
     }
 
     private fun setupViewElements(view: View) {
@@ -111,7 +159,6 @@ class FragmentCustomerListFilter : Fragment(R.layout.fragment_customer_list_filt
     }
 
     private fun setupCheckboxes() {
-        Log.d("OsteoApp", "FragmentCustomerListFilter: setupCheckboxes()")
         filterSharedPreferences = CustomerFilterSharedPreferences(requireActivity())
         filterSharedPreferences.loadValues()
         filterSharedPreferences.mapIdsToKeys(
@@ -122,10 +169,7 @@ class FragmentCustomerListFilter : Fragment(R.layout.fragment_customer_list_filt
             cbByCategoryNoHelp.id
         )
 
-        Log.d("OsteoApp", "FragmentCustomerListFilter: setupCheckboxes(): allCheckBoxes.size = ${allCheckBoxes.size}")
-
         allCheckBoxes.forEach { checkBox ->
-            Log.d("OsteoApp", "FragmentCustomerListFilter: setupCheckboxes(): id = ${checkBox.id}")
             checkBox.isChecked = filterSharedPreferences.getValueByViewId(checkBox.id)
             checkBox.setOnClickListener {
                 filterSharedPreferences.saveValue(checkBox.id, checkBox.isChecked)
@@ -134,30 +178,9 @@ class FragmentCustomerListFilter : Fragment(R.layout.fragment_customer_list_filt
     }
 
     private fun changeCheckBoxesState(toChecked: Boolean) {
-        Log.d("OsteoApp", "FragmentCustomerListFilter: changeCheckBoxesState()")
         allCheckBoxes.forEach { checkBox ->
             checkBox.isChecked = toChecked
             filterSharedPreferences.saveValue(checkBox.id, checkBox.isChecked)
         }
-    }
-
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment FragmentCustomerListFilter.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            FragmentCustomerListFilter().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
     }
 }

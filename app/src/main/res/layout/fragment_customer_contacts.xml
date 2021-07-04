@@ -1,150 +1,192 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/gl_vertical_left"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        app:layout_constraintGuide_begin="16dp"/>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/gl_vertical_right"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        app:layout_constraintGuide_end="16dp"/>
-    
-    <TextView
-        android:id="@+id/tv_header"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintLeft_toLeftOf="@id/gl_vertical_left"
-        app:layout_constraintRight_toRightOf="@id/gl_vertical_right"
-        app:layout_constraintTop_toTopOf="parent"
-        android:text="@string/header_contacts"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:paddingVertical="16dp"/>
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/gl_vertical_left"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="16dp"/>
 
-    <androidx.appcompat.widget.AppCompatEditText
-        android:id="@+id/et_name"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintLeft_toLeftOf="@id/gl_vertical_left"
-        app:layout_constraintRight_toRightOf="@id/gl_vertical_right"
-        app:layout_constraintTop_toBottomOf="@id/tv_header"
-        android:hint="@string/header_customer_name"
-        android:layout_marginTop="8dp"/>
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/gl_vertical_right"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            app:layout_constraintGuide_end="16dp"/>
 
-    <androidx.appcompat.widget.AppCompatEditText
-        android:id="@+id/et_birth_date"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintLeft_toLeftOf="@id/gl_vertical_left"
-        app:layout_constraintRight_toLeftOf="@id/ib_set_birth_date"
-        app:layout_constraintTop_toBottomOf="@id/et_name"
-        android:hint="@string/header_customer_birth_date"
-        android:layout_marginTop="8dp"/>
+        <TextView
+            android:id="@+id/tv_header"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toLeftOf="@id/gl_vertical_left"
+            app:layout_constraintRight_toRightOf="@id/gl_vertical_right"
+            app:layout_constraintTop_toTopOf="parent"
+            android:text="@string/header_contacts"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:paddingVertical="16dp"/>
 
-    <androidx.appcompat.widget.AppCompatImageButton
-        android:id="@+id/ib_set_birth_date"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:src="@drawable/ic_baseline_today_24"
-        app:layout_constraintTop_toBottomOf="@id/et_name"
-        app:layout_constraintRight_toRightOf="@id/gl_vertical_right"
-        android:layout_marginTop="8dp"
-        android:backgroundTintMode="screen"/>
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toLeftOf="@id/gl_vertical_left"
+            app:layout_constraintRight_toRightOf="@id/gl_vertical_right"
+            app:layout_constraintTop_toBottomOf="@id/tv_header"
+            app:boxBackgroundColor="@android:color/transparent">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/header_customer_name"
+                android:layout_marginTop="8dp"
+                android:nextFocusDown="@id/et_phone"
+                android:imeOptions="actionNext"/>
+        </com.google.android.material.textfield.TextInputLayout>
 
-    <androidx.appcompat.widget.AppCompatEditText
-        android:id="@+id/et_phone"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintLeft_toLeftOf="@id/gl_vertical_left"
-        app:layout_constraintRight_toLeftOf="@id/ib_call"
-        app:layout_constraintTop_toBottomOf="@id/et_birth_date"
-        android:hint="@string/header_customer_phone"
-        android:layout_marginTop="8dp"/>
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_birth_date"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toLeftOf="@id/gl_vertical_left"
+            app:layout_constraintRight_toLeftOf="@id/ib_set_birth_date"
+            app:layout_constraintTop_toBottomOf="@id/til_name"
+            app:boxBackgroundColor="@android:color/transparent">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_birth_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/header_customer_birth_date"
+                android:layout_marginTop="8dp"
+                android:enabled="false"
+                android:nextFocusDown="@id/et_phone"
+                android:imeOptions="actionNext"/>
+        </com.google.android.material.textfield.TextInputLayout>
 
-    <androidx.appcompat.widget.AppCompatImageButton
-        android:id="@+id/ib_call"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:src="@drawable/ic_baseline_call_24"
-        app:layout_constraintTop_toBottomOf="@id/et_birth_date"
-        app:layout_constraintRight_toRightOf="@id/gl_vertical_right"
-        android:layout_marginTop="8dp"
-        android:backgroundTintMode="screen"/>
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/ib_set_birth_date"
+            android:layout_width="56dp"
+            android:layout_height="0dp"
+            android:src="@drawable/ic_baseline_today_24"
+            app:layout_constraintTop_toBottomOf="@id/til_name"
+            app:layout_constraintRight_toRightOf="@id/gl_vertical_right"
+            app:layout_constraintTop_toTopOf="@id/til_birth_date"
+            app:layout_constraintBottom_toBottomOf="@id/til_birth_date"
+            android:layout_marginTop="8dp"
+            android:backgroundTintMode="screen"/>
 
-    <androidx.appcompat.widget.AppCompatEditText
-        android:id="@+id/et_social_instagram"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintLeft_toLeftOf="@id/gl_vertical_left"
-        app:layout_constraintRight_toLeftOf="@id/gl_vertical_right"
-        app:layout_constraintTop_toBottomOf="@id/et_phone"
-        android:hint="@string/header_customer_instagram"
-        android:layout_marginTop="8dp"/>
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_phone"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toLeftOf="@id/gl_vertical_left"
+            app:layout_constraintRight_toLeftOf="@id/ib_call"
+            app:layout_constraintTop_toBottomOf="@id/til_birth_date"
+            app:boxBackgroundColor="@android:color/transparent">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_phone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/header_customer_phone"
+                android:layout_marginTop="8dp"
+                android:nextFocusDown="@id/et_social_instagram"
+                android:imeOptions="actionNext"/>
+        </com.google.android.material.textfield.TextInputLayout>
 
-    <androidx.constraintlayout.widget.Barrier
-        android:id="@+id/b_end"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:barrierDirection="bottom"
-        app:constraint_referenced_ids="et_name,et_birth_date,et_phone,et_social_instagram"/>
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/ib_call"
+            android:layout_width="56dp"
+            android:layout_height="0dp"
+            android:src="@drawable/ic_baseline_call_24"
+            app:layout_constraintTop_toBottomOf="@id/til_birth_date"
+            app:layout_constraintRight_toRightOf="@id/gl_vertical_right"
+            app:layout_constraintTop_toTopOf="@id/til_phone"
+            app:layout_constraintBottom_toBottomOf="@id/til_phone"
+            android:layout_marginTop="8dp"
+            android:backgroundTintMode="screen"/>
 
-    <TextView
-        android:id="@+id/tv_category"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintLeft_toLeftOf="@id/gl_vertical_left"
-        app:layout_constraintRight_toRightOf="@id/gl_vertical_right"
-        app:layout_constraintTop_toBottomOf="@id/b_end"
-        android:text="@string/header_customer_category"
-        android:textSize="14sp"
-        android:paddingTop="24dp"
-        android:paddingBottom="16dp"/>
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_social_instagram"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toLeftOf="@id/gl_vertical_left"
+            app:layout_constraintRight_toLeftOf="@id/gl_vertical_right"
+            app:layout_constraintTop_toBottomOf="@id/til_phone"
+            app:boxBackgroundColor="@android:color/transparent">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_social_instagram"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/header_customer_instagram"
+                android:layout_marginTop="8dp"
+                android:imeOptions="actionDone"/>
+        </com.google.android.material.textfield.TextInputLayout>
 
-    <RadioGroup
-        android:id="@+id/rg_category"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintLeft_toLeftOf="@id/gl_vertical_left"
-        app:layout_constraintRight_toRightOf="@id/gl_vertical_right"
-        app:layout_constraintTop_toBottomOf="@id/tv_category">
-
-        <RadioButton
-            android:id="@+id/rb_work"
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/b_end"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/category_work"
-            android:drawableEnd="@drawable/ic_circle_mark"
-            android:drawableTint="@color/customer_status_work"
-            android:drawablePadding="8dp"/>
+            app:barrierDirection="bottom"
+            app:constraint_referenced_ids="til_name,til_birth_date,til_phone,til_social_instagram"/>
 
-        <RadioButton
-            android:id="@+id/rb_work_done"
-            android:layout_width="wrap_content"
+        <TextView
+            android:id="@+id/tv_category"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@string/category_work_done"
-            android:drawableEnd="@drawable/ic_circle_mark"
-            android:drawableTint="@color/customer_status_work_done"
-            android:drawablePadding="8dp"/>
+            app:layout_constraintLeft_toLeftOf="@id/gl_vertical_left"
+            app:layout_constraintRight_toRightOf="@id/gl_vertical_right"
+            app:layout_constraintTop_toBottomOf="@id/b_end"
+            android:text="@string/header_customer_category"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:paddingTop="40dp"
+            android:paddingBottom="16dp"/>
 
-        <RadioButton
-            android:id="@+id/rb_no_help"
-            android:layout_width="wrap_content"
+        <RadioGroup
+            android:id="@+id/rg_category"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@string/category_no_help"
-            android:drawableEnd="@drawable/ic_circle_mark"
-            android:drawableTint="@color/customer_status_no_help"
-            android:drawablePadding="8dp"/>
-    </RadioGroup>
+            app:layout_constraintLeft_toLeftOf="@id/gl_vertical_left"
+            app:layout_constraintRight_toRightOf="@id/gl_vertical_right"
+            app:layout_constraintTop_toBottomOf="@id/tv_category">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+            <RadioButton
+                android:id="@+id/rb_work"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/category_work"
+                android:drawableEnd="@drawable/ic_circle_mark"
+                android:drawableTint="@color/customer_status_work"
+                android:drawablePadding="8dp"/>
+
+            <RadioButton
+                android:id="@+id/rb_work_done"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/category_work_done"
+                android:drawableEnd="@drawable/ic_circle_mark"
+                android:drawableTint="@color/customer_status_work_done"
+                android:drawablePadding="8dp"/>
+
+            <RadioButton
+                android:id="@+id/rb_no_help"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/category_no_help"
+                android:drawableEnd="@drawable/ic_circle_mark"
+                android:drawableTint="@color/customer_status_no_help"
+                android:drawablePadding="8dp"/>
+        </RadioGroup>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

@@ -1,6 +1,7 @@
 package by.dashkevichpavel.osteopath.persistence
 
 import android.content.Context
+import by.dashkevichpavel.osteopath.model.Customer
 import by.dashkevichpavel.osteopath.persistence.entity.CustomerEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -11,6 +12,23 @@ class OsteoDbRepository(applicationContext: Context) {
 
     suspend fun getAllCustomers(): List<CustomerEntity> = withContext(Dispatchers.IO) {
         return@withContext osteoDb.customerDao.getAll()
+    }
+
+    suspend fun insertCustomers(customers: List<Customer>) = withContext(Dispatchers.IO) {
+        osteoDb.customerDao.insert(customers.map { CustomerEntity(it) })
+    }
+
+    suspend fun getCustomerById(customerId: Int): Customer? = withContext(Dispatchers.IO) {
+        val customerEntities = osteoDb.customerDao.getById(customerId)
+        val customers = customerEntities.map {
+            Customer(
+                it,
+                osteoDb.disfunctionDao.getByCustomerId(customerId),
+                osteoDb.sessionDao.getByCustomerId(customerId)
+            )
+        }
+
+        return@withContext customers.firstOrNull()
     }
 
     fun getAllCustomersAsFlow(): Flow<List<CustomerEntity>> = osteoDb.customerDao.getAllAsFlow()
