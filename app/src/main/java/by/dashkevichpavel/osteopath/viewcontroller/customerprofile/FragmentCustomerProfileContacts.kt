@@ -1,5 +1,6 @@
 package by.dashkevichpavel.osteopath.viewcontroller.customerprofile
 
+import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -42,6 +43,7 @@ class FragmentCustomerProfileContacts : Fragment(R.layout.fragment_customer_cont
     private lateinit var ibCall: AppCompatImageButton
     private lateinit var tilSocialInstagram: TextInputLayout
     private lateinit var etSocialInstagram: TextInputEditText
+    private lateinit var ibInstagramMessage: AppCompatImageButton
     private lateinit var rgCategory: RadioGroup
     private lateinit var rbCategoryWork: RadioButton
     private lateinit var rbCategoryWorkDone: RadioButton
@@ -170,6 +172,7 @@ class FragmentCustomerProfileContacts : Fragment(R.layout.fragment_customer_cont
         ibCall = view.findViewById(R.id.ib_call)
         tilSocialInstagram = view.findViewById(R.id.til_social_instagram)
         etSocialInstagram = view.findViewById(R.id.et_social_instagram)
+        ibInstagramMessage = view.findViewById(R.id.ib_instagram_message)
         rgCategory = view.findViewById(R.id.rg_category)
         rbCategoryWork = view.findViewById(R.id.rb_work)
         rbCategoryWorkDone = view.findViewById(R.id.rb_work_done)
@@ -221,6 +224,24 @@ class FragmentCustomerProfileContacts : Fragment(R.layout.fragment_customer_cont
                     Uri.fromParts("tel", etPhone.text.toString(), null)
                 )
                 ContextCompat.startActivity(requireContext(), intent, null)
+            }
+        }
+
+        ibInstagramMessage.setOnClickListener {
+            if (etSocialInstagram.text?.isNotBlank() == true) {
+                try {
+                    startActivity(
+                        Intent(
+                            Intent.ACTION_VIEW,
+                            Uri.parse("https://instagram.com/_u/${etSocialInstagram.text}"))
+                    )
+                } catch(e: ActivityNotFoundException) {
+                    startActivity(
+                        Intent(
+                            Intent.ACTION_VIEW,
+                            Uri.parse("https://instagram.com/${etSocialInstagram.text}"))
+                    )
+                }
             }
         }
     }
