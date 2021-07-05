@@ -6,6 +6,7 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import by.dashkevichpavel.osteopath.R
+import by.dashkevichpavel.osteopath.model.Customer
 import by.dashkevichpavel.osteopath.model.CustomerStatus
 import by.dashkevichpavel.osteopath.persistence.entity.CustomerEntity
 
@@ -13,7 +14,7 @@ class CustomerItemViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) 
     private val tvCustomerName: TextView = itemView.findViewById(R.id.tv_customer_name)
     private val ivColorLabel: AppCompatImageView = itemView.findViewById(R.id.iv_color_label)
 
-    fun bind(customer: CustomerEntity, customerClickListener: CustomerClickListener) {
+    fun bind(customer: Customer, customerClickListener: CustomerClickListener) {
         tvCustomerName.text = customer.name
         tvCustomerName.setOnClickListener {
             customerClickListener.onCustomerClick(customer.id)

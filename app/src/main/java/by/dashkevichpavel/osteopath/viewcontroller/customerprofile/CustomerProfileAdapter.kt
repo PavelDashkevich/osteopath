@@ -2,6 +2,8 @@ package by.dashkevichpavel.osteopath.viewcontroller.customerprofile
 
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import by.dashkevichpavel.osteopath.viewcontroller.customerprofile.contacts.FragmentCustomerProfileContacts
+import by.dashkevichpavel.osteopath.viewcontroller.customerprofile.disfunctions.FragmentCustomerProfileDisfunctions
 
 class CustomerProfileAdapter(hostFragment: Fragment) : FragmentStateAdapter(hostFragment) {
     override fun getItemCount(): Int = NUMBER_OF_PAGES

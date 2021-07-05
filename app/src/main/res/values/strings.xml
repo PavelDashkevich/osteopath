@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Osteopath</string>
     <string name="header_contacts">Контактные данные</string>
+    <string name="header_disfunctions">Дисфункции</string>
     <string name="header_customer_name">Фамилия, имя</string>
     <string name="header_customer_birth_date">Дата рождения</string>
     <string name="header_customer_phone">Телефон</string>

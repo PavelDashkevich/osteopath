@@ -1,4 +1,4 @@
-package by.dashkevichpavel.osteopath.viewcontroller.customerprofile
+package by.dashkevichpavel.osteopath.viewcontroller.customerprofile.contacts
 
 import android.content.ActivityNotFoundException
 import android.content.Context
@@ -13,7 +13,6 @@ import androidx.appcompat.widget.AppCompatImageButton
 import androidx.core.content.ContextCompat
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import by.dashkevichpavel.osteopath.R
 import by.dashkevichpavel.osteopath.model.Customer

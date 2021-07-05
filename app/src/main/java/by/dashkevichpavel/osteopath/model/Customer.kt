@@ -9,7 +9,7 @@ import by.dashkevichpavel.osteopath.persistence.entity.SessionEntity
 import java.util.*
 
 data class Customer(
-    var id: Int = 0,
+    var id: Long = 0,
     var name: String = "",
     var birthDate: Date = Date(0),
     var phone: String = "",

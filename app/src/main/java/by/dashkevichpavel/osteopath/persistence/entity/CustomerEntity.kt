@@ -16,7 +16,7 @@ import java.util.*
 data class CustomerEntity (
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = DbContract.Customers.COLUMN_NAME_ID)
-    var id: Int = 0,
+    var id: Long = 0,
 
     @ColumnInfo(name = DbContract.Customers.COLUMN_NAME_NAME)
     var name: String = "",

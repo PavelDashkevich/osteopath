@@ -13,11 +13,11 @@ import by.dashkevichpavel.osteopath.persistence.DbContract
 data class DisfunctionsInSessionEntity(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = DbContract.DisfunctionsInSession.COLUMN_NAME_ID)
-    var id: Int = 0,
+    var id: Long = 0,
 
     @ColumnInfo(name = DbContract.DisfunctionsInSession.COLUMN_NAME_SESSION_ID)
-    var sessionId: Int = 0,
+    var sessionId: Long = 0,
 
     @ColumnInfo(name = DbContract.DisfunctionsInSession.COLUMN_NAME_DISFUNCTION_ID)
-    var disfunctionId: Int = 0
+    var disfunctionId: Long = 0
 )

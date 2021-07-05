@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import by.dashkevichpavel.osteopath.viewcontroller.customerlistfilter.CustomerFilterSharedPreferences
 import by.dashkevichpavel.osteopath.R
+import by.dashkevichpavel.osteopath.model.Customer
 import by.dashkevichpavel.osteopath.persistence.entity.CustomerEntity
 import by.dashkevichpavel.osteopath.viewcontroller.customerprofile.FragmentCustomerProfile
 import by.dashkevichpavel.osteopath.viewmodel.CustomerListViewModel
@@ -36,6 +37,7 @@ class FragmentCustomerList :
 
     private lateinit var rvCustomers: RecyclerView
     private lateinit var fabAddCustomer: FloatingActionButton
+    private lateinit var fabAddTestData: FloatingActionButton
     private lateinit var tvEmptyListHint: TextView
     private lateinit var tvEmptyResultsHint: TextView
     private lateinit var pbLoadingProgress: ProgressBar
@@ -175,6 +177,7 @@ class FragmentCustomerList :
 
     private fun setupViewElements(view: View) {
         fabAddCustomer = view.findViewById(R.id.fab_customer_add)
+        fabAddTestData = view.findViewById(R.id.fab_add_test_data)
         tvEmptyListHint = view.findViewById(R.id.tv_empty_list_hint)
         tvEmptyResultsHint = view.findViewById(R.id.tv_empty_filter_or_search_result)
         rvCustomers = view.findViewById(R.id.rv_customer_list)
@@ -246,7 +249,7 @@ class FragmentCustomerList :
     private fun setupRecyclerView() {
         rvCustomers.layoutManager = LinearLayoutManager(requireContext())
         adapter = CustomerItemAdapter(
-            viewModel.filteredCustomerList.value as MutableList<CustomerEntity>,
+            viewModel.filteredCustomerList.value as MutableList<Customer>,
             this
         )
         rvCustomers.adapter = adapter
@@ -260,7 +263,7 @@ class FragmentCustomerList :
         }
     }
 
-    private fun updateCustomersList(newCustomers: List<CustomerEntity>) {
+    private fun updateCustomersList(newCustomers: List<Customer>) {
         hideEmptyListHints()
 
         if (newCustomers.isEmpty()) {
@@ -284,14 +287,19 @@ class FragmentCustomerList :
             val bundle = bundleOf(FragmentCustomerProfile.ARG_KEY_CUSTOMER_ID to 0)
             findNavController().navigate(R.id.action_fragmentCustomerList_to_fragmentCustomer, bundle)
         }
+
+        fabAddTestData.setOnClickListener {
+            viewModel.loadTestData()
+        }
     }
 
-    override fun onCustomerClick(customerId: Int) {
-        val bundle = bundleOf(FragmentCustomerProfile.ARG_KEY_CUSTOMER_ID to customerId)
+    override fun onCustomerClick(customerId: Long) {
+        val bundle = Bundle()
+        bundle.putLong(FragmentCustomerProfile.ARG_KEY_CUSTOMER_ID, customerId)
         findNavController().navigate(R.id.action_fragmentCustomerList_to_fragmentCustomer, bundle)
     }
 }
 
 interface CustomerClickListener {
-    fun onCustomerClick(customerId: Int)
+    fun onCustomerClick(customerId: Long)
 }

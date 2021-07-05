@@ -6,8 +6,8 @@ import by.dashkevichpavel.osteopath.persistence.entity.SessionEntity
 import java.util.*
 
 data class Session(
-    var id: Int = 0,
-    var customerId: Int = 0,
+    var id: Long = 0,
+    var customerId: Long = 0,
     var dateTime: Date = Date(0),
     var isDone: Boolean = false
 ) {

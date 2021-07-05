@@ -36,9 +36,9 @@ class FragmentCustomerProfile : Fragment(R.layout.fragment_customer) {
         Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
         super.onCreate(savedInstanceState)
 
-        val argVal = arguments?.getInt(ARG_KEY_CUSTOMER_ID)
+        val argVal = arguments?.getLong(ARG_KEY_CUSTOMER_ID)
 
-        viewModel.selectCustomer(argVal ?: 0)
+        viewModel.selectCustomer(argVal ?: 0L)
 
         setHasOptionsMenu(true)
     }

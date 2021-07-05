@@ -16,8 +16,8 @@ class CustomerProfileViewModel(
 
     var toolbarStateTitle: CharSequence = ""
 
-    fun selectCustomer(customerId: Int) {
-        if (customerId == 0) {
+    fun selectCustomer(customerId: Long) {
+        if (customerId == 0L) {
             customer.value = Customer()
             return
         }
@@ -35,7 +35,7 @@ class CustomerProfileViewModel(
         updateCustomerName()
     }
 
-    private fun loadCustomerData(customerId: Int) {
+    private fun loadCustomerData(customerId: Long) {
         viewModelScope.launch {
             val loadedCustomer = repository.getCustomerById(customerId)
 

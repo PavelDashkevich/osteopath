@@ -3,6 +3,7 @@ package by.dashkevichpavel.osteopath.viewmodel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import by.dashkevichpavel.osteopath.model.Customer
 import by.dashkevichpavel.osteopath.model.CustomerListProcessor
 import by.dashkevichpavel.osteopath.model.CustomerListProcessorSubscriber
 import by.dashkevichpavel.osteopath.model.FilterValues
@@ -18,7 +19,7 @@ class CustomerListViewModel(
     var searchViewStateKeyboardShown: Boolean = true
     var searchViewStateQueryString: CharSequence = ""
 
-    var filteredCustomerList = MutableLiveData<List<CustomerEntity>>(mutableListOf())
+    var filteredCustomerList = MutableLiveData<List<Customer>>(mutableListOf())
     var isCustomersLoading = MutableLiveData(false)
     var isSearchOrFilterResult: Boolean = false
 
@@ -32,7 +33,11 @@ class CustomerListViewModel(
         model.setQueryString(newSearchQuery)
     }
 
-    override fun onCustomersProcessed(customers: List<CustomerEntity>, isSearchOrFilterResult: Boolean) {
+    fun loadTestData() {
+        model.loadTestData()
+    }
+
+    override fun onCustomersProcessed(customers: List<Customer>, isSearchOrFilterResult: Boolean) {
         filteredCustomerList.value = customers
         this.isSearchOrFilterResult = isSearchOrFilterResult
     }

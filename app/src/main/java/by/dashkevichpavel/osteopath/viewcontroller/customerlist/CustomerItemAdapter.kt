@@ -4,10 +4,11 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import by.dashkevichpavel.osteopath.R
+import by.dashkevichpavel.osteopath.model.Customer
 import by.dashkevichpavel.osteopath.persistence.entity.CustomerEntity
 
 class CustomerItemAdapter(
-    var customers: MutableList<CustomerEntity>,
+    var customers: MutableList<Customer>,
     private var customerClickListener: CustomerClickListener
     ): RecyclerView.Adapter<CustomerItemViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CustomerItemViewHolder =

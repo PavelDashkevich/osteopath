@@ -1,4 +1,4 @@
-package by.dashkevichpavel.osteopath.viewcontroller.customerprofile
+package by.dashkevichpavel.osteopath.viewcontroller.customerprofile.disfunctions
 
 import android.content.Context
 import android.os.Bundle

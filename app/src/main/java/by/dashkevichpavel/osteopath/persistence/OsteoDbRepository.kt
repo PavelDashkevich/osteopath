@@ -3,8 +3,11 @@ package by.dashkevichpavel.osteopath.persistence
 import android.content.Context
 import by.dashkevichpavel.osteopath.model.Customer
 import by.dashkevichpavel.osteopath.persistence.entity.CustomerEntity
+import by.dashkevichpavel.osteopath.persistence.entity.DisfunctionEntity
+import by.dashkevichpavel.osteopath.persistence.entity.SessionEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 
 class OsteoDbRepository(applicationContext: Context) {
@@ -14,11 +17,7 @@ class OsteoDbRepository(applicationContext: Context) {
         return@withContext osteoDb.customerDao.getAll()
     }
 
-    suspend fun insertCustomers(customers: List<Customer>) = withContext(Dispatchers.IO) {
-        osteoDb.customerDao.insert(customers.map { CustomerEntity(it) })
-    }
-
-    suspend fun getCustomerById(customerId: Int): Customer? = withContext(Dispatchers.IO) {
+    suspend fun getCustomerById(customerId: Long): Customer? = withContext(Dispatchers.IO) {
         val customerEntities = osteoDb.customerDao.getById(customerId)
         val customers = customerEntities.map {
             Customer(
@@ -31,7 +30,22 @@ class OsteoDbRepository(applicationContext: Context) {
         return@withContext customers.firstOrNull()
     }
 
-    fun getAllCustomersAsFlow(): Flow<List<CustomerEntity>> = osteoDb.customerDao.getAllAsFlow()
+    suspend fun insertCustomers(customers: List<Customer>) = withContext(Dispatchers.IO) {
+        for (customer in customers) {
+            val customerId = osteoDb.customerDao.insert(CustomerEntity(customer))
+
+            customer.disfunctions.forEach { disfunction -> disfunction.customerId = customerId }
+            customer.sessions.forEach { session -> session.customerId = customerId }
+
+            osteoDb.disfunctionDao.insert(customer.disfunctions.map { DisfunctionEntity(it) })
+            osteoDb.sessionDao.insert(customer.sessions.map { SessionEntity(it) })
+        }
+    }
+
+    fun getAllCustomersAsFlow(): Flow<List<Customer>> =
+        osteoDb.customerDao.getAllAsFlow().map { customerEntities ->
+            customerEntities.map { customerEntity -> Customer(customerEntity, listOf(), listOf()) }
+        }
 }
 
 object OsteoDbRepositorySingleton {
