@@ -1,11 +1,12 @@
 package by.dashkevichpavel.osteopath.viewcontroller.customerprofile.disfunctions
 
 import by.dashkevichpavel.osteopath.model.Disfunction
+import by.dashkevichpavel.osteopath.model.DisfunctionStatus
 
 abstract class DisfunctionListItem
 
 data class DisfunctionListItemCategory(
-    var name: String
+    val nameStringId: Int
 ) : DisfunctionListItem()
 
 data class DisfunctionListItemData(

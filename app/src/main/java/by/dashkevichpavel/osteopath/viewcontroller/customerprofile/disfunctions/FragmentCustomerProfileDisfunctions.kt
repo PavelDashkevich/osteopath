@@ -6,7 +6,10 @@ import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import by.dashkevichpavel.osteopath.R
+import by.dashkevichpavel.osteopath.model.Disfunction
 import by.dashkevichpavel.osteopath.viewmodel.CustomerProfileViewModel
 import by.dashkevichpavel.osteopath.viewmodel.OsteoViewModelFactory
 
@@ -15,6 +18,9 @@ class FragmentCustomerProfileDisfunctions : Fragment(R.layout.fragment_customer_
         ownerProducer = { requireParentFragment() },
         factoryProducer = { OsteoViewModelFactory(requireContext().applicationContext) }
     )
+
+    private lateinit var rvDisfunctions: RecyclerView
+    private var adapter = DisfunctionItemAdapter(mutableListOf())
 
     override fun onAttach(context: Context) {
         Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
@@ -37,6 +43,12 @@ class FragmentCustomerProfileDisfunctions : Fragment(R.layout.fragment_customer_
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
+
+        setupViews(view)
+        setupListeners()
+
+        viewModel.disfunctions.observe(viewLifecycleOwner, this::updateDisfunctionsList)
+        viewModel.startListeningForDisfunctionsChanges()
     }
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
@@ -97,5 +109,21 @@ class FragmentCustomerProfileDisfunctions : Fragment(R.layout.fragment_customer_
     override fun onDetach() {
         Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
         super.onDetach()
+    }
+
+    private fun setupViews(view: View) {
+        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
+        rvDisfunctions = view.findViewById(R.id.rv_disfunctions_list)
+        rvDisfunctions.layoutManager = LinearLayoutManager(requireContext())
+        rvDisfunctions.adapter = adapter
+    }
+
+    private fun setupListeners() {
+
+    }
+
+    private fun updateDisfunctionsList(newDisfunctionsList: MutableList<Disfunction>) {
+        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
+        adapter.setItems(newDisfunctionsList)
     }
 }

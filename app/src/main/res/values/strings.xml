@@ -25,4 +25,8 @@
     <string name="customer_profile_new_customer">Новый клиент</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="disfunction_status_work">В работе</string>
+    <string name="disfunction_status_work_done">Отработаны</string>
+    <string name="disfunction_status_no_help">Не удалось отработать</string>
+    <string name="disfunction_status_wrong_diagnosed">Неверно диагностированы</string>
 </resources>

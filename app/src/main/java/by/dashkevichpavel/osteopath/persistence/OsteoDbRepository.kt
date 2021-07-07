@@ -2,6 +2,7 @@ package by.dashkevichpavel.osteopath.persistence
 
 import android.content.Context
 import by.dashkevichpavel.osteopath.model.Customer
+import by.dashkevichpavel.osteopath.model.Disfunction
 import by.dashkevichpavel.osteopath.persistence.entity.CustomerEntity
 import by.dashkevichpavel.osteopath.persistence.entity.DisfunctionEntity
 import by.dashkevichpavel.osteopath.persistence.entity.SessionEntity
@@ -17,13 +18,23 @@ class OsteoDbRepository(applicationContext: Context) {
         return@withContext osteoDb.customerDao.getAll()
     }
 
-    suspend fun getCustomerById(customerId: Long): Customer? = withContext(Dispatchers.IO) {
+    suspend fun getCustomerById(
+        customerId: Long,
+        loadDisfunctions: Boolean = false,
+        loadSessions: Boolean = false
+    ): Customer? = withContext(Dispatchers.IO) {
         val customerEntities = osteoDb.customerDao.getById(customerId)
         val customers = customerEntities.map {
             Customer(
                 it,
-                osteoDb.disfunctionDao.getByCustomerId(customerId),
-                osteoDb.sessionDao.getByCustomerId(customerId)
+                if (loadDisfunctions)
+                    osteoDb.disfunctionDao.getByCustomerId(customerId)
+                else
+                    listOf(),
+                if (loadSessions)
+                    osteoDb.sessionDao.getByCustomerId(customerId)
+                else
+                    listOf()
             )
         }
 
@@ -45,6 +56,11 @@ class OsteoDbRepository(applicationContext: Context) {
     fun getAllCustomersAsFlow(): Flow<List<Customer>> =
         osteoDb.customerDao.getAllAsFlow().map { customerEntities ->
             customerEntities.map { customerEntity -> Customer(customerEntity, listOf(), listOf()) }
+        }
+
+    fun getAllDisfunctionsByCustomerId(customerId: Long): Flow<List<Disfunction>> =
+        osteoDb.disfunctionDao.getByCustomerIdAsFlow(customerId).map { disfunctionEntities ->
+            disfunctionEntities.map { disfunctionEntity -> Disfunction(disfunctionEntity) }
         }
 }
 

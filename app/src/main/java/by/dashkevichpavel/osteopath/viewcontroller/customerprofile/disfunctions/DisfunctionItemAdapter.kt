@@ -1,9 +1,14 @@
 package by.dashkevichpavel.osteopath.viewcontroller.customerprofile.disfunctions
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import by.dashkevichpavel.osteopath.R
+import by.dashkevichpavel.osteopath.model.Disfunction
+import by.dashkevichpavel.osteopath.model.DisfunctionStatus
+import by.dashkevichpavel.osteopath.model.DisfunctionStatusHelper
 
 class DisfunctionItemAdapter(
     var disfunctionItems: MutableList<DisfunctionListItem>
@@ -40,4 +45,28 @@ class DisfunctionItemAdapter(
     }
 
     override fun getItemCount(): Int = disfunctionItems.size
+
+    fun setItems(newItems: List<Disfunction>) {
+        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
+        val disfunctionsByStatus = newItems.groupBy { it.disfunctionStatusId }
+        val newList: MutableList<DisfunctionListItem> = mutableListOf()
+
+        for (key in disfunctionsByStatus.keys) {
+            newList.add(DisfunctionListItemCategory(DisfunctionStatusHelper.getNameStringIdById(key)))
+
+            disfunctionsByStatus[key]?.let { listOfDisfunctions ->
+                newList.addAll(
+                    listOfDisfunctions.map { disfunction ->
+                        DisfunctionListItemData(disfunction)
+                    }
+                )
+            }
+        }
+
+        val result = DiffUtil.calculateDiff(DisfunctionListDiffUtil(disfunctionItems, newList))
+        disfunctionItems.clear()
+        disfunctionItems.addAll(newList)
+        result.dispatchUpdatesTo(this)
+        //notifyDataSetChanged()
+    }
 }

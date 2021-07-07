@@ -296,7 +296,12 @@ class FragmentCustomerList :
     override fun onCustomerClick(customerId: Long) {
         val bundle = Bundle()
         bundle.putLong(FragmentCustomerProfile.ARG_KEY_CUSTOMER_ID, customerId)
-        findNavController().navigate(R.id.action_fragmentCustomerList_to_fragmentCustomer, bundle)
+
+        try {
+            findNavController().navigate(R.id.action_fragmentCustomerList_to_fragmentCustomer, bundle)
+        } catch (e: IllegalArgumentException) {
+            Log.d("OsteoApp", "onCustomerClick(): exception: ${e.message}")
+        }
     }
 }
 

@@ -15,8 +15,8 @@ class DisfunctionListDiffUtil(
 
         if (oldItems[oldItemPosition] is DisfunctionListItemCategory &&
                 newItems[newItemPosition] is DisfunctionListItemCategory) {
-            res = ((oldItems[oldItemPosition] as DisfunctionListItemCategory).name ==
-                    (newItems[newItemPosition] as DisfunctionListItemCategory).name)
+            res = ((oldItems[oldItemPosition] as DisfunctionListItemCategory).nameStringId ==
+                    (newItems[newItemPosition] as DisfunctionListItemCategory).nameStringId)
         } else if (oldItems[oldItemPosition] is DisfunctionListItemData &&
             newItems[newItemPosition] is DisfunctionListItemData) {
             res = ((oldItems[oldItemPosition] as DisfunctionListItemData).disfunction.id ==
@@ -31,8 +31,8 @@ class DisfunctionListDiffUtil(
 
         if (oldItems[oldItemPosition] is DisfunctionListItemCategory &&
             newItems[newItemPosition] is DisfunctionListItemCategory) {
-            res = ((oldItems[oldItemPosition] as DisfunctionListItemCategory).name ==
-                    (newItems[newItemPosition] as DisfunctionListItemCategory).name)
+            res = ((oldItems[oldItemPosition] as DisfunctionListItemCategory).nameStringId ==
+                    (newItems[newItemPosition] as DisfunctionListItemCategory).nameStringId)
         } else if (oldItems[oldItemPosition] is DisfunctionListItemData &&
             newItems[newItemPosition] is DisfunctionListItemData) {
             val oldDisfunction = (oldItems[oldItemPosition] as DisfunctionListItemData).disfunction
