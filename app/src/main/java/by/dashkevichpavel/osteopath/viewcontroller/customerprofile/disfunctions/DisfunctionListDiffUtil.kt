@@ -1,5 +1,6 @@
 package by.dashkevichpavel.osteopath.viewcontroller.customerprofile.disfunctions
 
+import android.util.Log
 import androidx.recyclerview.widget.DiffUtil
 
 class DisfunctionListDiffUtil(
@@ -15,13 +16,19 @@ class DisfunctionListDiffUtil(
 
         if (oldItems[oldItemPosition] is DisfunctionListItemCategory &&
                 newItems[newItemPosition] is DisfunctionListItemCategory) {
-            res = ((oldItems[oldItemPosition] as DisfunctionListItemCategory).nameStringId ==
-                    (newItems[newItemPosition] as DisfunctionListItemCategory).nameStringId)
+            val oldDisfunctionCategory = oldItems[oldItemPosition] as DisfunctionListItemCategory
+            val newDisfunctionCategory = newItems[newItemPosition] as DisfunctionListItemCategory
+            res = (oldDisfunctionCategory.disfunctionStatus == newDisfunctionCategory.disfunctionStatus)
         } else if (oldItems[oldItemPosition] is DisfunctionListItemData &&
             newItems[newItemPosition] is DisfunctionListItemData) {
             res = ((oldItems[oldItemPosition] as DisfunctionListItemData).disfunction.id ==
                     (newItems[newItemPosition] as DisfunctionListItemData).disfunction.id)
         }
+
+        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}: " +
+            "oldItemPos = $oldItemPosition, newItemPos = $newItemPosition, " +
+            "oldItems[oldItemPosition] = ${oldItems[oldItemPosition]}, " +
+            "newItems[newItemPosition] = ${newItems[newItemPosition]}, res = $res")
 
         return res
     }
@@ -31,8 +38,8 @@ class DisfunctionListDiffUtil(
 
         if (oldItems[oldItemPosition] is DisfunctionListItemCategory &&
             newItems[newItemPosition] is DisfunctionListItemCategory) {
-            res = ((oldItems[oldItemPosition] as DisfunctionListItemCategory).nameStringId ==
-                    (newItems[newItemPosition] as DisfunctionListItemCategory).nameStringId)
+            res = ((oldItems[oldItemPosition] as DisfunctionListItemCategory).isEmpty ==
+                    (newItems[newItemPosition] as DisfunctionListItemCategory).isEmpty)
         } else if (oldItems[oldItemPosition] is DisfunctionListItemData &&
             newItems[newItemPosition] is DisfunctionListItemData) {
             val oldDisfunction = (oldItems[oldItemPosition] as DisfunctionListItemData).disfunction
@@ -41,6 +48,11 @@ class DisfunctionListDiffUtil(
             res = (oldDisfunction.id == newDisfunction.id &&
                     oldDisfunction.description == newDisfunction.description)
         }
+
+        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}: " +
+                "oldItemPos = $oldItemPosition, newItemPos = $newItemPosition, " +
+                "oldItems[oldItemPosition] = ${oldItems[oldItemPosition]}, " +
+                "newItems[newItemPosition] = ${newItems[newItemPosition]}, res = $res")
 
         return res
     }

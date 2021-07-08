@@ -10,17 +10,20 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import by.dashkevichpavel.osteopath.R
 import by.dashkevichpavel.osteopath.model.Disfunction
+import by.dashkevichpavel.osteopath.model.DisfunctionStatus
 import by.dashkevichpavel.osteopath.viewmodel.CustomerProfileViewModel
 import by.dashkevichpavel.osteopath.viewmodel.OsteoViewModelFactory
 
-class FragmentCustomerProfileDisfunctions : Fragment(R.layout.fragment_customer_disfunctions) {
+class FragmentCustomerProfileDisfunctions :
+    Fragment(R.layout.fragment_customer_disfunctions),
+    DisfunctionCategoryCollapseExpandClickListener {
     private val viewModel: CustomerProfileViewModel by viewModels(
         ownerProducer = { requireParentFragment() },
         factoryProducer = { OsteoViewModelFactory(requireContext().applicationContext) }
     )
 
     private lateinit var rvDisfunctions: RecyclerView
-    private var adapter = DisfunctionItemAdapter(mutableListOf())
+    private var adapter = DisfunctionItemAdapter(mutableListOf(), this)
 
     override fun onAttach(context: Context) {
         Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
@@ -126,4 +129,12 @@ class FragmentCustomerProfileDisfunctions : Fragment(R.layout.fragment_customer_
         Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
         adapter.setItems(newDisfunctionsList)
     }
+
+    override fun onCategoryClick(disfunctionStatus: DisfunctionStatus) {
+        adapter.setItems(viewModel.disfunctions.value ?: emptyList(), disfunctionStatus)
+    }
+}
+
+interface DisfunctionCategoryCollapseExpandClickListener {
+    fun onCategoryClick(disfunctionStatus: DisfunctionStatus)
 }

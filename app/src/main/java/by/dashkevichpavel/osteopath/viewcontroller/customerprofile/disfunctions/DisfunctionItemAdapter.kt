@@ -11,8 +11,14 @@ import by.dashkevichpavel.osteopath.model.DisfunctionStatus
 import by.dashkevichpavel.osteopath.model.DisfunctionStatusHelper
 
 class DisfunctionItemAdapter(
-    var disfunctionItems: MutableList<DisfunctionListItem>
+    var disfunctionItems: MutableList<DisfunctionListItem>,
+    private val disfunctionCategoryCollapseExpandClickListener: DisfunctionCategoryCollapseExpandClickListener
 ) : RecyclerView.Adapter<DisfunctionItemViewHolder>() {
+    private val disfunctionCategories: MutableList<DisfunctionListItemCategory> =
+        DisfunctionStatus.values().map {
+            DisfunctionListItemCategory(it, false)
+        } as MutableList<DisfunctionListItemCategory>
+
     override fun getItemViewType(position: Int): Int {
         return if (disfunctionItems[position] is DisfunctionListItemCategory) 0 else 1
     }
@@ -22,7 +28,8 @@ class DisfunctionItemAdapter(
             return DisfunctionItemCategoryViewHolder(
                 LayoutInflater
                     .from(parent.context)
-                    .inflate(R.layout.listitem_disfunction_category, parent, false)
+                    .inflate(R.layout.listitem_disfunction_category, parent, false),
+                disfunctionCategoryCollapseExpandClickListener
             )
         }
 
@@ -46,20 +53,27 @@ class DisfunctionItemAdapter(
 
     override fun getItemCount(): Int = disfunctionItems.size
 
-    fun setItems(newItems: List<Disfunction>) {
+    fun setItems(newItems: List<Disfunction>, changeStateOfCategory: DisfunctionStatus? = null) {
         Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
-        val disfunctionsByStatus = newItems.groupBy { it.disfunctionStatusId }
         val newList: MutableList<DisfunctionListItem> = mutableListOf()
 
-        for (key in disfunctionsByStatus.keys) {
-            newList.add(DisfunctionListItemCategory(DisfunctionStatusHelper.getNameStringIdById(key)))
+        for (disfunctionCategoryItem in disfunctionCategories) {
+            if (disfunctionCategoryItem.disfunctionStatus == changeStateOfCategory) {
+                disfunctionCategoryItem.collapsed = !disfunctionCategoryItem.collapsed
+            }
 
-            disfunctionsByStatus[key]?.let { listOfDisfunctions ->
-                newList.addAll(
-                    listOfDisfunctions.map { disfunction ->
-                        DisfunctionListItemData(disfunction)
-                    }
-                )
+            val subList = newItems.filter { disfunction ->
+                disfunction.disfunctionStatusId == disfunctionCategoryItem.disfunctionStatus.id
+            }
+
+            disfunctionCategoryItem.isEmpty = subList.isEmpty()
+
+            newList.add(disfunctionCategoryItem.copy())
+
+            if (subList.isNotEmpty() && !disfunctionCategoryItem.collapsed) {
+                newList.addAll(subList.map { disfunction ->
+                    DisfunctionListItemData(disfunction)
+                })
             }
         }
 
@@ -67,6 +81,5 @@ class DisfunctionItemAdapter(
         disfunctionItems.clear()
         disfunctionItems.addAll(newList)
         result.dispatchUpdatesTo(this)
-        //notifyDataSetChanged()
     }
 }

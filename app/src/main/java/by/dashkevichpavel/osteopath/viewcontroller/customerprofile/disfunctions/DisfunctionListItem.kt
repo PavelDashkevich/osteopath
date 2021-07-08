@@ -6,7 +6,9 @@ import by.dashkevichpavel.osteopath.model.DisfunctionStatus
 abstract class DisfunctionListItem
 
 data class DisfunctionListItemCategory(
-    val nameStringId: Int
+    val disfunctionStatus: DisfunctionStatus,
+    var isEmpty: Boolean,
+    var collapsed: Boolean = disfunctionStatus != DisfunctionStatus.WORK
 ) : DisfunctionListItem()
 
 data class DisfunctionListItemData(
