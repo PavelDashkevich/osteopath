@@ -26,7 +26,7 @@ import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import java.util.*
 
-class FragmentCustomerProfileContacts : Fragment(R.layout.fragment_customer_contacts) {
+class FragmentCustomerProfileContacts : Fragment(R.layout.fragment_customer_profile_contacts) {
     private val viewModel: CustomerProfileViewModel by viewModels(
         ownerProducer = { requireParentFragment() },
         factoryProducer = { OsteoViewModelFactory(requireContext().applicationContext) }

@@ -24,4 +24,8 @@ interface DisfunctionDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(disfunctionEntities: List<DisfunctionEntity>)
+
+    @Query("""SELECT * FROM ${DbContract.Disfunctions.TABLE_NAME} 
+        WHERE ${DbContract.Disfunctions.COLUMN_NAME_ID} == :disfunctionId""")
+    suspend fun getById(disfunctionId: Long): List<DisfunctionEntity>
 }

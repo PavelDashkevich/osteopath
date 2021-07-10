@@ -23,6 +23,12 @@ data class SessionEntity(
     @ColumnInfo(name = DbContract.Sessions.COLUMN_NAME_DATE_TIME)
     var dateTime: Date = Date(0),
 
+    @ColumnInfo(name = DbContract.Sessions.COLUMN_NAME_PLAN)
+    var plan: String = "",
+
+    @ColumnInfo(name = DbContract.Sessions.COLUMN_NAME_BODY_CONDITION)
+    var bodyCondition: String = "",
+
     @ColumnInfo(name = DbContract.Sessions.COLUMN_NAME_IS_DONE)
     var isDone: Boolean = false
 ) {
@@ -30,6 +36,8 @@ data class SessionEntity(
         id = session.id,
         customerId = session.customerId,
         dateTime = session.dateTime,
+        plan = session.plan,
+        bodyCondition = session.bodyCondition,
         isDone = session.isDone
     )
 }

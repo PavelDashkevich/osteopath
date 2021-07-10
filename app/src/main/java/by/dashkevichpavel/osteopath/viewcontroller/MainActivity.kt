@@ -7,7 +7,9 @@ import android.util.Log
 import android.view.Menu
 import by.dashkevichpavel.osteopath.R
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), BackClickHandler {
+    private val backClickListeners = mutableListOf<BackClickListener?>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
         super.onCreate(savedInstanceState)
@@ -93,4 +95,42 @@ class MainActivity : AppCompatActivity() {
         Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
         super.onDestroy()
     }
+
+    override fun onBackPressed() {
+        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
+        if (!isBackInterceptedByFragments()) {
+            super.onBackPressed()
+        }
+    }
+
+    private fun isBackInterceptedByFragments(): Boolean {
+        var intercepted = false
+
+        for (backClickListener in backClickListeners) {
+            intercepted = intercepted || (backClickListener?.onBackClick() == true)
+        }
+
+        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}: intercepted = $intercepted")
+
+        return intercepted
+    }
+
+    override fun addBackClickListener(backClickListener: BackClickListener) {
+        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
+        backClickListeners.add(backClickListener)
+    }
+
+    override fun removeBackClickListener(backClickListener: BackClickListener) {
+        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
+        backClickListeners.remove(backClickListener)
+    }
+}
+
+interface BackClickListener {
+    fun onBackClick(): Boolean
+}
+
+interface BackClickHandler {
+    fun addBackClickListener(backClickListener: BackClickListener)
+    fun removeBackClickListener(backClickListener: BackClickListener)
 }

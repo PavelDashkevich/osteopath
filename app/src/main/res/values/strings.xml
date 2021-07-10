@@ -2,16 +2,22 @@
     <string name="app_name">Osteopath</string>
     <string name="header_contacts">Контактные данные</string>
     <string name="header_disfunctions">Дисфункции</string>
+    <string name="header_plan">План работ и что было сделано</string>
+    <string name="header_body_condition">Состояние тела</string>
+    <string name="header_sessions">Сеансы</string>
     <string name="header_customer_name">Фамилия, имя</string>
     <string name="header_customer_birth_date">Дата рождения</string>
     <string name="header_customer_phone">Телефон</string>
     <string name="header_customer_instagram">Instagram</string>
     <string name="header_customer_category">Категория</string>
-    <string name="category_work">в работе</string>
-    <string name="category_work_done">работа завершена</string>
-    <string name="category_no_help">не удалось помочь</string>
+    <string name="header_disfunction_description">Описание дисфункции</string>
+    <string name="category_work">В работе</string>
+    <string name="category_work_done">Работа завершена</string>
+    <string name="category_no_help">Не удалось помочь</string>
     <string name="fragment_title_customers">Клиенты</string>
     <string name="content_description_customers_add">Добавить клиента</string>
+    <string name="content_description_disfunctions_add">Добавить дисфункцию</string>
+    <string name="content_description_sessions_add">Добавить сеанс</string>
     <string name="hint_customer_list_empty">Список клиентов пуст. \nДля добавления нажмите эту кнопку</string>
     <string name="customer_menu_item_search">Поиск</string>
     <string name="customer_menu_item_filter">Фильтр</string>
@@ -19,6 +25,7 @@
     <string name="filter_by_age_children">дети (до 18 лет)</string>
     <string name="filter_by_age_adults">взрослые (от 18 лет)</string>
     <string name="header_filter_by_category">По категории</string>
+    <string name="standard_edit_screen_menu_item_cancel">Отмена</string>
     <string name="customer_filter_menu_item_select_all">Установить все</string>
     <string name="customer_filter_menu_item_deselect_all">Сбросить все</string>
     <string name="hint_customer_filter_or_search_result">По заданным условиям\nни одного клиента не найдено.</string>
@@ -26,7 +33,15 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="disfunction_status_work">В работе</string>
-    <string name="disfunction_status_work_done">Отработаны</string>
+    <string name="disfunction_status_work_done_group">Отработаны</string>
+    <string name="disfunction_status_work_done">Отработана</string>
     <string name="disfunction_status_no_help">Не удалось отработать</string>
-    <string name="disfunction_status_wrong_diagnosed">Неверно диагностированы</string>
+    <string name="disfunction_status_wrong_diagnosed_group">Неверно диагностированы</string>
+    <string name="disfunction_status_wrong_diagnosed">Неверно диагностирована</string>
+
+    <string name="alert_dialog_cancel_changes">Данные были изменены. Сохранить изменения?</string>
+    <string name="alert_dialog_button_yes">Да</string>
+    <string name="alert_dialog_button_no">Нет</string>
+
+    <string name="snackbar_saving_changes">Сохраняю изменения…</string>
 </resources>

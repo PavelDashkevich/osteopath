@@ -13,7 +13,6 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.Toolbar
-import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -21,7 +20,6 @@ import androidx.recyclerview.widget.RecyclerView
 import by.dashkevichpavel.osteopath.viewcontroller.customerlistfilter.CustomerFilterSharedPreferences
 import by.dashkevichpavel.osteopath.R
 import by.dashkevichpavel.osteopath.model.Customer
-import by.dashkevichpavel.osteopath.persistence.entity.CustomerEntity
 import by.dashkevichpavel.osteopath.viewcontroller.customerprofile.FragmentCustomerProfile
 import by.dashkevichpavel.osteopath.viewmodel.CustomerListViewModel
 import by.dashkevichpavel.osteopath.viewmodel.OsteoViewModelFactory
@@ -284,8 +282,7 @@ class FragmentCustomerList :
 
     private fun setupFab() {
         fabAddCustomer.setOnClickListener {
-            val bundle = bundleOf(FragmentCustomerProfile.ARG_KEY_CUSTOMER_ID to 0)
-            findNavController().navigate(R.id.action_fragmentCustomerList_to_fragmentCustomer, bundle)
+            openCustomerProfileScreen(0L)
         }
 
         fabAddTestData.setOnClickListener {
@@ -293,15 +290,19 @@ class FragmentCustomerList :
         }
     }
 
-    override fun onCustomerClick(customerId: Long) {
+    private fun openCustomerProfileScreen(customerId: Long) {
         val bundle = Bundle()
         bundle.putLong(FragmentCustomerProfile.ARG_KEY_CUSTOMER_ID, customerId)
 
         try {
             findNavController().navigate(R.id.action_fragmentCustomerList_to_fragmentCustomer, bundle)
         } catch (e: IllegalArgumentException) {
-            Log.d("OsteoApp", "onCustomerClick(): exception: ${e.message}")
+            Log.d("OsteoApp", "openCustomerProfileScreen(): exception: ${e.message}")
         }
+    }
+
+    override fun onCustomerClick(customerId: Long) {
+        openCustomerProfileScreen(customerId)
     }
 }
 

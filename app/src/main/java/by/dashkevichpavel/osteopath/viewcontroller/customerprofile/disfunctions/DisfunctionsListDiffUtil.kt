@@ -3,7 +3,7 @@ package by.dashkevichpavel.osteopath.viewcontroller.customerprofile.disfunctions
 import android.util.Log
 import androidx.recyclerview.widget.DiffUtil
 
-class DisfunctionListDiffUtil(
+class DisfunctionsListDiffUtil(
     private var oldItems: List<DisfunctionListItem>,
     private var newItems: List<DisfunctionListItem>
 ) : DiffUtil.Callback() {

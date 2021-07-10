@@ -20,15 +20,29 @@
     <fragment
         android:id="@+id/fragmentCustomerProfile"
         android:name="by.dashkevichpavel.osteopath.viewcontroller.customerprofile.FragmentCustomerProfile"
-        android:label="FragmentCustomer" >
+        android:label="FragmentCustomer"
+        tools:layout="@layout/fragment_customer_profile">
         <argument
             android:name="customerId"
-            app:argType="integer"
-            android:defaultValue="0" />
+            app:argType="long"
+            android:defaultValue="0L" />
+        <action
+            android:id="@+id/action_fragmentCustomerProfile_to_fragmentDisfunction"
+            app:destination="@id/fragmentDisfunction" />
     </fragment>
     <fragment
         android:id="@+id/fragmentCustomerListFilter"
         android:name="by.dashkevichpavel.osteopath.viewcontroller.customerlistfilter.FragmentCustomerListFilter"
         android:label="fragment_customer_list_filter"
         tools:layout="@layout/fragment_customer_list_filter" />
+    <fragment
+        android:id="@+id/fragmentDisfunction"
+        android:name="by.dashkevichpavel.osteopath.viewcontroller.disfunction.FragmentDisfunction"
+        android:label="FragmentDisfunction"
+        tools:layout="@layout/fragment_disfunction">
+        <argument
+            android:name="disfunctionId"
+            app:argType="long"
+            android:defaultValue="0L" />
+    </fragment>
 </navigation>

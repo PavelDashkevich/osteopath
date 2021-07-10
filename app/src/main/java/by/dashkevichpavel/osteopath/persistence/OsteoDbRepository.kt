@@ -1,11 +1,14 @@
 package by.dashkevichpavel.osteopath.persistence
 
 import android.content.Context
+import android.util.Log
 import by.dashkevichpavel.osteopath.model.Customer
 import by.dashkevichpavel.osteopath.model.Disfunction
+import by.dashkevichpavel.osteopath.model.Session
 import by.dashkevichpavel.osteopath.persistence.entity.CustomerEntity
 import by.dashkevichpavel.osteopath.persistence.entity.DisfunctionEntity
 import by.dashkevichpavel.osteopath.persistence.entity.SessionEntity
+import by.dashkevichpavel.osteopath.persistence.entity.SessionWithDisfunctionsEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -61,6 +64,27 @@ class OsteoDbRepository(applicationContext: Context) {
     fun getAllDisfunctionsByCustomerId(customerId: Long): Flow<List<Disfunction>> =
         osteoDb.disfunctionDao.getByCustomerIdAsFlow(customerId).map { disfunctionEntities ->
             disfunctionEntities.map { disfunctionEntity -> Disfunction(disfunctionEntity) }
+        }
+
+    suspend fun getDisfunctionById(disfunctionId: Long): Disfunction? = withContext(Dispatchers.IO) {
+        val disfunctions = osteoDb.disfunctionDao.getById(disfunctionId).map { disfunctionEntity ->
+            Disfunction(disfunctionEntity)
+        }
+
+        return@withContext disfunctions.firstOrNull()
+    }
+
+    suspend fun insertDisfunction(disfunction: Disfunction): Long = withContext(Dispatchers.IO) {
+        Log.d("OsteoApp", "OsteoDbRepository: insertDisfunction")
+        return@withContext osteoDb.disfunctionDao.insert(DisfunctionEntity(disfunction))
+    }
+
+    fun getSessionsWithDisfunctionsByCustomerId(customerId: Long): Flow<List<Session>> =
+        osteoDb.sessionDao.getSessionsWithDisfunctionsByCustomerId(customerId).map {
+            sessionsWithDisfunction ->
+                sessionsWithDisfunction.map { sessionWithDisfunctions ->
+                    Session(sessionWithDisfunctions)
+                }
         }
 }
 

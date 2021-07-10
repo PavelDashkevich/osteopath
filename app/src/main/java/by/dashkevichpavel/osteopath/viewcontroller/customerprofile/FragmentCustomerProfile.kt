@@ -17,7 +17,7 @@ import by.dashkevichpavel.osteopath.viewmodel.OsteoViewModelFactory
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 
-class FragmentCustomerProfile : Fragment(R.layout.fragment_customer) {
+class FragmentCustomerProfile : Fragment(R.layout.fragment_customer_profile) {
     private lateinit var tbActions: Toolbar
     private lateinit var tlTabs: TabLayout
     private lateinit var vpPager: ViewPager2

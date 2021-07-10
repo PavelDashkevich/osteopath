@@ -11,12 +11,14 @@ import by.dashkevichpavel.osteopath.persistence.dao.SessionDao
 import by.dashkevichpavel.osteopath.persistence.entity.CustomerEntity
 import by.dashkevichpavel.osteopath.persistence.entity.DisfunctionEntity
 import by.dashkevichpavel.osteopath.persistence.entity.SessionEntity
+import by.dashkevichpavel.osteopath.persistence.entity.SessionWithDisfunctionsEntity
 
 @Database(
     entities = [
         CustomerEntity::class,
         DisfunctionEntity::class,
-        SessionEntity::class
+        SessionEntity::class,
+        SessionWithDisfunctionsEntity::class
     ],
     version = 1
 )

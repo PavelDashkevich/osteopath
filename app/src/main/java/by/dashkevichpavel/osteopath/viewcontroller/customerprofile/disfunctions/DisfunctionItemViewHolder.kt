@@ -6,6 +6,7 @@ import androidx.appcompat.widget.AppCompatImageButton
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import by.dashkevichpavel.osteopath.R
+import com.google.android.material.card.MaterialCardView
 
 open class DisfunctionItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
@@ -60,12 +61,22 @@ class DisfunctionItemCategoryViewHolder(
     }
 }
 
-class DisfunctionItemDataViewHolder(itemView: View):
+class DisfunctionItemDataViewHolder(
+    itemView: View,
+    private val disfunctionClickListener: DisfunctionClickListener):
     DisfunctionItemViewHolder(itemView) {
 
     private val tvDescription: TextView = itemView.findViewById(R.id.tv_description)
+    private val cvCard: MaterialCardView = itemView.findViewById(R.id.cv_card)
 
     fun bind(disfunctionListItemData: DisfunctionListItemData) {
         tvDescription.text = disfunctionListItemData.disfunction.description
+
+        cvCard.setOnClickListener {
+            disfunctionClickListener.onDisfunctionClick(
+                disfunctionListItemData.disfunction.customerId,
+                disfunctionListItemData.disfunction.id
+            )
+        }
     }
 }

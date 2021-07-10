@@ -8,13 +8,18 @@ import by.dashkevichpavel.osteopath.persistence.DbContract
 
 @Entity(
     tableName = DbContract.DisfunctionsInSession.TABLE_NAME,
-    indices = [Index(DbContract.DisfunctionsInSession.COLUMN_NAME_ID)]
+    indices = [
+        Index(
+            DbContract.DisfunctionsInSession.COLUMN_NAME_SESSION_ID,
+            DbContract.DisfunctionsInSession.COLUMN_NAME_DISFUNCTION_ID
+        )
+              ],
+    primaryKeys = [
+        DbContract.DisfunctionsInSession.COLUMN_NAME_SESSION_ID,
+        DbContract.DisfunctionsInSession.COLUMN_NAME_DISFUNCTION_ID
+    ]
 )
-data class DisfunctionsInSessionEntity(
-    @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = DbContract.DisfunctionsInSession.COLUMN_NAME_ID)
-    var id: Long = 0,
-
+data class SessionWithDisfunctionsEntity(
     @ColumnInfo(name = DbContract.DisfunctionsInSession.COLUMN_NAME_SESSION_ID)
     var sessionId: Long = 0,
 

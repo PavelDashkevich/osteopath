@@ -33,13 +33,14 @@ object DbContract {
         const val COLUMN_NAME_ID = BaseColumns._ID
         const val COLUMN_NAME_CUSTOMER_ID = "customer_id"
         const val COLUMN_NAME_DATE_TIME = "date_time"
+        const val COLUMN_NAME_PLAN = "plan"
+        const val COLUMN_NAME_BODY_CONDITION = "body_condition"
         const val COLUMN_NAME_IS_DONE = "is_done"
     }
 
     object DisfunctionsInSession {
         const val TABLE_NAME = "disfunctions_in_session"
 
-        const val COLUMN_NAME_ID = BaseColumns._ID
         const val COLUMN_NAME_SESSION_ID = "session_id"
         const val COLUMN_NAME_DISFUNCTION_ID = "disfunction_id"
     }

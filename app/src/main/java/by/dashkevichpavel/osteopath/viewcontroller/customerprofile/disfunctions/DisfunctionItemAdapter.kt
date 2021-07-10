@@ -8,11 +8,11 @@ import androidx.recyclerview.widget.RecyclerView
 import by.dashkevichpavel.osteopath.R
 import by.dashkevichpavel.osteopath.model.Disfunction
 import by.dashkevichpavel.osteopath.model.DisfunctionStatus
-import by.dashkevichpavel.osteopath.model.DisfunctionStatusHelper
 
 class DisfunctionItemAdapter(
     var disfunctionItems: MutableList<DisfunctionListItem>,
-    private val disfunctionCategoryCollapseExpandClickListener: DisfunctionCategoryCollapseExpandClickListener
+    private val disfunctionCategoryCollapseExpandClickListener: DisfunctionCategoryCollapseExpandClickListener,
+    private val disfunctionClickListener: DisfunctionClickListener
 ) : RecyclerView.Adapter<DisfunctionItemViewHolder>() {
     private val disfunctionCategories: MutableList<DisfunctionListItemCategory> =
         DisfunctionStatus.values().map {
@@ -36,7 +36,8 @@ class DisfunctionItemAdapter(
         return DisfunctionItemDataViewHolder(
             LayoutInflater
                 .from(parent.context)
-                .inflate(R.layout.listitem_disfunction_data, parent, false)
+                .inflate(R.layout.listitem_disfunction_data, parent, false),
+            disfunctionClickListener
         )
     }
 
@@ -77,7 +78,7 @@ class DisfunctionItemAdapter(
             }
         }
 
-        val result = DiffUtil.calculateDiff(DisfunctionListDiffUtil(disfunctionItems, newList))
+        val result = DiffUtil.calculateDiff(DisfunctionsListDiffUtil(disfunctionItems, newList))
         disfunctionItems.clear()
         disfunctionItems.addAll(newList)
         result.dispatchUpdatesTo(this)

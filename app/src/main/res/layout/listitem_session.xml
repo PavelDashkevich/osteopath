@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cv_card"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="8dp"
+    android:elevation="4dp"
+    android:layout_marginBottom="8dp"
+    app:strokeWidth="0.3dp"
+    app:strokeColor="@color/divider">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/gl_vertical_left"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="16dp"/>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/gl_vertical_right"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            app:layout_constraintGuide_end="16dp"/>
+
+        <TextView
+            android:id="@+id/tv_date_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="@id/gl_vertical_left"
+            tools:text="10.05.2021 10:20"
+            android:paddingVertical="12dp"
+            android:textSize="12sp"/>
+
+        <TextView
+            android:id="@+id/tv_done"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/gl_vertical_right"
+            tools:text="Проведен"
+            android:paddingVertical="12dp"
+            android:textSize="12sp"/>
+
+        <TextView
+            android:id="@+id/tv_header_disfunctions"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/tv_date_time"
+            app:layout_constraintStart_toStartOf="@id/gl_vertical_left"
+            app:layout_constraintEnd_toEndOf="@id/gl_vertical_right"
+            android:gravity="center_vertical"
+            android:text="@string/header_disfunctions"
+            android:textStyle="bold"
+            android:paddingVertical="12dp"/>
+
+        <TextView
+            android:id="@+id/tv_disfunctions"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/tv_header_disfunctions"
+            app:layout_constraintStart_toStartOf="@id/gl_vertical_left"
+            app:layout_constraintEnd_toEndOf="@id/gl_vertical_right"
+            android:gravity="center_vertical"
+            tools:text="@tools:sample/lorem"
+            android:paddingBottom="12dp"/>
+
+        <TextView
+            android:id="@+id/tv_header_plan"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/tv_disfunctions"
+            app:layout_constraintStart_toStartOf="@id/gl_vertical_left"
+            app:layout_constraintEnd_toEndOf="@id/gl_vertical_right"
+            android:gravity="center_vertical"
+            android:text="@string/header_plan"
+            android:textStyle="bold"
+            android:paddingVertical="12dp"/>
+
+        <TextView
+            android:id="@+id/tv_plan"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/tv_header_plan"
+            app:layout_constraintStart_toStartOf="@id/gl_vertical_left"
+            app:layout_constraintEnd_toEndOf="@id/gl_vertical_right"
+            android:gravity="center_vertical"
+            tools:text="@tools:sample/lorem"
+            android:paddingBottom="12dp"/>
+
+        <TextView
+            android:id="@+id/tv_header_body_condition"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/tv_plan"
+            app:layout_constraintStart_toStartOf="@id/gl_vertical_left"
+            app:layout_constraintEnd_toEndOf="@id/gl_vertical_right"
+            android:gravity="center_vertical"
+            android:text="@string/header_body_condition"
+            android:textStyle="bold"
+            android:paddingVertical="12dp"/>
+
+        <TextView
+            android:id="@+id/tv_body_condition"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/tv_header_body_condition"
+            app:layout_constraintStart_toStartOf="@id/gl_vertical_left"
+            app:layout_constraintEnd_toEndOf="@id/gl_vertical_right"
+            android:gravity="center_vertical"
+            tools:text="@tools:sample/lorem"
+            android:paddingBottom="12dp"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</com.google.android.material.card.MaterialCardView>
