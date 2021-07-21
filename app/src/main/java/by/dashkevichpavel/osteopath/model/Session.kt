@@ -1,10 +1,8 @@
 package by.dashkevichpavel.osteopath.model
 
-import androidx.room.ColumnInfo
-import by.dashkevichpavel.osteopath.persistence.DbContract
-import by.dashkevichpavel.osteopath.persistence.SessionWithDisfunctions
-import by.dashkevichpavel.osteopath.persistence.entity.DisfunctionEntity
-import by.dashkevichpavel.osteopath.persistence.entity.SessionEntity
+import by.dashkevichpavel.osteopath.repositories.localdb.SessionAndDisfunctions
+import by.dashkevichpavel.osteopath.repositories.localdb.entity.DisfunctionEntity
+import by.dashkevichpavel.osteopath.repositories.localdb.entity.SessionEntity
 import java.util.*
 
 data class Session(
@@ -31,9 +29,9 @@ data class Session(
         } as MutableList<Disfunction>
             )
 
-    constructor(sessionWithDisfunctions: SessionWithDisfunctions) : this (
-        sessionEntity = sessionWithDisfunctions.sessionEntity,
-        disfunctionEntities = sessionWithDisfunctions.disfunctionEntities
+    constructor(sessionAndDisfunctions: SessionAndDisfunctions) : this (
+        sessionEntity = sessionAndDisfunctions.sessionEntity,
+        disfunctionEntities = sessionAndDisfunctions.disfunctionEntities
             )
 
     fun isContentTheSame(other: Session): Boolean {

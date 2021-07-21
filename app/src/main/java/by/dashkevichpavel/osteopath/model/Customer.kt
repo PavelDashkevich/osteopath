@@ -1,11 +1,8 @@
 package by.dashkevichpavel.osteopath.model
 
-import androidx.room.ColumnInfo
-import by.dashkevichpavel.osteopath.persistence.CustomerAndDisfunctions
-import by.dashkevichpavel.osteopath.persistence.DbContract
-import by.dashkevichpavel.osteopath.persistence.entity.CustomerEntity
-import by.dashkevichpavel.osteopath.persistence.entity.DisfunctionEntity
-import by.dashkevichpavel.osteopath.persistence.entity.SessionEntity
+import by.dashkevichpavel.osteopath.repositories.localdb.entity.CustomerEntity
+import by.dashkevichpavel.osteopath.repositories.localdb.entity.DisfunctionEntity
+import by.dashkevichpavel.osteopath.repositories.localdb.entity.SessionEntity
 import java.util.*
 
 data class Customer(
@@ -34,6 +31,8 @@ data class Customer(
         facebook = customerEntity.facebook,
         customerStatusId = customerEntity.customerStatusId,
         disfunctions = disfunctionEntities.map { Disfunction(it) } as MutableList<Disfunction>,
-        sessions = sessionEntities.map { Session(it) } as MutableList<Session>
+        sessions = sessionEntities.map { sessionEntity ->
+            Session(sessionEntity, emptyList())
+        } as MutableList<Session>
                 )
 }

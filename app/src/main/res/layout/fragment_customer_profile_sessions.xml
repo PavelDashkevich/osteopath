@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".viewcontroller.customerprofile.sessions.FragmentCustomerProfileSessions">
+    tools:context=".features.customerprofile.sessions.FragmentCustomerProfileSessions">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/gl_vertical_left"
@@ -50,6 +50,6 @@
         app:fabSize="normal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        android:contentDescription="@string/content_description_disfunctions_add"/>
+        android:contentDescription="@string/content_description_sessions_add"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

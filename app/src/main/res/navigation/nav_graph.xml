@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/fragmentCustomerList"
-        android:name="by.dashkevichpavel.osteopath.viewcontroller.customerlist.FragmentCustomerList"
+        android:name="by.dashkevichpavel.osteopath.features.customerlist.FragmentCustomerList"
         android:label="@string/fragment_title_customers"
         tools:layout="@layout/fragment_customer_list" >
         <action
@@ -19,7 +19,7 @@
     </fragment>
     <fragment
         android:id="@+id/fragmentCustomerProfile"
-        android:name="by.dashkevichpavel.osteopath.viewcontroller.customerprofile.FragmentCustomerProfile"
+        android:name="by.dashkevichpavel.osteopath.features.customerprofile.FragmentCustomerProfile"
         android:label="FragmentCustomer"
         tools:layout="@layout/fragment_customer_profile">
         <argument
@@ -32,12 +32,12 @@
     </fragment>
     <fragment
         android:id="@+id/fragmentCustomerListFilter"
-        android:name="by.dashkevichpavel.osteopath.viewcontroller.customerlistfilter.FragmentCustomerListFilter"
+        android:name="by.dashkevichpavel.osteopath.features.customerlistfilter.FragmentCustomerListFilter"
         android:label="fragment_customer_list_filter"
         tools:layout="@layout/fragment_customer_list_filter" />
     <fragment
         android:id="@+id/fragmentDisfunction"
-        android:name="by.dashkevichpavel.osteopath.viewcontroller.disfunction.FragmentDisfunction"
+        android:name="by.dashkevichpavel.osteopath.features.disfunction.FragmentDisfunction"
         android:label="FragmentDisfunction"
         tools:layout="@layout/fragment_disfunction">
         <argument

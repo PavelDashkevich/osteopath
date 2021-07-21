@@ -3,7 +3,10 @@ package by.dashkevichpavel.osteopath.viewmodel
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import by.dashkevichpavel.osteopath.persistence.OsteoDbRepositorySingleton
+import by.dashkevichpavel.osteopath.repositories.localdb.OsteoDbRepositorySingleton
+import by.dashkevichpavel.osteopath.features.customerlist.CustomerListViewModel
+import by.dashkevichpavel.osteopath.features.customerprofile.CustomerProfileViewModel
+import by.dashkevichpavel.osteopath.features.disfunction.DisfunctionViewModel
 
 class OsteoViewModelFactory(
     private val applicationContext: Context

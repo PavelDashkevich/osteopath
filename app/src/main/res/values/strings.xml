@@ -42,6 +42,9 @@
     <string name="alert_dialog_cancel_changes">Данные были изменены. Сохранить изменения?</string>
     <string name="alert_dialog_button_yes">Да</string>
     <string name="alert_dialog_button_no">Нет</string>
-
     <string name="snackbar_saving_changes">Сохраняю изменения…</string>
+    <string name="session_status_done">Проведен</string>
+    <string name="session_status_planned">Запланирован</string>
+    <string name="header_date">Дата</string>
+    <string name="header_time">Время</string>
 </resources>

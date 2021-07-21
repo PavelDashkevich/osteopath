@@ -1,56 +1,34 @@
 package by.dashkevichpavel.osteopath.model
 
-import androidx.lifecycle.viewModelScope
-import by.dashkevichpavel.osteopath.persistence.OsteoDbRepository
-import by.dashkevichpavel.osteopath.persistence.entity.CustomerEntity
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
 import java.util.*
 
 class CustomerListProcessor(
-    private val handler: CustomerListProcessorSubscriber,
-    private val repository: OsteoDbRepository,
-    private val scope: CoroutineScope
+    private val customerListProcessorSubscriber: CustomerListProcessorSubscriber
 ) {
     private var filterValues = FilterValues()
     private var searchQuery: String = ""
-    private var allCustomers: List<Customer> = emptyList()
-    private var jobFlow: Job? = null
+    private var allCustomers: List<Customer> = listOf()
 
-    init {
-        startCustomersTableChangeListening()
+    fun setList(customers: List<Customer>) {
+        allCustomers = customers
+        processCustomersList()
     }
 
     fun setFilter(newFilterValues: FilterValues) {
         if (newFilterValues != filterValues) {
             filterValues = newFilterValues
-            if (jobFlow != null) {
-                updateFilteredCustomersList()
-            }
+            processCustomersList()
         }
     }
 
     fun setQueryString(newSearchQuery: String) {
         if (!newSearchQuery.equals(searchQuery, true)) {
             searchQuery = newSearchQuery
-            updateFilteredCustomersList()
+            processCustomersList()
         }
     }
 
-    private fun startCustomersTableChangeListening() {
-        if (jobFlow == null) {
-            jobFlow = scope.launch {
-                repository.getAllCustomersAsFlow().collect { listOfCustomers ->
-                    allCustomers = listOfCustomers
-                    updateFilteredCustomersList()
-                }
-            }
-        }
-    }
-
-    private fun updateFilteredCustomersList() {
+    private fun processCustomersList() {
         var newFilteredList: List<Customer> = allCustomers
         var isSearchOrFilterResult = false
 
@@ -76,7 +54,8 @@ class CustomerListProcessor(
                 }
             }
 
-            if (!(filterValues.byAgeChildren && filterValues.byAgeAdults)) {
+            if ((filterValues.byAgeChildren || filterValues.byAgeAdults) &&
+                (filterValues.byAgeChildren != filterValues.byAgeAdults)) {
                 val now = Date()
                 val calendar = Calendar.getInstance()
                 calendar.timeInMillis = now.time
@@ -112,107 +91,7 @@ class CustomerListProcessor(
             isSearchOrFilterResult = true
         }
 
-        handler.onCustomersProcessed(newFilteredList, isSearchOrFilterResult)
-    }
-
-    fun loadTestData() {
-        val customers: MutableList<Customer> = mutableListOf(
-            Customer(
-                name = "Иванов Иван",
-                birthDate = Date(),
-                phone = "+375291112233",
-                email = "ivanov.ivan@ff.ru",
-                instagram = "ivaiva",
-                facebook = "ivaivaiva",
-                customerStatusId = CustomerStatus.WORK.id,
-                disfunctions = mutableListOf(
-                    Disfunction(
-                        description = "Болит левое плечо. Хромает на правую ногу. Хрустят колени.",
-                        disfunctionStatusId = DisfunctionStatus.WORK.id),
-                    Disfunction(
-                        description = "Тут очень сложное и большое описание дисфункции.",
-                        disfunctionStatusId = DisfunctionStatus.WORK.id),
-                    Disfunction(
-                        description = "Искривление позвоночника, уход среднего отдела влево.",
-                        disfunctionStatusId = DisfunctionStatus.WORK_DONE.id),
-                    Disfunction(
-                        description = "Некоторый набор слов, характеризующий дисфункцию.",
-                        disfunctionStatusId = DisfunctionStatus.WORK_DONE.id),
-                    Disfunction(
-                        description = "Мучают тики.",
-                        disfunctionStatusId = DisfunctionStatus.WORK_FAIL.id),
-                    Disfunction(
-                        description = "Выпадение волос и их ломкость.",
-                        disfunctionStatusId = DisfunctionStatus.WRONG_DIAGNOSED.id)
-                ),
-                sessions = mutableListOf(
-                    Session(isDone = true),
-                    Session(isDone = false),
-                    Session(isDone = true),
-                    Session(isDone = true)
-                )
-            ),
-            Customer(
-                name = "Карымова Ира",
-                birthDate = Date(),
-                phone = "+3752922222222",
-                email = "ira.ira@ff.ru",
-                instagram = "ira_karymova",
-                facebook = "iraira",
-                customerStatusId = CustomerStatus.WORK.id,
-                disfunctions = mutableListOf(
-                    Disfunction(
-                        description = "Несимметричность левой пятки относительно правой.",
-                        disfunctionStatusId = DisfunctionStatus.WORK.id),
-                    Disfunction(
-                        description = "Некоторый набор слов, характеризующий дисфункцию.",
-                        disfunctionStatusId = DisfunctionStatus.WORK_DONE.id)
-                ),
-                sessions = mutableListOf(
-                    Session(isDone = true),Session(isDone = false),
-                    Session(isDone = true),
-                    Session(isDone = true)
-                )
-            ),
-            Customer(
-                name = "Ключинская Ира",
-                birthDate = Date(),
-                phone = "+375293333333",
-                email = "ira.ira@ff.ru",
-                instagram = "ira_kluch",
-                facebook = "iraira",
-                customerStatusId = CustomerStatus.WORK_DONE.id,
-                disfunctions = mutableListOf(
-                    Disfunction(
-                        description = "Несимметричность левой пятки относительно правой.",
-                        disfunctionStatusId = DisfunctionStatus.WORK.id),
-                    Disfunction(
-                        description = "Некоторый набор слов, характеризующий дисфункцию.",
-                        disfunctionStatusId = DisfunctionStatus.WORK_DONE.id)
-                ),
-                sessions = mutableListOf(
-                    Session(isDone = true),Session(isDone = false),
-                    Session(isDone = true),
-                    Session(isDone = true)
-                )
-            ),
-            Customer(
-                name = "Мама",
-                birthDate = Date(),
-                phone = "+375294444444",
-                customerStatusId = CustomerStatus.WORK_DONE.id
-            ),
-            Customer(
-                name = "Папа",
-                birthDate = Date(),
-                phone = "+375295555555",
-                customerStatusId = CustomerStatus.WORK.id
-            )
-        )
-
-        scope.launch {
-            repository.insertCustomers(customers)
-        }
+        customerListProcessorSubscriber.onCustomersProcessed(newFilteredList, isSearchOrFilterResult)
     }
 }
 

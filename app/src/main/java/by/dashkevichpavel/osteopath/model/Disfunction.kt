@@ -1,8 +1,6 @@
 package by.dashkevichpavel.osteopath.model
 
-import androidx.room.ColumnInfo
-import by.dashkevichpavel.osteopath.persistence.DbContract
-import by.dashkevichpavel.osteopath.persistence.entity.DisfunctionEntity
+import by.dashkevichpavel.osteopath.repositories.localdb.entity.DisfunctionEntity
 
 data class Disfunction(
     val id: Long = 0,

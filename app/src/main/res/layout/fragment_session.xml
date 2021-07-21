@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/gl_vertical_left"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="16dp"/>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/gl_vertical_right"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            app:layout_constraintGuide_end="16dp"/>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/gl_vertical_center"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.5"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_date"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="@id/gl_vertical_left"
+            app:layout_constraintEnd_toStartOf="@id/ib_set_date"
+            app:boxBackgroundColor="@android:color/transparent"
+            android:layout_marginTop="8dp">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/header_date"
+                android:enabled="false"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/ib_set_date"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/ic_baseline_today_24"
+            android:background="@drawable/button_shape_circle"
+            app:layout_constraintTop_toTopOf="@id/til_date"
+            app:layout_constraintEnd_toStartOf="@id/gl_vertical_center"
+            app:layout_constraintBottom_toBottomOf="@id/til_date"
+            app:layout_constraintStart_toEndOf="@id/til_date"
+            android:layout_marginEnd="8dp"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_time"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="@id/gl_vertical_center"
+            app:layout_constraintEnd_toStartOf="@id/ib_set_time"
+            app:boxBackgroundColor="@android:color/transparent"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="8dp">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/header_time"
+                android:enabled="false"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/ib_set_time"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/ic_baseline_access_time_24"
+            android:background="@drawable/button_shape_circle"
+            app:layout_constraintTop_toTopOf="@id/til_time"
+            app:layout_constraintEnd_toStartOf="@id/gl_vertical_right"
+            app:layout_constraintBottom_toBottomOf="@id/til_time"
+            app:layout_constraintStart_toEndOf="@id/til_time"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_plan"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="@id/gl_vertical_left"
+            app:layout_constraintEnd_toEndOf="@id/gl_vertical_right"
+            app:layout_constraintTop_toBottomOf="@id/til_date"
+            app:boxBackgroundColor="@android:color/transparent"
+            android:layout_marginTop="8dp">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_plan"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/header_plan"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_body_conditions"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="@id/gl_vertical_left"
+            app:layout_constraintEnd_toEndOf="@id/gl_vertical_right"
+            app:layout_constraintTop_toBottomOf="@id/til_plan"
+            app:boxBackgroundColor="@android:color/transparent"
+            android:layout_marginTop="8dp">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_body_conditions"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/header_body_condition"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:id="@+id/tv_disfunctions"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="@id/gl_vertical_left"
+            app:layout_constraintEnd_toStartOf="@id/ib_add_disfunction"
+            app:layout_constraintTop_toBottomOf="@id/til_body_conditions"
+            android:text="Дисфункции для отработки на сеансе"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:paddingVertical="16dp"
+            android:layout_marginTop="8dp"/>
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/ib_add_disfunction"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/ic_baseline_add_24"
+            android:background="@drawable/button_shape_circle"
+            app:layout_constraintEnd_toEndOf="@id/gl_vertical_right"
+            app:layout_constraintStart_toEndOf="@id/tv_disfunctions"
+            app:layout_constraintTop_toTopOf="@id/tv_disfunctions"
+            app:layout_constraintBottom_toBottomOf="@id/tv_disfunctions"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_disfunctions"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@id/tv_disfunctions"
+            app:layout_constraintStart_toStartOf="@id/gl_vertical_left"
+            app:layout_constraintEnd_toEndOf="@id/gl_vertical_right"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>
