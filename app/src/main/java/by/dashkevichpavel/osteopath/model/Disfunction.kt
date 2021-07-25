@@ -14,4 +14,6 @@ data class Disfunction(
         disfunctionStatusId = disfunctionEntity.disfunctionStatusId,
         customerId = disfunctionEntity.customerId
     )
+
+    fun isTheSame(other: Disfunction): Boolean = this.id == other.id
 }

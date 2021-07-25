@@ -2,6 +2,7 @@ package by.dashkevichpavel.osteopath.features.customerprofile
 
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import by.dashkevichpavel.osteopath.features.customerprofile.attachments.FragmentCustomerProfileAttachments
 import by.dashkevichpavel.osteopath.features.customerprofile.contacts.FragmentCustomerProfileContacts
 import by.dashkevichpavel.osteopath.features.customerprofile.disfunctions.FragmentCustomerProfileDisfunctions
 import by.dashkevichpavel.osteopath.features.customerprofile.sessions.FragmentCustomerProfileSessions
@@ -19,7 +20,7 @@ class CustomerProfileAdapter(hostFragment: Fragment) : FragmentStateAdapter(host
         }
     }
 
-    companion object {
-        const val NUMBER_OF_PAGES = 4
+    private companion object {
+        private const val NUMBER_OF_PAGES = 4
     }
 }

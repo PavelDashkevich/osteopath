@@ -8,8 +8,9 @@ import by.dashkevichpavel.osteopath.R
 import by.dashkevichpavel.osteopath.model.Session
 
 class SessionItemAdapter(
-    var sessions: MutableList<Session>
+    private val sessionItemClickListener: SessionItemClickListener
 ) : RecyclerView.Adapter<SessionItemViewHolder>() {
+    private val sessions: MutableList<Session> = mutableListOf()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SessionItemViewHolder =
         SessionItemViewHolder(
             LayoutInflater
@@ -18,7 +19,7 @@ class SessionItemAdapter(
         )
 
     override fun onBindViewHolder(holder: SessionItemViewHolder, position: Int) {
-        holder.bind(sessions[position])
+        holder.bind(sessions[position], sessionItemClickListener)
     }
 
     override fun getItemCount(): Int = sessions.size

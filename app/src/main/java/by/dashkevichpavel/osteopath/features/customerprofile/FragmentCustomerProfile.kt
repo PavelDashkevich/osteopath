@@ -4,7 +4,6 @@ import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.*
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
@@ -12,6 +11,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
 import by.dashkevichpavel.osteopath.R
+import by.dashkevichpavel.osteopath.model.setupToolbar
 import by.dashkevichpavel.osteopath.viewmodel.OsteoViewModelFactory
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
@@ -35,9 +35,7 @@ class FragmentCustomerProfile : Fragment(R.layout.fragment_customer_profile) {
         Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
         super.onCreate(savedInstanceState)
 
-        val argVal = arguments?.getLong(ARG_KEY_CUSTOMER_ID)
-
-        viewModel.selectCustomer(argVal ?: 0L)
+        viewModel.selectCustomer(arguments?.getLong(ARG_KEY_CUSTOMER_ID) ?: 0L)
 
         setHasOptionsMenu(true)
     }
@@ -54,14 +52,14 @@ class FragmentCustomerProfile : Fragment(R.layout.fragment_customer_profile) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
         setupViews(view)
-        setupToolbar()
+        setupToolbar(tbActions)
         setupViewPager()
         setupTabLayout()
 
-        viewModel.customerName.observe(viewLifecycleOwner, this::updateCustomerName)
+        viewModel.toolbarTitle.observe(viewLifecycleOwner, this::updateToolbarTitle)
     }
 
-    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+    /*override fun onViewStateRestored(savedInstanceState: Bundle?) {
         Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
         super.onViewStateRestored(savedInstanceState)
     }
@@ -78,14 +76,13 @@ class FragmentCustomerProfile : Fragment(R.layout.fragment_customer_profile) {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
-        updateCustomerName(viewModel.customerName.value)
         super.onCreateOptionsMenu(menu, inflater)
     }
 
     override fun onPrepareOptionsMenu(menu: Menu) {
         Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
         super.onPrepareOptionsMenu(menu)
-    }
+    }*/
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
@@ -98,7 +95,7 @@ class FragmentCustomerProfile : Fragment(R.layout.fragment_customer_profile) {
         return super.onOptionsItemSelected(item)
     }
 
-    override fun onPause() {
+    /*override fun onPause() {
         Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
         super.onPause()
     }
@@ -106,7 +103,6 @@ class FragmentCustomerProfile : Fragment(R.layout.fragment_customer_profile) {
     override fun onSaveInstanceState(outState: Bundle) {
         Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
         super.onSaveInstanceState(outState)
-        viewModel.toolbarStateTitle = tbActions.title.toString()
     }
 
     override fun onStop() {
@@ -132,17 +128,12 @@ class FragmentCustomerProfile : Fragment(R.layout.fragment_customer_profile) {
     override fun onDetach() {
         Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
         super.onDetach()
-    }
+    }*/
 
     private fun setupViews(view: View) {
         tbActions = view.findViewById(R.id.tb_actions)
         tlTabs = view.findViewById(R.id.tl_customer_tabs)
         vpPager = view.findViewById(R.id.vp2_view_pager)
-    }
-
-    private fun setupToolbar() {
-        (activity as AppCompatActivity).setSupportActionBar(tbActions)
-        //updateCustomerName(viewModel.customerName.value)
     }
 
     private fun setupViewPager() {
@@ -166,7 +157,7 @@ class FragmentCustomerProfile : Fragment(R.layout.fragment_customer_profile) {
             .attach()
     }
 
-    private fun updateCustomerName(newName: String?) {
+    private fun updateToolbarTitle(newName: String?) {
         Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
         tbActions.title = newName ?: getString(R.string.customer_profile_new_customer)
     }

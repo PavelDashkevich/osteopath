@@ -10,7 +10,7 @@ import by.dashkevichpavel.osteopath.model.Disfunction
 import by.dashkevichpavel.osteopath.model.DisfunctionStatus
 
 class DisfunctionItemAdapter(
-    var disfunctionItems: MutableList<DisfunctionListItem>,
+    private val disfunctionItems: MutableList<DisfunctionListItem>,
     private val disfunctionCategoryCollapseExpandClickListener: DisfunctionCategoryCollapseExpandClickListener,
     private val disfunctionClickListener: DisfunctionClickListener
 ) : RecyclerView.Adapter<DisfunctionItemViewHolder>() {

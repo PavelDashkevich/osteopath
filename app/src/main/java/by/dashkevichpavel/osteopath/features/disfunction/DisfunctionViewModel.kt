@@ -14,18 +14,38 @@ class DisfunctionViewModel(
 ) : ViewModel() {
     val disfunction = MutableLiveData<Disfunction?>(null)
     val isSaving = MutableLiveData<Boolean?>(null)
+    private var initialDisfunction: Disfunction? = null
 
     private var jobSave: Job? = null
 
     fun selectDisfunction(customerId: Long, disfunctionId: Long) {
         if (disfunctionId == 0L) {
-            disfunction.value = Disfunction(customerId = customerId)
+            setDisfunction(Disfunction(customerId = customerId))
             return
         }
 
         if (disfunction.value == null) {
             loadDisfunctionData(disfunctionId)
         }
+    }
+
+    fun setDescription(description: String) {
+        disfunction.value?.description = description
+    }
+
+    fun setStatus(disfunctionStatusIId: Int) {
+        disfunction.value?.disfunctionStatusId = disfunctionStatusIId
+    }
+
+    fun isDisfunctionModified(): Boolean {
+        var res = false
+
+        disfunction.value?.let { disf ->
+            res = disf.description != initialDisfunction?.description &&
+                    disf.disfunctionStatusId != initialDisfunction?.disfunctionStatusId
+        }
+
+        return res
     }
 
     fun saveDisfunction() {
@@ -43,11 +63,14 @@ class DisfunctionViewModel(
 
     private fun loadDisfunctionData(disfunctionId: Long) {
         viewModelScope.launch {
-            val loadedDisfunction = repository.getDisfunctionById(disfunctionId)
-
-            loadedDisfunction?.let {
-                disfunction.value = loadedDisfunction
+            repository.getDisfunctionById(disfunctionId)?.let { newDisfunction ->
+                setDisfunction(newDisfunction)
             }
         }
+    }
+
+    private fun setDisfunction(newDisfunction: Disfunction) {
+        disfunction.value = newDisfunction
+        initialDisfunction = newDisfunction.copy()
     }
 }

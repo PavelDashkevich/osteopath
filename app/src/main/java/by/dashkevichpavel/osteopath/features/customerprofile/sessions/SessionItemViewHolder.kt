@@ -6,8 +6,10 @@ import androidx.recyclerview.widget.RecyclerView
 import by.dashkevichpavel.osteopath.R
 import by.dashkevichpavel.osteopath.model.Session
 import by.dashkevichpavel.osteopath.model.formatDateTimeAsString
+import com.google.android.material.card.MaterialCardView
 
 class SessionItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    private val cvCard: MaterialCardView = itemView.findViewById(R.id.cv_card)
     private val tvDateTime: TextView = itemView.findViewById(R.id.tv_date_time)
     private val tvDone: TextView = itemView.findViewById(R.id.tv_done)
     private val tvHeaderDisfunctions: TextView = itemView.findViewById(R.id.tv_header_disfunctions)
@@ -17,7 +19,7 @@ class SessionItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) 
     private val tvHeaderBodyCondition: TextView = itemView.findViewById(R.id.tv_header_body_condition)
     private val tvBodyCondition: TextView = itemView.findViewById(R.id.tv_body_condition)
 
-    fun bind(session: Session) {
+    fun bind(session: Session, sessionItemClickListener: SessionItemClickListener) {
         tvDateTime.text = session.dateTime.formatDateTimeAsString()
         tvDone.text = itemView.context.getString(
             if (session.isDone) {
@@ -39,6 +41,10 @@ class SessionItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) 
         setContentAndVisibilityOfBlock(tvHeaderDisfunctions, tvDisfunctions, disfunctionsDescriptions)
         setContentAndVisibilityOfBlock(tvHeaderPlan, tvPlan, session.plan)
         setContentAndVisibilityOfBlock(tvHeaderBodyCondition, tvBodyCondition, session.bodyCondition)
+
+        cvCard.setOnClickListener {
+            sessionItemClickListener.onSessionItemClick(session.customerId, session.id)
+        }
     }
 
     private fun setContentAndVisibilityOfBlock(headerView: TextView, textView: TextView, text: String) {

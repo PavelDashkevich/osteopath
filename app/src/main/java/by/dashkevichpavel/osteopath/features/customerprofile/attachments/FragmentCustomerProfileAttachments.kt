@@ -1,4 +1,4 @@
-package by.dashkevichpavel.osteopath.features.customerprofile
+package by.dashkevichpavel.osteopath.features.customerprofile.attachments
 
 import android.content.Context
 import android.os.Bundle

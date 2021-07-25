@@ -85,6 +85,14 @@ class OsteoDbRepository(applicationContext: Context) {
                     Session(sessionWithDisfunctions)
                 }
         }
+
+    suspend fun getSessionById(sessionId: Long): Session? = withContext(Dispatchers.IO) {
+        val sessionsAndDisfunctions = osteoDb.sessionDao.getSessionsWithDisfunctionsById(sessionId)
+        val sessions = sessionsAndDisfunctions.map { sessionAndDisfunction ->
+            Session(sessionAndDisfunction)
+        }
+        return@withContext sessions.firstOrNull()
+    }
 }
 
 object OsteoDbRepositorySingleton {

@@ -12,6 +12,10 @@ interface SessionDao {
         WHERE ${DbContract.Sessions.COLUMN_NAME_CUSTOMER_ID} == :customerId""")
     suspend fun getByCustomerId(customerId: Long): List<SessionEntity>
 
+    @Query("""SELECT * FROM ${DbContract.Sessions.TABLE_NAME}
+        WHERE ${DbContract.Sessions.COLUMN_NAME_ID} == :sessionId""")
+    suspend fun getById(sessionId: Long): List<SessionEntity>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(sessionEntities: List<SessionEntity>)
 
@@ -19,4 +23,9 @@ interface SessionDao {
     @Query("""SELECT * FROM ${DbContract.Sessions.TABLE_NAME} 
         WHERE ${DbContract.Sessions.COLUMN_NAME_CUSTOMER_ID} == :customerId""")
     fun getSessionsWithDisfunctionsByCustomerId(customerId: Long): Flow<List<SessionAndDisfunctions>>
+
+    @Transaction
+    @Query("""SELECT * FROM ${DbContract.Sessions.TABLE_NAME} 
+        WHERE ${DbContract.Sessions.COLUMN_NAME_ID} == :sessionId""")
+    suspend fun getSessionsWithDisfunctionsById(sessionId: Long): List<SessionAndDisfunctions>
 }

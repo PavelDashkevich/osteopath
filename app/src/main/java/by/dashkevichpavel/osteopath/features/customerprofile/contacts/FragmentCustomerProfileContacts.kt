@@ -1,7 +1,5 @@
 package by.dashkevichpavel.osteopath.features.customerprofile.contacts
 
-import android.content.ActivityNotFoundException
-import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -10,17 +8,13 @@ import android.view.*
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import androidx.appcompat.widget.AppCompatImageButton
-import androidx.core.content.ContextCompat
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import by.dashkevichpavel.osteopath.R
-import by.dashkevichpavel.osteopath.model.Customer
-import by.dashkevichpavel.osteopath.model.CustomerStatus
-import by.dashkevichpavel.osteopath.model.formatDateAsEditable
-import by.dashkevichpavel.osteopath.model.toEditable
 import by.dashkevichpavel.osteopath.features.datetimepicker.FragmentDatePicker
 import by.dashkevichpavel.osteopath.features.customerprofile.CustomerProfileViewModel
+import by.dashkevichpavel.osteopath.model.*
 import by.dashkevichpavel.osteopath.viewmodel.OsteoViewModelFactory
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
@@ -48,7 +42,7 @@ class FragmentCustomerProfileContacts : Fragment(R.layout.fragment_customer_prof
     private lateinit var rbCategoryWorkDone: RadioButton
     private lateinit var rbCategoryNoHelp: RadioButton
 
-    override fun onAttach(context: Context) {
+    /*override fun onAttach(context: Context) {
         Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
         super.onAttach(context)
     }
@@ -65,16 +59,10 @@ class FragmentCustomerProfileContacts : Fragment(R.layout.fragment_customer_prof
     ): View? {
         Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
         return super.onCreateView(inflater, container, savedInstanceState)
-    }
+    }*/
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
-
-        childFragmentManager.setFragmentResultListener(
-            FragmentDatePicker.KEY_RESULT,
-            viewLifecycleOwner,
-            ::onDatePickerDateSet
-        )
 
         setupViews(view)
         setupListeners()
@@ -82,7 +70,7 @@ class FragmentCustomerProfileContacts : Fragment(R.layout.fragment_customer_prof
         viewModel.customer.observe(viewLifecycleOwner, this::updateFields)
     }
 
-    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+    /*override fun onViewStateRestored(savedInstanceState: Bundle?) {
         Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
         super.onViewStateRestored(savedInstanceState)
     }
@@ -140,12 +128,12 @@ class FragmentCustomerProfileContacts : Fragment(R.layout.fragment_customer_prof
     override fun onDetach() {
         Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
         super.onDetach()
-    }
+    }*/
 
     private fun updateFields(newCustomer: Customer?) {
         newCustomer?.let { customer ->
             etName.text = customer.name.toEditable()
-            updateFieldBirthDate(customer)
+            updateFieldBirthDate(customer.birthDate)
             etPhone.text = customer.phone.toEditable()
             etSocialInstagram.text = customer.instagram.toEditable()
             when (customer.customerStatusId) {
@@ -156,8 +144,8 @@ class FragmentCustomerProfileContacts : Fragment(R.layout.fragment_customer_prof
         }
     }
 
-    private fun updateFieldBirthDate(customer: Customer) {
-        etBirthDate.text = customer.birthDate.formatDateAsEditable()
+    private fun updateFieldBirthDate(birthDate: Date) {
+        etBirthDate.text = birthDate.formatDateAsEditable()
     }
 
     private fun setupViews(view: View) {
@@ -179,16 +167,22 @@ class FragmentCustomerProfileContacts : Fragment(R.layout.fragment_customer_prof
     }
 
     private fun setupListeners() {
-        etName.doOnTextChanged { text, start, before, count ->
+        childFragmentManager.setFragmentResultListener(
+            FragmentDatePicker.KEY_RESULT,
+            viewLifecycleOwner,
+            ::onDatePickerDateSet
+        )
+
+        etName.doOnTextChanged { text, _, _, _ ->
             viewModel.setCustomerName(text.toString())
         }
 
-        etPhone.doOnTextChanged { text, start, before, count ->
-            viewModel.customer.value?.let { customer -> customer.phone = text.toString() }
+        etPhone.doOnTextChanged { text, _, _, _ ->
+            viewModel.setCustomerPhone(text.toString())
         }
 
-        etSocialInstagram.doOnTextChanged { text, start, before, count ->
-            viewModel.customer.value?.let { customer -> customer.instagram = text.toString() }
+        etSocialInstagram.doOnTextChanged { text, _, _, _ ->
+            viewModel.setCustomerInstagram(text.toString())
         }
 
         rgCategory.setOnCheckedChangeListener { group, checkedId ->
@@ -204,60 +198,26 @@ class FragmentCustomerProfileContacts : Fragment(R.layout.fragment_customer_prof
         }
 
         ibSetBirthDate.setOnClickListener {
-            val c: Calendar = Calendar.getInstance()
-            c.timeInMillis = viewModel.customer.value?.birthDate?.time ?: 0
-
-            val fragment = FragmentDatePicker()
-            fragment.arguments = Bundle().apply {
-                putInt(FragmentDatePicker.BUNDLE_KEY_YEAR, c.get(Calendar.YEAR))
-                putInt(FragmentDatePicker.BUNDLE_KEY_MONTH, c.get(Calendar.MONTH))
-                putInt(FragmentDatePicker.BUNDLE_KEY_DAY_OF_MONTH, c.get(Calendar.DAY_OF_MONTH))
-            }
-            fragment.show(childFragmentManager, "SET_BIRTH_DATE")
+            FragmentDatePicker.show(
+                childFragmentManager,
+                "SET_BIRTH_DATE",
+                viewModel.customer.value?.birthDate?.time ?: 0
+            )
         }
 
         ibCall.setOnClickListener {
-            if (etPhone.text?.isNotBlank() == true) {
-                val intent = Intent(
-                    Intent.ACTION_DIAL,
-                    Uri.fromParts("tel", etPhone.text.toString(), null)
-                )
-                ContextCompat.startActivity(requireContext(), intent, null)
-            }
+            actionCallPhoneNumber(etPhone.text.toString())
         }
 
         ibInstagramMessage.setOnClickListener {
-            if (etSocialInstagram.text?.isNotBlank() == true) {
-                try {
-                    startActivity(
-                        Intent(
-                            Intent.ACTION_VIEW,
-                            Uri.parse("https://instagram.com/_u/${etSocialInstagram.text}"))
-                    )
-                } catch(e: ActivityNotFoundException) {
-                    startActivity(
-                        Intent(
-                            Intent.ACTION_VIEW,
-                            Uri.parse("https://instagram.com/${etSocialInstagram.text}"))
-                    )
-                }
-            }
+            actionOpenInstagram(etSocialInstagram.text.toString())
         }
     }
 
     private fun onDatePickerDateSet(key: String, bundle: Bundle) {
-        val c = Calendar.getInstance()
-        c.timeInMillis = viewModel.customer.value?.birthDate?.time ?: 0
-
-        c.set(
-            bundle.getInt(FragmentDatePicker.BUNDLE_KEY_YEAR, c.get(Calendar.YEAR)),
-            bundle.getInt(FragmentDatePicker.BUNDLE_KEY_MONTH, c.get(Calendar.MONTH)),
-            bundle.getInt(FragmentDatePicker.BUNDLE_KEY_DAY_OF_MONTH, c.get(Calendar.DAY_OF_MONTH))
-        )
-
+        viewModel.setCustomerBirthDateInMillis(FragmentDatePicker.extractTimeInMillis(bundle))
         viewModel.customer.value?.let { customer ->
-            customer.birthDate.time = c.timeInMillis
-            updateFieldBirthDate(customer)
+            updateFieldBirthDate(customer.birthDate)
         }
     }
 }

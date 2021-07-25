@@ -18,9 +18,7 @@ class CustomerProfileViewModel(
     val customer = MutableLiveData<Customer?>(null)
     val disfunctions = MutableLiveData<MutableList<Disfunction>>(mutableListOf())
     val sessions = MutableLiveData<MutableList<Session>>(mutableListOf())
-    val customerName = MutableLiveData<String?>(null)
-
-    var toolbarStateTitle: CharSequence = ""
+    val toolbarTitle = MutableLiveData<String?>(null)
 
     var jobDisfunctionsLoadingListener: Job? = null
     var jobSessionsLoadingListener: Job? = null
@@ -36,12 +34,22 @@ class CustomerProfileViewModel(
         }
     }
 
-    fun setCustomerName(newCustomerName: String) {
-        customer.value?.let {
-            it.name = newCustomerName
-        }
+    fun setCustomerName(name: String) {
+        customer.value?.let { it.name = name }
 
-        updateCustomerName()
+        updateToolbarTitle()
+    }
+
+    fun setCustomerPhone(phone: String) {
+        customer.value?.let { it.phone = phone }
+    }
+
+    fun setCustomerInstagram(userName: String) {
+        customer.value?.let { it.instagram = userName }
+    }
+
+    fun setCustomerBirthDateInMillis(birthDateInMillis: Long) {
+        customer.value?.let { it.birthDate.time = birthDateInMillis }
     }
 
     fun startListeningForDisfunctionsChanges() {
@@ -84,9 +92,9 @@ class CustomerProfileViewModel(
         }
     }
 
-    private fun updateCustomerName() {
+    private fun updateToolbarTitle() {
         customer.value?.let {
-            customerName.value = it.name
+            toolbarTitle.value = it.name
         }
     }
 
@@ -106,6 +114,6 @@ class CustomerProfileViewModel(
 
     private fun onCustomerDataLoaded(loadedCustomer: Customer) {
         customer.value = loadedCustomer
-        updateCustomerName()
+        updateToolbarTitle()
     }
 }

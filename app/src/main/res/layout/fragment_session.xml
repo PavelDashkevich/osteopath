@@ -127,7 +127,7 @@
             app:layout_constraintStart_toStartOf="@id/gl_vertical_left"
             app:layout_constraintEnd_toStartOf="@id/ib_add_disfunction"
             app:layout_constraintTop_toBottomOf="@id/til_body_conditions"
-            android:text="Дисфункции для отработки на сеансе"
+            android:text="@string/header_session_disfunctions"
             android:textSize="16sp"
             android:textStyle="bold"
             android:paddingVertical="16dp"

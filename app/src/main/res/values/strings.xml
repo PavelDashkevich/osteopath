@@ -11,6 +11,8 @@
     <string name="header_customer_instagram">Instagram</string>
     <string name="header_customer_category">Категория</string>
     <string name="header_disfunction_description">Описание дисфункции</string>
+    <string name="header_session_disfunctions">Дисфункции для отработки на сеансе</string>
+
     <string name="category_work">В работе</string>
     <string name="category_work_done">Работа завершена</string>
     <string name="category_no_help">Не удалось помочь</string>

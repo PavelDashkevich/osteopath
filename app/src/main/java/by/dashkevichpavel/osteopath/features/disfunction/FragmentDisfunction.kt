@@ -7,8 +7,8 @@ import androidx.fragment.app.Fragment
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import by.dashkevichpavel.osteopath.R
@@ -16,6 +16,8 @@ import by.dashkevichpavel.osteopath.model.Disfunction
 import by.dashkevichpavel.osteopath.model.toEditable
 import by.dashkevichpavel.osteopath.features.BackClickHandler
 import by.dashkevichpavel.osteopath.features.BackClickListener
+import by.dashkevichpavel.osteopath.model.DisfunctionStatus
+import by.dashkevichpavel.osteopath.model.setupToolbar
 import by.dashkevichpavel.osteopath.viewmodel.OsteoViewModelFactory
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
@@ -28,19 +30,15 @@ class FragmentDisfunction : Fragment(R.layout.fragment_disfunction), BackClickLi
     private var backClickHandler: BackClickHandler? = null
     private val mapStatusIdToResId: Map<Int, Int> =
         mapOf(
-            0 to R.id.rb_work,
-            1 to R.id.rb_work_done,
-            2 to R.id.rb_no_help,
-            3 to R.id.rb_wrong_diagnosed
+            DisfunctionStatus.WORK.id to R.id.rb_work,
+            DisfunctionStatus.WORK_DONE.id to R.id.rb_work_done,
+            DisfunctionStatus.WORK_FAIL.id to R.id.rb_no_help,
+            DisfunctionStatus.WRONG_DIAGNOSED.id to R.id.rb_wrong_diagnosed
         )
     private val mapResIdToStatusId = mapStatusIdToResId.entries.associateBy({ it.value }) { it.key }
 
     private lateinit var etDescription: TextInputEditText
     private lateinit var rgStatus: RadioGroup
-    private lateinit var rbWork: RadioButton
-    private lateinit var rbWorkDone: RadioButton
-    private lateinit var rbNoHelp: RadioButton
-    private lateinit var rbWrongDiagnosed: RadioButton
     private lateinit var tbActions: Toolbar
 
     private var sbSaving: Snackbar? = null
@@ -60,14 +58,10 @@ class FragmentDisfunction : Fragment(R.layout.fragment_disfunction), BackClickLi
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
 
-        backClickHandler = (requireActivity() as BackClickHandler)
-        backClickHandler?.addBackClickListener(this)
-
         setupViews(view)
-        setupToolbar()
-
-        viewModel.disfunction.observe(viewLifecycleOwner, this::updateDisfunctionViews)
-        viewModel.isSaving.observe(viewLifecycleOwner, this::checkIsSaving)
+        setupToolbar(tbActions)
+        setupListeners()
+        setupObservers()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -80,8 +74,8 @@ class FragmentDisfunction : Fragment(R.layout.fragment_disfunction), BackClickLi
         Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
         when (item.itemId) {
             android.R.id.home -> {
-                if (isDisfunctionModified()) {
-                    saveChanges()
+                if (viewModel.isDisfunctionModified()) {
+                    viewModel.saveDisfunction()
                 } else {
                     findNavController().navigateUp()
                 }
@@ -107,19 +101,28 @@ class FragmentDisfunction : Fragment(R.layout.fragment_disfunction), BackClickLi
         Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
         etDescription = view.findViewById(R.id.et_description)
         rgStatus = view.findViewById(R.id.rg_category)
-        rbWork = view.findViewById(R.id.rb_work)
-        rbWorkDone = view.findViewById(R.id.rb_work_done)
-        rbNoHelp = view.findViewById(R.id.rb_no_help)
-        rbWrongDiagnosed = view.findViewById(R.id.rb_wrong_diagnosed)
         tbActions = view.findViewById(R.id.tb_actions)
     }
 
-    private fun setupToolbar() {
-        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
-        (activity as AppCompatActivity).setSupportActionBar(tbActions)
+    private fun setupObservers() {
+        viewModel.disfunction.observe(viewLifecycleOwner, this::updateDisfunctionFields)
+        viewModel.isSaving.observe(viewLifecycleOwner, this::checkIsSaving)
     }
 
-    private fun updateDisfunctionViews(newDisfunction: Disfunction?) {
+    private fun setupListeners() {
+        backClickHandler = (requireActivity() as BackClickHandler)
+        backClickHandler?.addBackClickListener(this)
+
+        etDescription.doOnTextChanged { text, _, _, _ ->
+            viewModel.setDescription(text.toString())
+        }
+
+        rgStatus.setOnCheckedChangeListener { _, checkedId ->
+            viewModel.setStatus(mapResIdToStatusId[checkedId] ?: 0)
+        }
+    }
+
+    private fun updateDisfunctionFields(newDisfunction: Disfunction?) {
         Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
         var toolbarTitle = "Новая дисфункция"
 
@@ -155,48 +158,11 @@ class FragmentDisfunction : Fragment(R.layout.fragment_disfunction), BackClickLi
         }
     }
 
-    private fun isDisfunctionModified(): Boolean {
-        var res = false
-
-        viewModel.disfunction.value?.let { disfunction ->
-            val selectedStatusId = mapResIdToStatusId[rgStatus.checkedRadioButtonId] ?: 0
-
-            res = (etDescription.text.toString() != disfunction.description ||
-                    selectedStatusId != disfunction.disfunctionStatusId)
-        }
-
-        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}: res = $res")
-
-        return res
-    }
-
-    private fun updateViewModelDisfunction() {
-        viewModel.disfunction.value?.let { disfunction ->
-            disfunction.description = etDescription.text.toString()
-            disfunction.disfunctionStatusId = mapResIdToStatusId[rgStatus.checkedRadioButtonId] ?: 0
-        }
-    }
-
-    private fun navigateBack(): Boolean {
-        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
-        if (isDisfunctionModified()) {
-            saveChanges()
-            return true
-        }
-
-        return false
-    }
-
-    private fun saveChanges() {
-        updateViewModelDisfunction()
-        viewModel.saveDisfunction()
-    }
-
     private fun cancelChanges() {
-        if (isDisfunctionModified()) {
+        if (viewModel.isDisfunctionModified()) {
             AlertDialog.Builder(requireContext())
                 .setMessage(R.string.alert_dialog_cancel_changes)
-                .setPositiveButton(R.string.alert_dialog_button_yes) { _, _ -> saveChanges() }
+                .setPositiveButton(R.string.alert_dialog_button_yes) { _, _ -> viewModel.saveDisfunction() }
                 .setNegativeButton(R.string.alert_dialog_button_no) { _, _ -> findNavController().navigateUp() }
                 .show()
         } else {
@@ -206,8 +172,8 @@ class FragmentDisfunction : Fragment(R.layout.fragment_disfunction), BackClickLi
 
     override fun onBackClick(): Boolean {
         Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object {}.javaClass.enclosingMethod.name}")
-        if (isDisfunctionModified()) {
-            saveChanges()
+        if (viewModel.isDisfunctionModified()) {
+            viewModel.saveDisfunction()
             return true
         }
 

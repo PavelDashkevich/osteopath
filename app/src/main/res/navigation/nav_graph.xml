@@ -29,6 +29,9 @@
         <action
             android:id="@+id/action_fragmentCustomerProfile_to_fragmentDisfunction"
             app:destination="@id/fragmentDisfunction" />
+        <action
+            android:id="@+id/action_fragmentCustomerProfile_to_fragmentSession"
+            app:destination="@id/fragmentSession" />
     </fragment>
     <fragment
         android:id="@+id/fragmentCustomerListFilter"
@@ -42,6 +45,16 @@
         tools:layout="@layout/fragment_disfunction">
         <argument
             android:name="disfunctionId"
+            app:argType="long"
+            android:defaultValue="0L" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragmentSession"
+        android:name="by.dashkevichpavel.osteopath.features.session.FragmentSession"
+        android:label="FragmentSession"
+        tools:layout="@layout/fragment_session">
+        <argument
+            android:name="sessionId"
             app:argType="long"
             android:defaultValue="0L" />
     </fragment>

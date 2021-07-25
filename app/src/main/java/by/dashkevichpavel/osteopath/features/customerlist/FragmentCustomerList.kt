@@ -132,12 +132,11 @@ class FragmentCustomerList :
         return super.onOptionsItemSelected(item)
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
+    /*override fun onSaveInstanceState(outState: Bundle) {
         Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
 
         super.onSaveInstanceState(outState)
-        saveStateOfSearchView()
-    }
+    }*/
 
     override fun onStop() {
         Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")

@@ -12,7 +12,7 @@ class DisfunctionsListDiffUtil(
     override fun getNewListSize(): Int = newItems.size
 
     override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-        var res = false
+        /*var res = false
 
         if (oldItems[oldItemPosition] is DisfunctionListItemCategory &&
                 newItems[newItemPosition] is DisfunctionListItemCategory) {
@@ -28,13 +28,13 @@ class DisfunctionsListDiffUtil(
         Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}: " +
             "oldItemPos = $oldItemPosition, newItemPos = $newItemPosition, " +
             "oldItems[oldItemPosition] = ${oldItems[oldItemPosition]}, " +
-            "newItems[newItemPosition] = ${newItems[newItemPosition]}, res = $res")
+            "newItems[newItemPosition] = ${newItems[newItemPosition]}, res = $res")*/
 
-        return res
+        return oldItems[oldItemPosition].isTheSame(newItems[newItemPosition])
     }
 
     override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-        var res = false
+        /*var res = false
 
         if (oldItems[oldItemPosition] is DisfunctionListItemCategory &&
             newItems[newItemPosition] is DisfunctionListItemCategory) {
@@ -52,8 +52,8 @@ class DisfunctionsListDiffUtil(
         Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}: " +
                 "oldItemPos = $oldItemPosition, newItemPos = $newItemPosition, " +
                 "oldItems[oldItemPosition] = ${oldItems[oldItemPosition]}, " +
-                "newItems[newItemPosition] = ${newItems[newItemPosition]}, res = $res")
+                "newItems[newItemPosition] = ${newItems[newItemPosition]}, res = $res")*/
 
-        return res
+        return oldItems[oldItemPosition].contentsTheSame(newItems[newItemPosition])
     }
 }
