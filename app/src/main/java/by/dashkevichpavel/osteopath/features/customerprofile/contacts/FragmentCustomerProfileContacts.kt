@@ -1,7 +1,5 @@
 package by.dashkevichpavel.osteopath.features.customerprofile.contacts
 
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.*
@@ -12,7 +10,7 @@ import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import by.dashkevichpavel.osteopath.R
-import by.dashkevichpavel.osteopath.features.datetimepicker.FragmentDatePicker
+import by.dashkevichpavel.osteopath.features.pickers.FragmentDatePicker
 import by.dashkevichpavel.osteopath.features.customerprofile.CustomerProfileViewModel
 import by.dashkevichpavel.osteopath.model.*
 import by.dashkevichpavel.osteopath.viewmodel.OsteoViewModelFactory

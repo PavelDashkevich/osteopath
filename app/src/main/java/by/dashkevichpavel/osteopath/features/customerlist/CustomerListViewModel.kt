@@ -6,11 +6,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import by.dashkevichpavel.osteopath.model.*
-import by.dashkevichpavel.osteopath.repositories.localdb.OsteoDbRepository
+import by.dashkevichpavel.osteopath.repositories.localdb.LocalDbRepository
 import by.dashkevichpavel.osteopath.repositories.sharedprefs.CustomerFilterSharedPreferences
 
 class CustomerListViewModel(
-    repository: OsteoDbRepository
+    repository: LocalDbRepository
 ) : ViewModel(), CustomerListProcessorSubscriber, CustomerListLoaderSubscriber {
     // searchViewState* vars save state of SearchView on configuration change
     var searchViewStateIconified: Boolean = true

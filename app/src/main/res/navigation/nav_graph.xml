@@ -57,5 +57,18 @@
             android:name="sessionId"
             app:argType="long"
             android:defaultValue="0L" />
+        <action
+            android:id="@+id/action_fragmentSession_to_fragmentSelectDisfunctions"
+            app:destination="@id/fragmentSelectDisfunctions" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragmentSelectDisfunctions"
+        android:name="by.dashkevichpavel.osteopath.features.selectdisfunctions.FragmentSelectDisfunctions"
+        android:label="FragmentSelectDisfunctions"
+        tools:layout="@layout/fragment_select_disfunctions">
+        <argument
+            android:name="customerId"
+            app:argType="long"
+            android:defaultValue="0L" />
     </fragment>
 </navigation>

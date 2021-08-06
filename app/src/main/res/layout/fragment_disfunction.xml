@@ -5,90 +5,98 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/tb_actions"
+    <include
+        android:id="@+id/l_toolbar"
+        layout="@layout/toolbar"/>
+
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        android:elevation="4dp"
-        android:background="@color/design_default_color_primary"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:navigationIcon="?homeAsUpIndicator"/>
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/l_toolbar"
+        app:layout_constraintBottom_toBottomOf="parent">
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/gl_vertical_left"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        app:layout_constraintGuide_begin="16dp"/>
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/gl_vertical_right"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        app:layout_constraintGuide_end="16dp"/>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/til_description"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="@id/gl_vertical_left"
-        app:layout_constraintEnd_toEndOf="@id/gl_vertical_right"
-        app:boxBackgroundColor="@android:color/transparent"
-        app:layout_constraintTop_toBottomOf="@id/tb_actions"
-        android:layout_marginTop="24dp">
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/et_description"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/header_disfunction_description"/>
-    </com.google.android.material.textfield.TextInputLayout>
+            android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/tv_category"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintLeft_toLeftOf="@id/gl_vertical_left"
-        app:layout_constraintRight_toRightOf="@id/gl_vertical_right"
-        app:layout_constraintTop_toBottomOf="@id/til_description"
-        android:text="@string/header_customer_category"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:paddingTop="40dp"
-        android:paddingBottom="16dp"/>
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/gl_vertical_left"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                app:layout_constraintGuide_begin="16dp"/>
 
-    <RadioGroup
-        android:id="@+id/rg_category"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintLeft_toLeftOf="@id/gl_vertical_left"
-        app:layout_constraintRight_toRightOf="@id/gl_vertical_right"
-        app:layout_constraintTop_toBottomOf="@id/tv_category">
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/gl_vertical_right"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                app:layout_constraintGuide_end="16dp"/>
 
-        <RadioButton
-            android:id="@+id/rb_work"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/disfunction_status_work"/>
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_description"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="@id/gl_vertical_left"
+                app:layout_constraintEnd_toEndOf="@id/gl_vertical_right"
+                app:boxBackgroundColor="@android:color/transparent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginTop="24dp">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/header_disfunction_description"/>
+            </com.google.android.material.textfield.TextInputLayout>
 
-        <RadioButton
-            android:id="@+id/rb_work_done"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/disfunction_status_work_done"/>
+            <TextView
+                android:id="@+id/tv_category"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintLeft_toLeftOf="@id/gl_vertical_left"
+                app:layout_constraintRight_toRightOf="@id/gl_vertical_right"
+                app:layout_constraintTop_toBottomOf="@id/til_description"
+                android:text="@string/header_customer_category"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:paddingTop="40dp"
+                android:paddingBottom="16dp"/>
 
-        <RadioButton
-            android:id="@+id/rb_no_help"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/disfunction_status_no_help"/>
+            <RadioGroup
+                android:id="@+id/rg_category"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintLeft_toLeftOf="@id/gl_vertical_left"
+                app:layout_constraintRight_toRightOf="@id/gl_vertical_right"
+                app:layout_constraintTop_toBottomOf="@id/tv_category">
 
-        <RadioButton
-            android:id="@+id/rb_wrong_diagnosed"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/disfunction_status_wrong_diagnosed"/>
-    </RadioGroup>
+                <RadioButton
+                    android:id="@+id/rb_work"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/disfunction_status_work"/>
+
+                <RadioButton
+                    android:id="@+id/rb_work_done"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/disfunction_status_work_done"/>
+
+                <RadioButton
+                    android:id="@+id/rb_no_help"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/disfunction_status_no_help"/>
+
+                <RadioButton
+                    android:id="@+id/rb_wrong_diagnosed"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/disfunction_status_wrong_diagnosed"/>
+            </RadioGroup>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

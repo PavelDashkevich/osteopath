@@ -19,6 +19,9 @@ interface SessionDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(sessionEntities: List<SessionEntity>)
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insert(sessionEntity: SessionEntity)
+
     @Transaction
     @Query("""SELECT * FROM ${DbContract.Sessions.TABLE_NAME} 
         WHERE ${DbContract.Sessions.COLUMN_NAME_CUSTOMER_ID} == :customerId""")

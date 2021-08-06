@@ -4,25 +4,21 @@ import android.os.Bundle
 import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
-import android.widget.RadioButton
 import android.widget.RadioGroup
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.Toolbar
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import by.dashkevichpavel.osteopath.R
-import by.dashkevichpavel.osteopath.model.Disfunction
-import by.dashkevichpavel.osteopath.model.toEditable
 import by.dashkevichpavel.osteopath.features.BackClickHandler
 import by.dashkevichpavel.osteopath.features.BackClickListener
-import by.dashkevichpavel.osteopath.model.DisfunctionStatus
-import by.dashkevichpavel.osteopath.model.setupToolbar
+import by.dashkevichpavel.osteopath.helpers.savechanges.SaveChangesFragmentHelper
+import by.dashkevichpavel.osteopath.model.*
 import by.dashkevichpavel.osteopath.viewmodel.OsteoViewModelFactory
-import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 
-class FragmentDisfunction : Fragment(R.layout.fragment_disfunction), BackClickListener {
+class FragmentDisfunction :
+    Fragment(R.layout.fragment_disfunction),
+    BackClickListener {
     private val viewModel: DisfunctionViewModel by viewModels(
         factoryProducer = { OsteoViewModelFactory(requireContext().applicationContext) }
     )
@@ -41,7 +37,7 @@ class FragmentDisfunction : Fragment(R.layout.fragment_disfunction), BackClickLi
     private lateinit var rgStatus: RadioGroup
     private lateinit var tbActions: Toolbar
 
-    private var sbSaving: Snackbar? = null
+    private lateinit var saveChangesHelper: SaveChangesFragmentHelper
 
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
@@ -62,33 +58,22 @@ class FragmentDisfunction : Fragment(R.layout.fragment_disfunction), BackClickLi
         setupToolbar(tbActions)
         setupListeners()
         setupObservers()
+        setupHelpers()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
         inflater.inflate(R.menu.standard_edit_screen_menu, menu)
-        super.onCreateOptionsMenu(menu, inflater)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
         when (item.itemId) {
-            android.R.id.home -> {
-                if (viewModel.isDisfunctionModified()) {
-                    viewModel.saveDisfunction()
-                } else {
-                    findNavController().navigateUp()
-                }
-
-                return true
-            }
-            R.id.mi_cancel -> {
-                cancelChanges()
-                return true
-            }
+            android.R.id.home -> viewModel.saveChangesHelper.finishEditing()
+            R.id.mi_cancel -> viewModel.saveChangesHelper.cancelEditing()
+            else -> return super.onOptionsItemSelected(item)
         }
 
-        return super.onOptionsItemSelected(item)
+        return true
     }
 
     override fun onDestroyView() {
@@ -105,8 +90,11 @@ class FragmentDisfunction : Fragment(R.layout.fragment_disfunction), BackClickLi
     }
 
     private fun setupObservers() {
-        viewModel.disfunction.observe(viewLifecycleOwner, this::updateDisfunctionFields)
-        viewModel.isSaving.observe(viewLifecycleOwner, this::checkIsSaving)
+        viewModel.disfunction.observe(viewLifecycleOwner, this::onChangeDisfunction)
+    }
+
+    private fun setupHelpers() {
+        saveChangesHelper = SaveChangesFragmentHelper(this, viewModel.saveChangesHelper)
     }
 
     private fun setupListeners() {
@@ -122,62 +110,22 @@ class FragmentDisfunction : Fragment(R.layout.fragment_disfunction), BackClickLi
         }
     }
 
-    private fun updateDisfunctionFields(newDisfunction: Disfunction?) {
-        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
-        var toolbarTitle = "Новая дисфункция"
-
+    private fun onChangeDisfunction(newDisfunction: Disfunction?) {
         newDisfunction?.let { disfunction ->
             etDescription.text = disfunction.description.toEditable()
             rgStatus.check(mapStatusIdToResId[disfunction.disfunctionStatusId] ?: -1)
-
-            if (disfunction.id != 0L) {
-                toolbarTitle = ""
-            }
-
-            tbActions.title = toolbarTitle
-        }
-    }
-
-    private fun checkIsSaving(isSaving: Boolean?) {
-        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}: isSaving = $isSaving")
-
-        if (isSaving == null) {
-            return
-        }
-
-        if (isSaving) {
-            sbSaving = Snackbar.make(requireView(), R.string.snackbar_saving_changes, Snackbar.LENGTH_INDEFINITE)
-            sbSaving?.show()
-            Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}: show snackbar")
-        } else {
-            Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}: navigateUp")
-            if (sbSaving?.isShownOrQueued == true) {
-                sbSaving?.dismiss()
-            }
-            findNavController().navigateUp()
-        }
-    }
-
-    private fun cancelChanges() {
-        if (viewModel.isDisfunctionModified()) {
-            AlertDialog.Builder(requireContext())
-                .setMessage(R.string.alert_dialog_cancel_changes)
-                .setPositiveButton(R.string.alert_dialog_button_yes) { _, _ -> viewModel.saveDisfunction() }
-                .setNegativeButton(R.string.alert_dialog_button_no) { _, _ -> findNavController().navigateUp() }
-                .show()
-        } else {
-            findNavController().navigateUp()
+            tbActions.title =
+                if (disfunction.id != 0L) {
+                    ""
+                } else {
+                    getString(R.string.header_new_disfunction)
+                }
         }
     }
 
     override fun onBackClick(): Boolean {
-        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object {}.javaClass.enclosingMethod.name}")
-        if (viewModel.isDisfunctionModified()) {
-            viewModel.saveDisfunction()
-            return true
-        }
-
-        return false
+        viewModel.saveChangesHelper.finishEditing()
+        return true
     }
 
     companion object {

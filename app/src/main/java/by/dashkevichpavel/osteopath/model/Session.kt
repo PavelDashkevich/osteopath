@@ -8,7 +8,7 @@ import java.util.*
 data class Session(
     var id: Long = 0,
     var customerId: Long = 0,
-    var dateTime: Date = Date(0),
+    var dateTime: Date = Date(System.currentTimeMillis()),
     var plan: String = "",
     var bodyCondition: String = "",
     var isDone: Boolean = false,
@@ -34,14 +34,14 @@ data class Session(
         disfunctionEntities = sessionAndDisfunctions.disfunctionEntities
             )
 
-    fun isContentTheSame(other: Session): Boolean {
-        var res = false
+    fun isContentTheSame(other: Session?): Boolean {
+        if (other == null) return false
 
         if ((dateTime != other.dateTime)
             || (plan != other.plan)
             || (bodyCondition != other.bodyCondition)
             || (isDone != other.isDone)) {
-                return false
+            return false
         }
 
         val mapOfDisfunctions = disfunctions.associateBy { disfunction -> disfunction.id }
@@ -59,4 +59,6 @@ data class Session(
 
         return true
     }
+
+    fun isModified(other: Session?): Boolean = !isContentTheSame(other)
 }

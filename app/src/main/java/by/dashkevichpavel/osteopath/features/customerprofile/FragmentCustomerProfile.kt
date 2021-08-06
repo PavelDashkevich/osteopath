@@ -11,20 +11,27 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
 import by.dashkevichpavel.osteopath.R
+import by.dashkevichpavel.osteopath.features.BackClickHandler
+import by.dashkevichpavel.osteopath.features.BackClickListener
+import by.dashkevichpavel.osteopath.helpers.savechanges.SaveChangesFragmentHelper
 import by.dashkevichpavel.osteopath.model.setupToolbar
 import by.dashkevichpavel.osteopath.viewmodel.OsteoViewModelFactory
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 
-class FragmentCustomerProfile : Fragment(R.layout.fragment_customer_profile) {
+class FragmentCustomerProfile :
+    Fragment(R.layout.fragment_customer_profile),
+    BackClickListener {
+    private val viewModel: CustomerProfileViewModel by viewModels(
+        factoryProducer = { OsteoViewModelFactory(requireContext().applicationContext) }
+    )
     private lateinit var tbActions: Toolbar
     private lateinit var tlTabs: TabLayout
     private lateinit var vpPager: ViewPager2
     private lateinit var adapter: CustomerProfileAdapter
 
-    private val viewModel: CustomerProfileViewModel by viewModels(
-        factoryProducer = { OsteoViewModelFactory(requireContext().applicationContext) }
-    )
+    private lateinit var saveChangesHelper: SaveChangesFragmentHelper
+    private var backClickHandler: BackClickHandler? = null
 
     override fun onAttach(context: Context) {
         Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
@@ -55,80 +62,28 @@ class FragmentCustomerProfile : Fragment(R.layout.fragment_customer_profile) {
         setupToolbar(tbActions)
         setupViewPager()
         setupTabLayout()
-
-        viewModel.toolbarTitle.observe(viewLifecycleOwner, this::updateToolbarTitle)
-    }
-
-    /*override fun onViewStateRestored(savedInstanceState: Bundle?) {
-        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
-        super.onViewStateRestored(savedInstanceState)
-    }
-
-    override fun onStart() {
-        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
-        super.onStart()
-    }
-
-    override fun onResume() {
-        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
-        super.onResume()
+        setupObservers()
+        setupHelpers()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
-        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.standard_edit_screen_menu, menu)
     }
-
-    override fun onPrepareOptionsMenu(menu: Menu) {
-        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
-        super.onPrepareOptionsMenu(menu)
-    }*/
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            android.R.id.home -> {
-                findNavController().navigateUp()
-                return true
-            }
+            android.R.id.home -> viewModel.saveChangesHelper.finishEditing()
+            R.id.mi_cancel -> viewModel.saveChangesHelper.cancelEditing()
+            else -> return super.onOptionsItemSelected(item)
         }
 
-        return super.onOptionsItemSelected(item)
-    }
-
-    /*override fun onPause() {
-        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
-        super.onPause()
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
-        super.onSaveInstanceState(outState)
-    }
-
-    override fun onStop() {
-        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
-        super.onStop()
+        return true
     }
 
     override fun onDestroyView() {
-        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
         super.onDestroyView()
+        backClickHandler?.removeBackClickListener(this)
     }
-
-    override fun onDestroy() {
-        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
-        super.onDestroy()
-    }
-
-    override fun onDestroyOptionsMenu() {
-        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
-        super.onDestroyOptionsMenu()
-    }
-
-    override fun onDetach() {
-        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
-        super.onDetach()
-    }*/
 
     private fun setupViews(view: View) {
         tbActions = view.findViewById(R.id.tb_actions)
@@ -139,6 +94,11 @@ class FragmentCustomerProfile : Fragment(R.layout.fragment_customer_profile) {
     private fun setupViewPager() {
         adapter = CustomerProfileAdapter(this)
         vpPager.adapter = adapter
+        vpPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                viewModel.swipe(position)
+            }
+        })
     }
 
     private fun setupTabLayout() {
@@ -157,9 +117,22 @@ class FragmentCustomerProfile : Fragment(R.layout.fragment_customer_profile) {
             .attach()
     }
 
-    private fun updateToolbarTitle(newName: String?) {
+    private fun setupObservers() {
+        viewModel.toolbarTitle.observe(viewLifecycleOwner, this::onChangeToolbarTitle)
+    }
+
+    private fun setupHelpers() {
+        saveChangesHelper = SaveChangesFragmentHelper(this, viewModel.saveChangesHelper)
+    }
+
+    private fun onChangeToolbarTitle(newName: String?) {
         Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
         tbActions.title = newName ?: getString(R.string.customer_profile_new_customer)
+    }
+
+    override fun onBackClick(): Boolean {
+        viewModel.saveChangesHelper.finishEditing()
+        return true
     }
 
     companion object {

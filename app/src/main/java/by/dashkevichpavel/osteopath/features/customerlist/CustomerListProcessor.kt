@@ -91,6 +91,11 @@ class CustomerListProcessor(
             isSearchOrFilterResult = true
         }
 
+        // sort
+        newFilteredList = newFilteredList.sortedWith(
+            compareBy(String.CASE_INSENSITIVE_ORDER, { it.name })
+        )
+
         customerListProcessorSubscriber.onCustomersProcessed(newFilteredList, isSearchOrFilterResult)
     }
 }

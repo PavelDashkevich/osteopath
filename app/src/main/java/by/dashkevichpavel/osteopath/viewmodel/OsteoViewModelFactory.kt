@@ -7,6 +7,7 @@ import by.dashkevichpavel.osteopath.repositories.localdb.OsteoDbRepositorySingle
 import by.dashkevichpavel.osteopath.features.customerlist.CustomerListViewModel
 import by.dashkevichpavel.osteopath.features.customerprofile.CustomerProfileViewModel
 import by.dashkevichpavel.osteopath.features.disfunction.DisfunctionViewModel
+import by.dashkevichpavel.osteopath.features.selectdisfunctions.SelectDisfunctionsViewModel
 import by.dashkevichpavel.osteopath.features.session.SessionViewModel
 
 class OsteoViewModelFactory(
@@ -23,6 +24,8 @@ class OsteoViewModelFactory(
                 DisfunctionViewModel(OsteoDbRepositorySingleton.getInstance(applicationContext))
             SessionViewModel::class.java ->
                 SessionViewModel(OsteoDbRepositorySingleton.getInstance(applicationContext))
+            SelectDisfunctionsViewModel::class.java ->
+                SelectDisfunctionsViewModel(OsteoDbRepositorySingleton.getInstance(applicationContext))
             else ->
                 throw IllegalArgumentException("$modelClass is not registered ViewModel")
         } as T

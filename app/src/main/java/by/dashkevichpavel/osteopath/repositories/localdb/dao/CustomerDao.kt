@@ -8,11 +8,11 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface CustomerDao {
     @Query("""SELECT * FROM ${DbContract.Customers.TABLE_NAME} 
-        ORDER BY ${DbContract.Customers.COLUMN_NAME_NAME}""")
+        ORDER BY ${DbContract.Customers.COLUMN_NAME_NAME} COLLATE NOCASE""")
     suspend fun getAll(): List<CustomerEntity>
 
     @Query("""SELECT * FROM ${DbContract.Customers.TABLE_NAME} 
-        ORDER BY ${DbContract.Customers.COLUMN_NAME_NAME}""")
+        ORDER BY ${DbContract.Customers.COLUMN_NAME_NAME} COLLATE NOCASE""")
     fun getAllAsFlow(): Flow<List<CustomerEntity>>
 
     @Query("""SELECT * FROM ${DbContract.Customers.TABLE_NAME} 

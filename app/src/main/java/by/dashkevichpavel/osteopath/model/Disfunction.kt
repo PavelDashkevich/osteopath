@@ -15,5 +15,12 @@ data class Disfunction(
         customerId = disfunctionEntity.customerId
     )
 
-    fun isTheSame(other: Disfunction): Boolean = this.id == other.id
+    fun isTheSameById(other: Disfunction): Boolean = this.id == other.id
+
+    fun isModified(other: Disfunction?): Boolean {
+        if (other == null) return true
+
+        return this.disfunctionStatusId != other.disfunctionStatusId ||
+                this.description != other.description
+    }
 }

@@ -35,4 +35,16 @@ data class Customer(
             Session(sessionEntity, emptyList())
         } as MutableList<Session>
                 )
+
+    fun isModified(other: Customer?): Boolean {
+        if (other == null) return true
+
+        return name != other.name ||
+                birthDate != other.birthDate ||
+                phone != other.phone ||
+                email != other.email ||
+                instagram != other.instagram ||
+                facebook != other.facebook ||
+                customerStatusId != other.customerStatusId
+    }
 }

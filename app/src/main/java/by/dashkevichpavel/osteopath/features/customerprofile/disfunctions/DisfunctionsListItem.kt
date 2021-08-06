@@ -32,7 +32,7 @@ data class DisfunctionListItemData(
     override fun isTheSame(other: DisfunctionListItem): Boolean {
         if (other !is DisfunctionListItemData) return false
 
-        return other.disfunction.isTheSame(this.disfunction)
+        return other.disfunction.isTheSameById(this.disfunction)
     }
 
     override fun contentsTheSame(other: DisfunctionListItem): Boolean {
@@ -40,4 +40,22 @@ data class DisfunctionListItemData(
 
         return other.disfunction == this.disfunction
     }
+}
+
+data class DisfunctionsListSelectableItemData(
+    var disfunction: Disfunction,
+    var isSelected: Boolean
+) : DisfunctionListItem() {
+    override fun isTheSame(other: DisfunctionListItem): Boolean {
+        if (other !is DisfunctionsListSelectableItemData) return false
+
+        return other.disfunction.isTheSameById(this.disfunction)
+    }
+
+    override fun contentsTheSame(other: DisfunctionListItem): Boolean {
+        if (other !is DisfunctionsListSelectableItemData) return false
+
+        return other.disfunction == this.disfunction
+    }
+
 }

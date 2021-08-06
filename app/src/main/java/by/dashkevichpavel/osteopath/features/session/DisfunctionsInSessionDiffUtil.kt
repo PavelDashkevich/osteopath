@@ -12,7 +12,7 @@ class DisfunctionsInSessionDiffUtil(
     override fun getNewListSize(): Int = newItems.size
 
     override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-        return oldItems[oldItemPosition].isTheSame(newItems[newItemPosition])
+        return oldItems[oldItemPosition].isTheSameById(newItems[newItemPosition])
     }
 
     override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {

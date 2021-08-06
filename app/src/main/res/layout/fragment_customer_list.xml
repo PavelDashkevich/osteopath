@@ -43,7 +43,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:contentDescription="@string/content_description_customers_add"
-        android:backgroundTint="#FF0000"/>
+        android:backgroundTint="#FF0000"
+        android:visibility="gone"/>
 
     <TextView
         android:id="@+id/tv_empty_filter_or_search_result"

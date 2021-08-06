@@ -1,6 +1,6 @@
 package by.dashkevichpavel.osteopath.model
 
-import by.dashkevichpavel.osteopath.repositories.localdb.OsteoDbRepository
+import by.dashkevichpavel.osteopath.repositories.localdb.LocalDbRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
@@ -9,7 +9,7 @@ import java.util.*
 
 class CustomerListLoader(
     private val customerListLoaderSubscriber: CustomerListLoaderSubscriber,
-    private val repository: OsteoDbRepository,
+    private val repository: LocalDbRepository,
     private val scope: CoroutineScope
 ) {
     private var jobFlow: Job? = null

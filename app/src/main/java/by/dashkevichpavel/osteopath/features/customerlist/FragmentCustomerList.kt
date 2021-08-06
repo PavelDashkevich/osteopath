@@ -17,7 +17,6 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import by.dashkevichpavel.osteopath.repositories.sharedprefs.CustomerFilterSharedPreferences
 import by.dashkevichpavel.osteopath.R
 import by.dashkevichpavel.osteopath.model.Customer
 import by.dashkevichpavel.osteopath.features.customerprofile.FragmentCustomerProfile

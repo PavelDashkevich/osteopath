@@ -49,4 +49,7 @@
     <string name="session_status_planned">Запланирован</string>
     <string name="header_date">Дата</string>
     <string name="header_time">Время</string>
+    <string name="header_session_done">Сеанс проведен</string>
+    <string name="header_new_session">Новый сеанс</string>
+    <string name="header_new_disfunction">Новая дисфункция</string>
 </resources>
