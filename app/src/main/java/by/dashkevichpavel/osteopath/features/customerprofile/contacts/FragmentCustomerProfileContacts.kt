@@ -1,24 +1,33 @@
 package by.dashkevichpavel.osteopath.features.customerprofile.contacts
 
+import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
-import android.view.*
+import android.view.View
 import android.widget.RadioButton
 import android.widget.RadioGroup
+import androidx.activity.result.ActivityResultCallback
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.AppCompatImageButton
+import androidx.core.content.ContextCompat
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import by.dashkevichpavel.osteopath.R
-import by.dashkevichpavel.osteopath.features.pickers.FragmentDatePicker
 import by.dashkevichpavel.osteopath.features.customerprofile.CustomerProfileViewModel
+import by.dashkevichpavel.osteopath.features.pickers.FragmentDatePicker
+import by.dashkevichpavel.osteopath.helpers.permissions.PermissionsGrantedListener
+import by.dashkevichpavel.osteopath.helpers.permissions.ReadContactsPermissionsHelper
 import by.dashkevichpavel.osteopath.model.*
 import by.dashkevichpavel.osteopath.viewmodel.OsteoViewModelFactory
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import java.util.*
 
-class FragmentCustomerProfileContacts : Fragment(R.layout.fragment_customer_profile_contacts) {
+class FragmentCustomerProfileContacts :
+    Fragment(R.layout.fragment_customer_profile_contacts),
+    PermissionsGrantedListener {
     private val viewModel: CustomerProfileViewModel by viewModels(
         ownerProducer = { requireParentFragment() },
         factoryProducer = { OsteoViewModelFactory(requireContext().applicationContext) }
@@ -26,6 +35,7 @@ class FragmentCustomerProfileContacts : Fragment(R.layout.fragment_customer_prof
 
     private lateinit var tilName: TextInputLayout
     private lateinit var etName: TextInputEditText
+    private lateinit var ibSetContact: AppCompatImageButton
     private lateinit var tilBirthDate: TextInputLayout
     private lateinit var etBirthDate: TextInputEditText
     private lateinit var ibSetBirthDate: AppCompatImageButton
@@ -40,24 +50,16 @@ class FragmentCustomerProfileContacts : Fragment(R.layout.fragment_customer_prof
     private lateinit var rbCategoryWorkDone: RadioButton
     private lateinit var rbCategoryNoHelp: RadioButton
 
-    /*override fun onAttach(context: Context) {
-        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
-        super.onAttach(context)
+    private val getContact = registerForActivityResult(ActivityResultContracts.PickContact()) {
+        contactUri: Uri? -> onContactSet(contactUri)
     }
+
+    private lateinit var readContactsPermissionsHelper: ReadContactsPermissionsHelper
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
         super.onCreate(savedInstanceState)
+        readContactsPermissionsHelper = ReadContactsPermissionsHelper(this, this)
     }
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
-        return super.onCreateView(inflater, container, savedInstanceState)
-    }*/
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
@@ -67,66 +69,6 @@ class FragmentCustomerProfileContacts : Fragment(R.layout.fragment_customer_prof
 
         viewModel.customer.observe(viewLifecycleOwner, this::updateFields)
     }
-
-    /*override fun onViewStateRestored(savedInstanceState: Bundle?) {
-        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
-        super.onViewStateRestored(savedInstanceState)
-    }
-
-    override fun onStart() {
-        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
-        super.onStart()
-    }
-
-    override fun onResume() {
-        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
-        super.onResume()
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
-        super.onCreateOptionsMenu(menu, inflater)
-    }
-
-    override fun onPrepareOptionsMenu(menu: Menu) {
-        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
-        super.onPrepareOptionsMenu(menu)
-    }
-
-    override fun onPause() {
-        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
-        super.onPause()
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
-        super.onSaveInstanceState(outState)
-    }
-
-    override fun onStop() {
-        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
-        super.onStop()
-    }
-
-    override fun onDestroyView() {
-        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
-        super.onDestroyView()
-    }
-
-    override fun onDestroy() {
-        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
-        super.onDestroy()
-    }
-
-    override fun onDestroyOptionsMenu() {
-        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
-        super.onDestroyOptionsMenu()
-    }
-
-    override fun onDetach() {
-        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
-        super.onDetach()
-    }*/
 
     private fun updateFields(newCustomer: Customer?) {
         newCustomer?.let { customer ->
@@ -149,6 +91,7 @@ class FragmentCustomerProfileContacts : Fragment(R.layout.fragment_customer_prof
     private fun setupViews(view: View) {
         tilName = view.findViewById(R.id.til_name)
         etName = view.findViewById(R.id.et_name)
+        ibSetContact = view.findViewById(R.id.ib_set_contact)
         tilBirthDate = view.findViewById(R.id.til_birth_date)
         etBirthDate = view.findViewById(R.id.et_birth_date)
         ibSetBirthDate = view.findViewById(R.id.ib_set_birth_date)
@@ -195,6 +138,10 @@ class FragmentCustomerProfileContacts : Fragment(R.layout.fragment_customer_prof
             }
         }
 
+        ibSetContact.setOnClickListener {
+            readContactsPermissionsHelper.requestPermissions()
+        }
+
         ibSetBirthDate.setOnClickListener {
             FragmentDatePicker.show(
                 childFragmentManager,
@@ -217,5 +164,13 @@ class FragmentCustomerProfileContacts : Fragment(R.layout.fragment_customer_prof
         viewModel.customer.value?.let { customer ->
             updateFieldBirthDate(customer.birthDate)
         }
+    }
+
+    private fun onContactSet(contactUri: Uri?) {
+        viewModel.extractContactData(requireContext().contentResolver, contactUri)
+    }
+
+    override fun onPermissionsGranted() {
+        getContact.launch(null)
     }
 }

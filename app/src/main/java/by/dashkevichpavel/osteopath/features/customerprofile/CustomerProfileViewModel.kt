@@ -1,9 +1,13 @@
 package by.dashkevichpavel.osteopath.features.customerprofile
 
+import android.content.ContentResolver
+import android.net.Uri
+import android.provider.ContactsContract
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import by.dashkevichpavel.osteopath.helpers.contacts.ContactInfoLoader
 import by.dashkevichpavel.osteopath.helpers.savechanges.SavableInterface
 import by.dashkevichpavel.osteopath.helpers.savechanges.SaveChangesViewModelHelper
 import by.dashkevichpavel.osteopath.model.Customer
@@ -93,6 +97,28 @@ class CustomerProfileViewModel(
     fun swipe(position: Int) {
         if (customer.value?.id == 0L && position != 0) {
             saveCustomer(false)
+        }
+    }
+
+    fun extractContactData(contentResolver: ContentResolver, contactUri: Uri?) {
+        contactUri?.let { uri ->
+            viewModelScope.launch {
+                val contactInfoLoader = ContactInfoLoader(contentResolver)
+                val contactInfo = contactInfoLoader.getContactInfo(uri)
+
+                customer.value?.let { cust ->
+                    customer.value = cust.copy(
+                        name = if (contactInfo.name.isNotBlank())
+                                    contactInfo.name
+                                else
+                                    cust.name,
+                        phone = if (contactInfo.phones.isNotEmpty())
+                                    contactInfo.phones[0]
+                                else
+                                    cust.phone
+                    )
+                }
+            }
         }
     }
 

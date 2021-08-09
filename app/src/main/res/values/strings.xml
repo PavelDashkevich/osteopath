@@ -52,4 +52,10 @@
     <string name="header_session_done">Сеанс проведен</string>
     <string name="header_new_session">Новый сеанс</string>
     <string name="header_new_disfunction">Новая дисфункция</string>
+
+    <string name="permissions_not_granted">Нельзя использовать эту функцию - не получено разрешений.</string>
+    <string name="permissions_explanation_template">Чтобы использовать функцию %1$s, пожалуйста, предоставьте разрешения: %2$s.</string>
+    <string name="permissions_function_get_data_from_contact">заполнения имени и телефона из адресной книги</string>
+    <string name="permissions_read_contact">чтения адресной книги</string>
+    <string name="permissions_denied_template">Функция %1$s недоступна без следующих разрешений: %2$s. Открыть настройки программы, чтобы Вы могли установить эти разрешения?</string>
 </resources>

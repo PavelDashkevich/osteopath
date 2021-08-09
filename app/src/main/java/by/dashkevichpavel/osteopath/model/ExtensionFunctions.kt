@@ -2,6 +2,7 @@ package by.dashkevichpavel.osteopath.model
 
 import android.content.ActivityNotFoundException
 import android.content.Intent
+import android.database.Cursor
 import android.net.Uri
 import android.text.Editable
 import androidx.appcompat.app.AppCompatActivity
@@ -91,4 +92,24 @@ fun Fragment.actionOpenInstagram(userName: String) {
 
 fun Fragment.setupToolbar(toolbar: Toolbar) {
     (activity as AppCompatActivity).setSupportActionBar(toolbar)
+}
+
+fun Cursor.getStringByColumnName(columnName: String, defaultValue: String): String {
+    val colIndex = this.getColumnIndex(columnName)
+
+    if (colIndex >= 0) {
+        return this.getString(colIndex)
+    }
+
+    return defaultValue
+}
+
+fun Cursor.getIntByColumnName(columnName: String, defaultValue: Int): Int {
+    val colIndex = this.getColumnIndex(columnName)
+
+    if (colIndex >= 0) {
+        return this.getInt(colIndex)
+    }
+
+    return defaultValue
 }
