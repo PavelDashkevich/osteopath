@@ -15,16 +15,20 @@ import androidx.recyclerview.widget.RecyclerView
 import by.dashkevichpavel.osteopath.R
 import by.dashkevichpavel.osteopath.features.BackClickHandler
 import by.dashkevichpavel.osteopath.features.BackClickListener
+import by.dashkevichpavel.osteopath.features.customerlist.SpaceItemDecoration
 import by.dashkevichpavel.osteopath.features.pickers.FragmentDatePicker
 import by.dashkevichpavel.osteopath.features.pickers.FragmentTimePicker
 import by.dashkevichpavel.osteopath.features.selectdisfunctions.FragmentSelectDisfunctions
+import by.dashkevichpavel.osteopath.helpers.formatDateAsEditable
+import by.dashkevichpavel.osteopath.helpers.formatTimeAsEditable
 import by.dashkevichpavel.osteopath.helpers.savechanges.SaveChangesFragmentHelper
+import by.dashkevichpavel.osteopath.helpers.setupToolbar
+import by.dashkevichpavel.osteopath.helpers.toEditable
 import by.dashkevichpavel.osteopath.model.*
 import by.dashkevichpavel.osteopath.viewmodel.OsteoViewModelFactory
 import com.google.android.material.switchmaterial.SwitchMaterial
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
-import com.google.android.material.textview.MaterialTextView
 import java.lang.IllegalArgumentException
 import java.util.*
 
@@ -111,6 +115,7 @@ class FragmentSession :
     private fun setupRecyclerView() {
         adapter = DisfunctionInSessionAdapter(this)
         rvDisfunctions.layoutManager = LinearLayoutManager(requireContext())
+        rvDisfunctions.addItemDecoration(SpaceItemDecoration())
         rvDisfunctions.adapter = adapter
     }
 

@@ -1,4 +1,4 @@
-package by.dashkevichpavel.osteopath.model
+package by.dashkevichpavel.osteopath.helpers
 
 import android.content.ActivityNotFoundException
 import android.content.Intent

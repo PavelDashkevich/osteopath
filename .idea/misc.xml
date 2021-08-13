@@ -3,9 +3,25 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/AndroidDev/Projects/Osteopath/app/src/main/res/layout/fragment_customer_list.xml" value="0.2884963768115942" />
-        <entry key="..\:/AndroidDev/Projects/Osteopath/app/src/main/res/layout/fragment_customer_profile_contacts.xml" value="0.2884963768115942" />
-        <entry key="..\:/AndroidDev/Projects/Osteopath/app/src/main/res/layout/fragment_session.xml" value="0.26038500506585616" />
+        <entry key="..\:/AndroidDev/Projects/Osteopath/app/src/main/res/drawable/background_gradient.xml" value="0.38425925925925924" />
+        <entry key="..\:/AndroidDev/Projects/Osteopath/app/src/main/res/drawable/button_shape_circle.xml" value="0.17962962962962964" />
+        <entry key="..\:/AndroidDev/Projects/Osteopath/app/src/main/res/layout/activity_main.xml" value="0.2692502532928065" />
+        <entry key="..\:/AndroidDev/Projects/Osteopath/app/src/main/res/layout/fragment_customer_list.xml" value="0.5" />
+        <entry key="..\:/AndroidDev/Projects/Osteopath/app/src/main/res/layout/fragment_customer_list_filter.xml" value="0.26038500506585616" />
+        <entry key="..\:/AndroidDev/Projects/Osteopath/app/src/main/res/layout/fragment_customer_profile.xml" value="0.26038500506585616" />
+        <entry key="..\:/AndroidDev/Projects/Osteopath/app/src/main/res/layout/fragment_customer_profile_contacts.xml" value="0.1" />
+        <entry key="..\:/AndroidDev/Projects/Osteopath/app/src/main/res/layout/fragment_customer_profile_disfunctions.xml" value="0.26038500506585616" />
+        <entry key="..\:/AndroidDev/Projects/Osteopath/app/src/main/res/layout/fragment_customer_profile_sessions.xml" value="0.26038500506585616" />
+        <entry key="..\:/AndroidDev/Projects/Osteopath/app/src/main/res/layout/fragment_disfunction.xml" value="0.26038500506585616" />
+        <entry key="..\:/AndroidDev/Projects/Osteopath/app/src/main/res/layout/fragment_select_disfunctions.xml" value="0.26038500506585616" />
+        <entry key="..\:/AndroidDev/Projects/Osteopath/app/src/main/res/layout/fragment_session.xml" value="0.1" />
+        <entry key="..\:/AndroidDev/Projects/Osteopath/app/src/main/res/layout/listitem_customer.xml" value="0.26038500506585616" />
+        <entry key="..\:/AndroidDev/Projects/Osteopath/app/src/main/res/layout/listitem_disfunction_category.xml" value="0.26038500506585616" />
+        <entry key="..\:/AndroidDev/Projects/Osteopath/app/src/main/res/layout/listitem_disfunction_data.xml" value="0.26038500506585616" />
+        <entry key="..\:/AndroidDev/Projects/Osteopath/app/src/main/res/layout/listitem_disfunction_selectable.xml" value="0.26038500506585616" />
+        <entry key="..\:/AndroidDev/Projects/Osteopath/app/src/main/res/layout/listitem_session.xml" value="0.26038500506585616" />
+        <entry key="..\:/AndroidDev/Projects/Osteopath/app/src/main/res/layout/listitem_session_disfunction.xml" value="0.26038500506585616" />
+        <entry key="..\:/AndroidDev/Projects/Osteopath/app/src/main/res/layout/toolbar.xml" value="0.26038500506585616" />
       </map>
     </option>
   </component>

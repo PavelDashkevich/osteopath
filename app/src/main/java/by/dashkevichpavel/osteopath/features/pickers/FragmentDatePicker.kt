@@ -7,7 +7,7 @@ import android.widget.DatePicker
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.setFragmentResult
-import by.dashkevichpavel.osteopath.model.setDateComponents
+import by.dashkevichpavel.osteopath.helpers.setDateComponents
 import java.util.*
 
 class FragmentDatePicker :

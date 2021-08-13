@@ -5,6 +5,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import by.dashkevichpavel.osteopath.helpers.savechanges.SavableInterface
 import by.dashkevichpavel.osteopath.helpers.savechanges.SaveChangesViewModelHelper
+import by.dashkevichpavel.osteopath.helpers.setDatePartFromTimeInMillis
+import by.dashkevichpavel.osteopath.helpers.setTimePartFromTimeInMillis
 import by.dashkevichpavel.osteopath.model.*
 import by.dashkevichpavel.osteopath.repositories.localdb.LocalDbRepository
 import kotlinx.coroutines.Job

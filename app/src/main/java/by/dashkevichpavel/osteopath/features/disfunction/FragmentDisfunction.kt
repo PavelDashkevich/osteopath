@@ -12,6 +12,8 @@ import by.dashkevichpavel.osteopath.R
 import by.dashkevichpavel.osteopath.features.BackClickHandler
 import by.dashkevichpavel.osteopath.features.BackClickListener
 import by.dashkevichpavel.osteopath.helpers.savechanges.SaveChangesFragmentHelper
+import by.dashkevichpavel.osteopath.helpers.setupToolbar
+import by.dashkevichpavel.osteopath.helpers.toEditable
 import by.dashkevichpavel.osteopath.model.*
 import by.dashkevichpavel.osteopath.viewmodel.OsteoViewModelFactory
 import com.google.android.material.textfield.TextInputEditText

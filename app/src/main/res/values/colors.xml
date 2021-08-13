@@ -1,10 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="purple_200">#FFBB86FC</color>
-    <color name="purple_500">#FF6200EE</color>
-    <color name="purple_700">#FF3700B3</color>
+    <color name="red_50">#ffffebee</color>
+    <color name="red_100">#ffffcdd2</color>
+    <color name="red_200">#ffef9a9a</color>
+    <color name="red_300">#ffe57373</color>
+    <color name="red_400">#ffef5350</color>
+    <color name="red_500">#fff44336</color>
+    <color name="red_600">#ffe53935</color>
+    <color name="red_700">#ffd32f2f</color>
+    <color name="red_800">#ffc62828</color>
+    <color name="red_900">#ffb71c1c</color>
+
+    <color name="pink_50">#fffce4ec</color>
+    <color name="pink_100">#fff8bbd0</color>
+    <color name="pink_200">#fff48fb1</color>
+    <color name="pink_300">#fff06292</color>
+    <color name="pink_400">#ffec407a</color>
+    <color name="pink_500">#ffe91e63</color>
+    <color name="pink_600">#ffd81b60</color>
+    <color name="pink_700">#ffc2185b</color>
+    <color name="pink_800">#ffad1457</color>
+    <color name="pink_900">#ff880e4f</color>
+
+    <color name="purple_50">#fff3e5f5</color>
+    <color name="purple_100">#ffe1bee7</color>
+    <color name="purple_200">#ffce93d8</color>
+    <color name="purple_300">#ffba68c8</color>
+    <color name="purple_400">#ffab47bc</color>
+    <color name="purple_500">#ff9c27b0</color>
+    <color name="purple_600">#ff8e24aa</color>
+    <color name="purple_700">#ff7b1fa2</color>
+    <color name="purple_800">#ff6a1b9a</color>
+    <color name="purple_900">#ff4a148c</color>
+
+    <color name="primaryColor">#7e57c2</color>
+    <color name="primaryLightColor">#b085f5</color>
+    <color name="primaryDarkColor">#4d2c91</color>
+    <color name="secondaryColor">#ab47bc</color>
+    <color name="secondaryLightColor">#df78ef</color>
+    <color name="secondaryDarkColor">#790e8b</color>
+    <color name="primaryTextColor">#ffffff</color>
+    <color name="secondaryTextColor">#ffffff</color>
+
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
+
+
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 

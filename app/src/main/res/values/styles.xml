@@ -1,3 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!--  Toolbars  -->
+    <style name="Toolbar">
+        <item name="android:elevation">@dimen/toolbar_default_elevation</item>
+        <item name="android:background">?attr/colorPrimary</item>
+        <item name="titleTextColor">?attr/colorOnPrimary</item>
+        <item name="colorControlNormal">?android:attr/textColorPrimary</item>
+        <item name="searchViewStyle">@style/Widget.AppCompat.SearchView.ActionBar</item>
+    </style>
+    <style name="Toolbar.WithUpButton" parent="Toolbar">
+        <item name="navigationIcon">?homeAsUpIndicator</item>
+    </style>
+
+    <!--  FABs  -->
+    <style name="FloatingActionButton">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_margin">@dimen/fab_margin_default</item>
+        <item name="fabSize">normal</item>
+    </style>
+    <style name="FloatingActionButton.Add" parent="FloatingActionButton">
+        <item name="android:src">@drawable/ic_baseline_add_24</item>
+    </style>
+
+    <!--  CardViews -->
+    <style name="CardView.Default" parent="CardView">
+        <item name="cardCornerRadius">@dimen/card_view_default_radius</item>
+        <item name="elevation">@dimen/cardview_default_elevation</item>
+        <item name="strokeWidth">@dimen/card_view_default_stroke_width</item>
+        <item name="strokeColor">@color/divider</item>
+    </style>
+
+    <!--  Image buttons  -->
+    <style name="ImageButton">
+        <item name="android:layout_width">@dimen/image_button_width</item>
+        <item name="android:layout_height">@dimen/image_button_height</item>
+        <item name="android:background">@drawable/button_shape_circle</item>
+    </style>
+    <style name="ImageButton.PickContact" parent="ImageButton">
+        <item name="android:src">@drawable/ic_baseline_person_search_24</item>
+    </style>
+    <style name="ImageButton.SetDate" parent="ImageButton">
+        <item name="android:src">@drawable/ic_baseline_today_24</item>
+    </style>
+    <style name="ImageButton.Call" parent="ImageButton">
+        <item name="android:src">@drawable/ic_baseline_call_24</item>
+    </style>
+    <style name="ImageButton.SendMessage" parent="ImageButton">
+        <item name="android:src">@drawable/ic_baseline_message_24</item>
+    </style>
+    <style name="ImageButton.Add" parent="ImageButton">
+        <item name="android:src">@drawable/ic_baseline_add_24</item>
+    </style>
+
+    <!--  Tab layout  -->
+    <style name="TabLayout" parent="Widget.MaterialComponents.TabLayout">
+        <item name="android:background">?attr/colorSurface</item>
+    </style>
 </resources>

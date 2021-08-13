@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="toolbar_default_elevation">4dp</dimen>
+
+    <dimen name="fab_margin_default">24dp</dimen>
+
+    <dimen name="card_view_default_radius">8dp</dimen>
+    <dimen name="card_view_default_stroke_width">0.3dp</dimen>
+    <dimen name="card_view_default_space">8dp</dimen>
+
+    <dimen name="image_button_width">48dp</dimen>
+    <dimen name="image_button_height">48dp</dimen>
+</resources>

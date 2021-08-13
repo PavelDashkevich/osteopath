@@ -7,7 +7,7 @@ import android.widget.TimePicker
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.setFragmentResult
-import by.dashkevichpavel.osteopath.model.setTimeComponents
+import by.dashkevichpavel.osteopath.helpers.setTimeComponents
 import java.util.*
 
 class FragmentTimePicker :

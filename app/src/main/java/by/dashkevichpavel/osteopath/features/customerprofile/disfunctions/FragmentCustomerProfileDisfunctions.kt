@@ -10,6 +10,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import by.dashkevichpavel.osteopath.R
+import by.dashkevichpavel.osteopath.features.customerlist.SpaceItemDecoration
 import by.dashkevichpavel.osteopath.model.Disfunction
 import by.dashkevichpavel.osteopath.model.DisfunctionStatus
 import by.dashkevichpavel.osteopath.features.disfunction.FragmentDisfunction
@@ -35,93 +36,12 @@ class FragmentCustomerProfileDisfunctions :
     )
     private lateinit var fabAddDisfunction: FloatingActionButton
 
-    override fun onAttach(context: Context) {
-        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
-        super.onAttach(context)
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
-        super.onCreate(savedInstanceState)
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
-        return super.onCreateView(inflater, container, savedInstanceState)
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
 
         setupViews(view)
         setupListeners()
-
-        viewModel.disfunctions.observe(viewLifecycleOwner, this::updateDisfunctionsList)
-        viewModel.startListeningForDisfunctionsChanges()
-    }
-
-    override fun onViewStateRestored(savedInstanceState: Bundle?) {
-        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
-        super.onViewStateRestored(savedInstanceState)
-    }
-
-    override fun onStart() {
-        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
-        super.onStart()
-    }
-
-    override fun onResume() {
-        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
-        super.onResume()
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
-        super.onCreateOptionsMenu(menu, inflater)
-    }
-
-    override fun onPrepareOptionsMenu(menu: Menu) {
-        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
-        super.onPrepareOptionsMenu(menu)
-    }
-
-    override fun onPause() {
-        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
-        super.onPause()
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
-        super.onSaveInstanceState(outState)
-    }
-
-    override fun onStop() {
-        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
-        super.onStop()
-    }
-
-    override fun onDestroyView() {
-        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
-        super.onDestroyView()
-    }
-
-    override fun onDestroy() {
-        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
-        super.onDestroy()
-    }
-
-    override fun onDestroyOptionsMenu() {
-        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
-        super.onDestroyOptionsMenu()
-    }
-
-    override fun onDetach() {
-        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
-        super.onDetach()
+        setupObservers()
     }
 
     private fun setupViews(view: View) {
@@ -129,6 +49,7 @@ class FragmentCustomerProfileDisfunctions :
         fabAddDisfunction = view.findViewById(R.id.fab_disfunction_add)
         rvDisfunctions = view.findViewById(R.id.rv_disfunctions_list)
         rvDisfunctions.layoutManager = LinearLayoutManager(requireContext())
+        rvDisfunctions.addItemDecoration(SpaceItemDecoration())
         rvDisfunctions.adapter = adapter
     }
 
@@ -136,6 +57,11 @@ class FragmentCustomerProfileDisfunctions :
         fabAddDisfunction.setOnClickListener {
             openDisfunctionScreen(viewModel.customer.value?.id ?: 0L, 0L)
         }
+    }
+
+    private fun setupObservers() {
+        viewModel.disfunctions.observe(viewLifecycleOwner, this::updateDisfunctionsList)
+        viewModel.startListeningForDisfunctionsChanges()
     }
 
     private fun updateDisfunctionsList(newDisfunctionsList: MutableList<Disfunction>) {

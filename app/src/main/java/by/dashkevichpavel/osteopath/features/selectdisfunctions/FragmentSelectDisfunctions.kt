@@ -15,8 +15,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import by.dashkevichpavel.osteopath.R
 import by.dashkevichpavel.osteopath.features.BackClickListener
+import by.dashkevichpavel.osteopath.features.customerlist.SpaceItemDecoration
 import by.dashkevichpavel.osteopath.model.Disfunction
-import by.dashkevichpavel.osteopath.model.setupToolbar
+import by.dashkevichpavel.osteopath.helpers.setupToolbar
 import by.dashkevichpavel.osteopath.viewmodel.OsteoViewModelFactory
 
 class FragmentSelectDisfunctions :
@@ -66,6 +67,7 @@ class FragmentSelectDisfunctions :
         tbActions = view.findViewById(R.id.tb_actions)
         rvDisfunctions = view.findViewById(R.id.rv_disfunctions)
         rvDisfunctions.layoutManager = LinearLayoutManager(requireContext())
+        rvDisfunctions.addItemDecoration(SpaceItemDecoration())
         rvDisfunctions.adapter = adapter
     }
 

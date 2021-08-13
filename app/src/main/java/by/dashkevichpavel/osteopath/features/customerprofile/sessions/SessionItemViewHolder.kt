@@ -5,7 +5,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import by.dashkevichpavel.osteopath.R
 import by.dashkevichpavel.osteopath.model.Session
-import by.dashkevichpavel.osteopath.model.formatDateTimeAsString
+import by.dashkevichpavel.osteopath.helpers.formatDateTimeAsString
 import com.google.android.material.card.MaterialCardView
 
 class SessionItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

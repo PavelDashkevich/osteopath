@@ -2,12 +2,9 @@ package by.dashkevichpavel.osteopath.helpers.contacts
 
 import android.content.ContentResolver
 import android.content.ContentUris
-import android.database.Cursor
 import android.net.Uri
 import android.provider.ContactsContract
-import android.util.Log
-import by.dashkevichpavel.osteopath.model.getIntByColumnName
-import by.dashkevichpavel.osteopath.model.getStringByColumnName
+import by.dashkevichpavel.osteopath.helpers.getStringByColumnName
 
 class ContactInfoLoader(private val contentResolver: ContentResolver) {
     fun getContactInfo(fromContactUri: Uri): ContactInfo {

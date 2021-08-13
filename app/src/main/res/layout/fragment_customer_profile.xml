@@ -11,10 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
-        android:elevation="4dp"
-        android:background="@color/design_default_color_primary"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:navigationIcon="?homeAsUpIndicator"/>
+        style="@style/Toolbar.WithUpButton"/>
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tl_customer_tabs"
@@ -26,7 +23,7 @@
         app:tabMode="fixed"
         app:tabGravity="fill"
         android:elevation="4dp"
-        android:theme="@style/Widget.MaterialComponents.TabLayout.PrimarySurface"/>
+        android:theme="@style/TabLayout"/>
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/vp2_view_pager"

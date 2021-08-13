@@ -56,13 +56,10 @@
 
         <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/ib_set_contact"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:src="@drawable/ic_baseline_person_search_24"
             app:layout_constraintRight_toRightOf="@id/gl_vertical_right"
             app:layout_constraintTop_toTopOf="@id/til_name"
             app:layout_constraintBottom_toBottomOf="@id/til_name"
-            android:background="@drawable/button_shape_circle"/>
+            style="@style/ImageButton.PickContact"/>
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/til_birth_date"
@@ -85,13 +82,10 @@
 
         <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/ib_set_birth_date"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:src="@drawable/ic_baseline_today_24"
             app:layout_constraintRight_toRightOf="@id/gl_vertical_right"
             app:layout_constraintTop_toTopOf="@id/til_birth_date"
             app:layout_constraintBottom_toBottomOf="@id/til_birth_date"
-            android:background="@drawable/button_shape_circle"/>
+            style="@style/ImageButton.SetDate"/>
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/til_phone"
@@ -113,13 +107,10 @@
 
         <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/ib_call"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:src="@drawable/ic_baseline_call_24"
             app:layout_constraintRight_toRightOf="@id/gl_vertical_right"
             app:layout_constraintTop_toTopOf="@id/til_phone"
             app:layout_constraintBottom_toBottomOf="@id/til_phone"
-            android:background="@drawable/button_shape_circle"/>
+            style="@style/ImageButton.Call"/>
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/til_social_instagram"
@@ -140,13 +131,10 @@
 
         <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/ib_instagram_message"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:src="@drawable/ic_baseline_message_24"
             app:layout_constraintRight_toRightOf="@id/gl_vertical_right"
             app:layout_constraintTop_toTopOf="@id/til_social_instagram"
             app:layout_constraintBottom_toBottomOf="@id/til_social_instagram"
-            android:background="@drawable/button_shape_circle"/>
+            style="@style/ImageButton.SendMessage"/>
 
         <androidx.constraintlayout.widget.Barrier
             android:id="@+id/b_end"
