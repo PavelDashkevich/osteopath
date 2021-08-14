@@ -14,6 +14,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import by.dashkevichpavel.osteopath.R
+import by.dashkevichpavel.osteopath.databinding.FragmentSelectDisfunctionsBinding
 import by.dashkevichpavel.osteopath.features.BackClickListener
 import by.dashkevichpavel.osteopath.features.customerlist.SpaceItemDecoration
 import by.dashkevichpavel.osteopath.model.Disfunction
@@ -28,8 +29,9 @@ class FragmentSelectDisfunctions :
         factoryProducer = { OsteoViewModelFactory(requireContext().applicationContext) }
     )
 
-    private lateinit var rvDisfunctions: RecyclerView
-    private lateinit var tbActions: Toolbar
+    private var fragmentSelectDisfunctionsBinding: FragmentSelectDisfunctionsBinding? = null
+    private val binding get() = fragmentSelectDisfunctionsBinding!!
+
     private val adapter = DisfunctionSelectableAdapter(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,7 +47,6 @@ class FragmentSelectDisfunctions :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         setupViews(view)
-        setupToolbar(tbActions)
         setupObservers()
     }
 
@@ -63,12 +64,17 @@ class FragmentSelectDisfunctions :
         return true
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        fragmentSelectDisfunctionsBinding = null
+    }
+
     private fun setupViews(view: View) {
-        tbActions = view.findViewById(R.id.tb_actions)
-        rvDisfunctions = view.findViewById(R.id.rv_disfunctions)
-        rvDisfunctions.layoutManager = LinearLayoutManager(requireContext())
-        rvDisfunctions.addItemDecoration(SpaceItemDecoration())
-        rvDisfunctions.adapter = adapter
+        fragmentSelectDisfunctionsBinding = FragmentSelectDisfunctionsBinding.bind(view)
+        setupToolbar(binding.lToolbar.tbActions)
+        binding.rvDisfunctions.layoutManager = LinearLayoutManager(requireContext())
+        binding.rvDisfunctions.addItemDecoration(SpaceItemDecoration())
+        binding.rvDisfunctions.adapter = adapter
     }
 
     private fun setupObservers() {

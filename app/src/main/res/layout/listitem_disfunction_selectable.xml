@@ -13,23 +13,23 @@
         android:layout_height="wrap_content">
 
         <TextView
-            android:id="@+id/tv_description"
+            android:id="@+id/tvDescription"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/cb_select"
+            app:layout_constraintEnd_toStartOf="@id/cbSelect"
             tools:text="@tools:sample/lorem"
             android:padding="12dp"
             android:textSize="16sp"/>
 
         <com.google.android.material.checkbox.MaterialCheckBox
-            android:id="@+id/cb_select"
+            android:id="@+id/cbSelect"
             android:layout_width="40dp"
             android:layout_height="48dp"
-            app:layout_constraintStart_toEndOf="@id/tv_description"
+            app:layout_constraintStart_toEndOf="@id/tvDescription"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/tv_description"
+            app:layout_constraintTop_toTopOf="@id/tvDescription"
             android:layout_marginStart="8dp"
             android:gravity="center"/>
 

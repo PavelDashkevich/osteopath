@@ -8,20 +8,16 @@ import android.view.*
 import android.view.inputmethod.InputMethodManager
 import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
-import android.widget.ProgressBar
-import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
-import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import by.dashkevichpavel.osteopath.R
+import by.dashkevichpavel.osteopath.databinding.FragmentCustomerListBinding
 import by.dashkevichpavel.osteopath.model.Customer
 import by.dashkevichpavel.osteopath.features.customerprofile.FragmentCustomerProfile
+import by.dashkevichpavel.osteopath.helpers.setupToolbar
 import by.dashkevichpavel.osteopath.viewmodel.OsteoViewModelFactory
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.lang.IllegalArgumentException
 
 class FragmentCustomerList :
@@ -31,70 +27,28 @@ class FragmentCustomerList :
         factoryProducer = { OsteoViewModelFactory(requireContext().applicationContext) }
     )
 
-    private lateinit var rvCustomers: RecyclerView
-    private lateinit var fabAddCustomer: FloatingActionButton
-    private lateinit var fabAddTestData: FloatingActionButton
-    private lateinit var tvEmptyListHint: TextView
-    private lateinit var tvEmptyResultsHint: TextView
-    private lateinit var pbLoadingProgress: ProgressBar
-    private lateinit var tbActions: Toolbar
+    private var fragmentCustomerListBinding: FragmentCustomerListBinding? = null
+    private val binding get() = fragmentCustomerListBinding!!
+
     private lateinit var svSearch: SearchView
     private lateinit var optionsMenu: Menu
     private lateinit var adapter: CustomerItemAdapter
 
     private var isMenuCreated: Boolean = false
 
-    /*override fun onAttach(context: Context) {
-        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
-        super.onAttach(context)
-    }*/
-
     override fun onCreate(savedInstanceState: Bundle?) {
-        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
-
         super.onCreate(savedInstanceState)
-
         setHasOptionsMenu(true)
     }
 
-    /*override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
-        return super.onCreateView(inflater, container, savedInstanceState)
-    }*/
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
-
-        viewModel.init(requireContext())
-
-        setupViewElements(view)
-        setupToolbar()
-        setupClickListeners()
+        setupViews(view)
+        setupEventListeners()
         setupObservers()
+        viewModel.setFilter()
     }
-
-    /*override fun onViewStateRestored(savedInstanceState: Bundle?) {
-        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
-        super.onViewStateRestored(savedInstanceState)
-    }
-
-    override fun onStart() {
-        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
-        super.onStart()
-    }
-
-    override fun onResume() {
-        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
-        super.onResume()
-    }*/
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
-
         inflater.inflate(R.menu.customer_list_menu, menu)
 
         optionsMenu = menu
@@ -105,19 +59,7 @@ class FragmentCustomerList :
         super.onCreateOptionsMenu(menu, inflater)
     }
 
-    /*override fun onPrepareOptionsMenu(menu: Menu) {
-        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
-        super.onPrepareOptionsMenu(menu)
-    }
-
-    override fun onPause() {
-        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
-        super.onPause()
-    }*/
-
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
-
         if (item.itemId == R.id.mi_filter) {
             try {
                 findNavController().navigate(R.id.action_fragmentCustomerList_to_fragmentCustomerListFilter)
@@ -131,51 +73,14 @@ class FragmentCustomerList :
         return super.onOptionsItemSelected(item)
     }
 
-    /*override fun onSaveInstanceState(outState: Bundle) {
-        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
-
-        super.onSaveInstanceState(outState)
-    }*/
-
     override fun onStop() {
-        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
-
         super.onStop()
         saveStateOfSearchView()
     }
 
-    /*override fun onDestroyView() {
-        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
+    override fun onDestroyView() {
         super.onDestroyView()
-    }
-
-    override fun onDestroy() {
-        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
-        super.onDestroy()
-    }
-
-    override fun onDestroyOptionsMenu() {
-        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
-        super.onDestroyOptionsMenu()
-    }
-
-    override fun onDetach() {
-        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
-        super.onDetach()
-    }*/
-
-    private fun setupViewElements(view: View) {
-        fabAddCustomer = view.findViewById(R.id.fab_customer_add)
-        fabAddTestData = view.findViewById(R.id.fab_add_test_data)
-        tvEmptyListHint = view.findViewById(R.id.tv_empty_list_hint)
-        tvEmptyResultsHint = view.findViewById(R.id.tv_empty_filter_or_search_result)
-        rvCustomers = view.findViewById(R.id.rv_customer_list)
-        pbLoadingProgress = view.findViewById(R.id.pb_loading)
-        tbActions = view.findViewById(R.id.tb_actions)
-    }
-
-    private fun setupToolbar() {
-        (activity as AppCompatActivity).setSupportActionBar(tbActions)
+        fragmentCustomerListBinding = null
     }
 
     private fun hideKeyboard(): Boolean {
@@ -183,6 +88,11 @@ class FragmentCustomerList :
             .getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
 
         return imm.hideSoftInputFromWindow(svSearch.windowToken, 0)
+    }
+
+    private fun setupViews(view: View) {
+        fragmentCustomerListBinding = FragmentCustomerListBinding.bind(view)
+        setupToolbar(binding.tbActions)
     }
 
     private fun setupSearch() {
@@ -235,13 +145,13 @@ class FragmentCustomerList :
     }
 
     private fun setupRecyclerView() {
-        rvCustomers.layoutManager = LinearLayoutManager(requireContext())
+        binding.rvCustomerList.layoutManager = LinearLayoutManager(requireContext())
         adapter = CustomerItemAdapter(viewModel.getCustomerList(), this)
-        rvCustomers.adapter = adapter
+        binding.rvCustomerList.adapter = adapter
     }
 
     private fun updateLoadingProgress(isLoading: Boolean) {
-        pbLoadingProgress.visibility = if (isLoading) View.VISIBLE else View.GONE
+        binding.pbLoading.visibility = if (isLoading) View.VISIBLE else View.GONE
 
         if (isLoading) {
             hideEmptyListHints()
@@ -253,9 +163,9 @@ class FragmentCustomerList :
 
         if (newCustomers.isEmpty()) {
             if (viewModel.isSearchOrFilterResult) {
-                tvEmptyResultsHint.visibility = View.VISIBLE
+                binding.tvEmptyFilterOrSearchResult.visibility = View.VISIBLE
             } else {
-                tvEmptyListHint.visibility = View.VISIBLE
+                binding.tvEmptyListHint.visibility = View.VISIBLE
             }
         }
 
@@ -263,31 +173,31 @@ class FragmentCustomerList :
     }
 
     private fun hideEmptyListHints() {
-        tvEmptyResultsHint.visibility = View.GONE
-        tvEmptyListHint.visibility = View.GONE
+        binding.tvEmptyFilterOrSearchResult.visibility = View.GONE
+        binding.tvEmptyListHint.visibility = View.GONE
     }
 
-    private fun setupClickListeners() {
-        fabAddCustomer.setOnClickListener {
+    private fun setupEventListeners() {
+        binding.fabAddCustomer.setOnClickListener {
             openCustomerProfileScreen(0L)
         }
 
-        fabAddTestData.setOnClickListener {
+        binding.fabAddTestData.setOnClickListener {
             viewModel.loadTestData()
         }
     }
 
     private fun setupObservers() {
-        viewModel.observeLoadingProgressChanges(viewLifecycleOwner, this::updateLoadingProgress)
-        viewModel.observeCustomerListChanges(viewLifecycleOwner, this::updateCustomersList)
+        viewModel.isCustomersLoading.observe(viewLifecycleOwner, ::updateLoadingProgress)
+        viewModel.filteredCustomerList.observe(viewLifecycleOwner, ::updateCustomersList)
     }
 
     private fun openCustomerProfileScreen(customerId: Long) {
-        val bundle = Bundle()
-        bundle.putLong(FragmentCustomerProfile.ARG_KEY_CUSTOMER_ID, customerId)
-
         try {
-            findNavController().navigate(R.id.action_fragmentCustomerList_to_fragmentCustomer, bundle)
+            findNavController().navigate(
+                R.id.action_fragmentCustomerList_to_fragmentCustomer,
+                FragmentCustomerProfile.packBundle(customerId)
+            )
         } catch (e: IllegalArgumentException) {
             Log.d("OsteoApp", "openCustomerProfileScreen(): exception: ${e.message}")
         }

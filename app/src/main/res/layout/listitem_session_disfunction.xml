@@ -13,18 +13,18 @@
         android:layout_height="wrap_content">
 
         <TextView
-            android:id="@+id/tv_description"
+            android:id="@+id/tvDescription"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/ib_delete"
+            app:layout_constraintEnd_toStartOf="@id/ibDelete"
             tools:text="@tools:sample/lorem"
             android:padding="12dp"
             android:textSize="16sp"/>
 
         <androidx.appcompat.widget.AppCompatImageButton
-            android:id="@+id/ib_delete"
+            android:id="@+id/ibDelete"
             android:layout_width="36dp"
             android:layout_height="48dp"
             android:src="@drawable/ic_baseline_close_24"

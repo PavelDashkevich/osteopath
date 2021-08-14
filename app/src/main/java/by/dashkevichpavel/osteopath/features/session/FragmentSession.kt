@@ -13,6 +13,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import by.dashkevichpavel.osteopath.R
+import by.dashkevichpavel.osteopath.databinding.FragmentSessionBinding
 import by.dashkevichpavel.osteopath.features.BackClickHandler
 import by.dashkevichpavel.osteopath.features.BackClickListener
 import by.dashkevichpavel.osteopath.features.customerlist.SpaceItemDecoration
@@ -40,22 +41,11 @@ class FragmentSession :
         factoryProducer = { OsteoViewModelFactory(requireContext().applicationContext) }
     )
 
+    private var fragmentSessionBinding: FragmentSessionBinding? = null
+    private val binding get() = fragmentSessionBinding!!
+
     private var backClickHandler: BackClickHandler? = null
-
-    private lateinit var tbActions: Toolbar
-    private lateinit var tilDate: TextInputLayout
-    private lateinit var etDate: TextInputEditText
-    private lateinit var tilTime: TextInputLayout
-    private lateinit var etTime: TextInputEditText
-    private lateinit var tilPlan: TextInputLayout
-    private lateinit var etPlan: TextInputEditText
-    private lateinit var tilBodyConditions: TextInputLayout
-    private lateinit var etBodyConditions: TextInputEditText
-    private lateinit var ibAddDisfunction: AppCompatImageButton
-    private lateinit var smDone: SwitchMaterial
-    private lateinit var rvDisfunctions: RecyclerView
     private lateinit var adapter: DisfunctionInSessionAdapter
-
     private lateinit var saveChangesHelper: SaveChangesFragmentHelper
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -71,11 +61,10 @@ class FragmentSession :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         setupViews(view)
-        setupToolbar(tbActions)
-        setupRecyclerView()
         setupObservers()
         setupHelpers()
-        setupListeners()
+        setupEventListeners()
+        setupFragmentResultListeners()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -95,28 +84,20 @@ class FragmentSession :
     override fun onDestroyView() {
         super.onDestroyView()
         backClickHandler?.removeBackClickListener(this)
+        fragmentSessionBinding = null
     }
 
     private fun setupViews(view: View) {
-        tbActions = view.findViewById(R.id.tb_actions)
-        tilDate = view.findViewById(R.id.til_date)
-        etDate = view.findViewById(R.id.et_date)
-        tilTime = view.findViewById(R.id.til_time)
-        etTime = view.findViewById(R.id.et_time)
-        tilPlan = view.findViewById(R.id.til_plan)
-        etPlan = view.findViewById(R.id.et_plan)
-        tilBodyConditions = view.findViewById(R.id.til_body_conditions)
-        etBodyConditions = view.findViewById(R.id.et_body_conditions)
-        ibAddDisfunction = view.findViewById(R.id.ib_add_disfunction)
-        smDone = view.findViewById(R.id.sm_done)
-        rvDisfunctions = view.findViewById(R.id.rv_disfunctions)
+        fragmentSessionBinding = FragmentSessionBinding.bind(view)
+        setupToolbar(binding.lToolbar.tbActions)
+        setupRecyclerView()
     }
 
     private fun setupRecyclerView() {
         adapter = DisfunctionInSessionAdapter(this)
-        rvDisfunctions.layoutManager = LinearLayoutManager(requireContext())
-        rvDisfunctions.addItemDecoration(SpaceItemDecoration())
-        rvDisfunctions.adapter = adapter
+        binding.rvDisfunctions.layoutManager = LinearLayoutManager(requireContext())
+        binding.rvDisfunctions.addItemDecoration(SpaceItemDecoration())
+        binding.rvDisfunctions.adapter = adapter
     }
 
     private fun setupObservers() {
@@ -131,13 +112,11 @@ class FragmentSession :
         saveChangesHelper = SaveChangesFragmentHelper(this, viewModel.saveChangesHelper)
     }
 
-    private fun setupListeners() {
+    private fun setupEventListeners() {
         backClickHandler = (requireActivity() as BackClickHandler)
         backClickHandler?.addBackClickListener(this)
 
-        setupFragmentResultListeners()
-
-        etDate.setOnClickListener {
+        binding.etDate.setOnClickListener {
             FragmentDatePicker.show(
                 childFragmentManager,
                 KEY_DATE_PICKER_SESSION_DATE,
@@ -145,7 +124,7 @@ class FragmentSession :
             )
         }
 
-        etTime.setOnClickListener {
+        binding.etTime.setOnClickListener {
             FragmentTimePicker.show(
                 childFragmentManager,
                 KEY_TIME_PICKER_SESSION_TIME,
@@ -153,7 +132,7 @@ class FragmentSession :
             )
         }
 
-        ibAddDisfunction.setOnClickListener {
+        binding.ibAddDisfunction.setOnClickListener {
             try {
                 findNavController().navigate(
                     R.id.action_fragmentSession_to_fragmentSelectDisfunctions,
@@ -167,15 +146,15 @@ class FragmentSession :
             }
         }
 
-        etPlan.doOnTextChanged { text, _, _, _ ->
+        binding.etPlan.doOnTextChanged { text, _, _, _ ->
             viewModel.setPlan(text.toString())
         }
 
-        etBodyConditions.doOnTextChanged { text, _, _, _ ->
+        binding.etBodyConditions.doOnTextChanged { text, _, _, _ ->
             viewModel.setBodyCondition(text.toString())
         }
 
-        smDone.setOnCheckedChangeListener { _, isChecked ->
+        binding.smDone.setOnCheckedChangeListener { _, isChecked ->
             viewModel.setIsDone(isChecked)
         }
     }
@@ -190,7 +169,7 @@ class FragmentSession :
 
         childFragmentManager.setFragmentResultListener(
             FragmentTimePicker.KEY_RESULT,
-        viewLifecycleOwner
+            viewLifecycleOwner
         ) { _, bundle ->
             viewModel.setSessionTime(FragmentTimePicker.extractTimeInMillis(bundle))
         }
@@ -203,10 +182,10 @@ class FragmentSession :
     }
 
     private fun onChangeSession(session: Session) {
-        tbActions.title = if (session.id == 0L) getString(R.string.header_new_session) else ""
-        etPlan.text = session.plan.toEditable()
-        etBodyConditions.text = session.bodyCondition.toEditable()
-        smDone.isChecked = session.isDone
+        binding.lToolbar.tbActions.title = if (session.id == 0L) getString(R.string.header_new_session) else ""
+        binding.etPlan.text = session.plan.toEditable()
+        binding.etBodyConditions.text = session.bodyCondition.toEditable()
+        binding.smDone.isChecked = session.isDone
     }
 
     private fun onChangeDisfunctions(disfunctions: MutableList<Disfunction>) {
@@ -214,12 +193,12 @@ class FragmentSession :
     }
 
     private fun onChangeDateTime(date: Date) {
-        etDate.text = date.formatDateAsEditable()
-        etTime.text = date.formatTimeAsEditable()
+        binding.etDate.text = date.formatDateAsEditable()
+        binding.etTime.text = date.formatTimeAsEditable()
     }
 
     private fun onChangeAddDisfunctionActionAccessibility(isEnabled: Boolean) {
-        ibAddDisfunction.isEnabled = !isEnabled
+        binding.ibAddDisfunction.isEnabled = !isEnabled
     }
 
     override fun onDisfunctionDeleteClick(disfunctionId: Long) {
@@ -232,11 +211,19 @@ class FragmentSession :
     }
 
     companion object {
-        const val ARG_KEY_SESSION_ID = "ARG_KEY_SESSION_ID"
-        const val ARG_KEY_CUSTOMER_ID = "ARG_KEY_CUSTOMER_ID"
+        private const val ARG_KEY_SESSION_ID = "ARG_KEY_SESSION_ID"
+        private const val ARG_KEY_CUSTOMER_ID = "ARG_KEY_CUSTOMER_ID"
 
         private const val KEY_DATE_PICKER_SESSION_DATE = "KEY_DATE_PICKER_SESSION_DATE"
         private const val KEY_TIME_PICKER_SESSION_TIME = "KEY_TIME_PICKER_SESSION_TIME"
+
+        fun packBundle(customerId: Long, sessionId: Long): Bundle {
+            val bundle = Bundle()
+            bundle.putLong(ARG_KEY_CUSTOMER_ID, customerId)
+            bundle.putLong(ARG_KEY_SESSION_ID, sessionId)
+
+            return bundle
+        }
     }
 }
 

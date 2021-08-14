@@ -6,20 +6,20 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import by.dashkevichpavel.osteopath.R
+import by.dashkevichpavel.osteopath.databinding.ListitemCustomerBinding
 import by.dashkevichpavel.osteopath.model.Customer
 import by.dashkevichpavel.osteopath.model.CustomerStatus
 
 class CustomerItemViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
-    private val tvCustomerName: TextView = itemView.findViewById(R.id.tv_customer_name)
-    private val ivColorLabel: AppCompatImageView = itemView.findViewById(R.id.iv_color_label)
+    private val binding = ListitemCustomerBinding.bind(itemView)
 
     fun bind(customer: Customer, customerClickListener: CustomerClickListener) {
-        tvCustomerName.text = customer.name
-        tvCustomerName.setOnClickListener {
+        binding.tvCustomerName.text = customer.name
+        binding.tvCustomerName.setOnClickListener {
             customerClickListener.onCustomerClick(customer.id)
         }
 
-        ivColorLabel.setColorFilter(
+        binding.ivColorLabel.setColorFilter(
             ContextCompat.getColor(
                 itemView.context,
                 when(customer.customerStatusId) {

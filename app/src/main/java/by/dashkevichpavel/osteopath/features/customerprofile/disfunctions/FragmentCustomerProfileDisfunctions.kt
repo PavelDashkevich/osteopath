@@ -1,6 +1,5 @@
 package by.dashkevichpavel.osteopath.features.customerprofile.disfunctions
 
-import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.*
@@ -10,13 +9,13 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import by.dashkevichpavel.osteopath.R
+import by.dashkevichpavel.osteopath.databinding.FragmentCustomerProfileDisfunctionsBinding
 import by.dashkevichpavel.osteopath.features.customerlist.SpaceItemDecoration
 import by.dashkevichpavel.osteopath.model.Disfunction
 import by.dashkevichpavel.osteopath.model.DisfunctionStatus
 import by.dashkevichpavel.osteopath.features.disfunction.FragmentDisfunction
 import by.dashkevichpavel.osteopath.features.customerprofile.CustomerProfileViewModel
 import by.dashkevichpavel.osteopath.viewmodel.OsteoViewModelFactory
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.lang.IllegalArgumentException
 
 class FragmentCustomerProfileDisfunctions :
@@ -28,33 +27,37 @@ class FragmentCustomerProfileDisfunctions :
         factoryProducer = { OsteoViewModelFactory(requireContext().applicationContext) }
     )
 
-    private lateinit var rvDisfunctions: RecyclerView
+    private var fragmentCustomerProfileDisfunctionsBinding: FragmentCustomerProfileDisfunctionsBinding? = null
+    private val binding get() = fragmentCustomerProfileDisfunctionsBinding!!
+
     private var adapter = DisfunctionItemAdapter(
         mutableListOf(),
         this,
         this
     )
-    private lateinit var fabAddDisfunction: FloatingActionButton
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
 
         setupViews(view)
-        setupListeners()
+        setupEventListeners()
         setupObservers()
     }
 
-    private fun setupViews(view: View) {
-        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
-        fabAddDisfunction = view.findViewById(R.id.fab_disfunction_add)
-        rvDisfunctions = view.findViewById(R.id.rv_disfunctions_list)
-        rvDisfunctions.layoutManager = LinearLayoutManager(requireContext())
-        rvDisfunctions.addItemDecoration(SpaceItemDecoration())
-        rvDisfunctions.adapter = adapter
+    override fun onDestroyView() {
+        super.onDestroyView()
+        fragmentCustomerProfileDisfunctionsBinding = null
     }
 
-    private fun setupListeners() {
-        fabAddDisfunction.setOnClickListener {
+    private fun setupViews(view: View) {
+        fragmentCustomerProfileDisfunctionsBinding = FragmentCustomerProfileDisfunctionsBinding.bind(view)
+        binding.rvDisfunctionsList.layoutManager = LinearLayoutManager(requireContext())
+        binding.rvDisfunctionsList.addItemDecoration(SpaceItemDecoration())
+        binding.rvDisfunctionsList.adapter = adapter
+    }
+
+    private fun setupEventListeners() {
+        binding.fabAddDisfunction.setOnClickListener {
             openDisfunctionScreen(viewModel.customer.value?.id ?: 0L, 0L)
         }
     }
@@ -65,17 +68,15 @@ class FragmentCustomerProfileDisfunctions :
     }
 
     private fun updateDisfunctionsList(newDisfunctionsList: MutableList<Disfunction>) {
-        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
         adapter.setItems(newDisfunctionsList)
     }
 
     private fun openDisfunctionScreen(customerId: Long, disfunctionId: Long) {
-        val bundle = Bundle()
-        bundle.putLong(FragmentDisfunction.ARG_KEY_CUSTOMER_ID, customerId)
-        bundle.putLong(FragmentDisfunction.ARG_KEY_DISFUNCTION_ID, disfunctionId)
-
         try {
-            findNavController().navigate(R.id.action_fragmentCustomerProfile_to_fragmentDisfunction, bundle)
+            findNavController().navigate(
+                R.id.action_fragmentCustomerProfile_to_fragmentDisfunction,
+                FragmentDisfunction.packBundle(customerId, disfunctionId)
+            )
         } catch (e: IllegalArgumentException) {
             Log.d("OsteoApp", "openDisfunctionScreen(): exception: ${e.message}")
         }

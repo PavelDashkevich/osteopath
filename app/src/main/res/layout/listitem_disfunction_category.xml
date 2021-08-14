@@ -6,17 +6,17 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <TextView
-        android:id="@+id/tv_category_name"
+        android:id="@+id/tvCategoryName"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/ib_expand_collapse"
+        app:layout_constraintEnd_toStartOf="@id/ibExpandCollapse"
         tools:text="В работе"
         android:gravity="center_vertical"
         android:textSize="16sp"/>
 
     <androidx.appcompat.widget.AppCompatImageButton
-        android:id="@+id/ib_expand_collapse"
+        android:id="@+id/ibExpandCollapse"
         android:layout_width="48dp"
         android:layout_height="48dp"
         app:layout_constraintEnd_toEndOf="parent"

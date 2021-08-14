@@ -11,25 +11,25 @@
         android:layout_height="wrap_content">
 
         <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/gl_vertical_left"
+            android:id="@+id/glVerticalLeft"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:orientation="vertical"
             app:layout_constraintGuide_begin="16dp"/>
 
         <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/gl_vertical_right"
+            android:id="@+id/glVerticalRight"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:orientation="vertical"
             app:layout_constraintGuide_end="16dp"/>
 
         <TextView
-            android:id="@+id/tv_header"
+            android:id="@+id/tvHeader"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintLeft_toLeftOf="@id/gl_vertical_left"
-            app:layout_constraintRight_toRightOf="@id/gl_vertical_right"
+            app:layout_constraintLeft_toLeftOf="@id/glVerticalLeft"
+            app:layout_constraintRight_toRightOf="@id/glVerticalRight"
             app:layout_constraintTop_toTopOf="parent"
             android:text="@string/header_contacts"
             android:textSize="16sp"
@@ -37,92 +37,92 @@
             android:paddingVertical="16dp"/>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/til_name"
+            android:id="@+id/tilName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintLeft_toLeftOf="@id/gl_vertical_left"
-            app:layout_constraintRight_toLeftOf="@id/ib_set_contact"
-            app:layout_constraintTop_toBottomOf="@id/tv_header"
+            app:layout_constraintLeft_toLeftOf="@id/glVerticalLeft"
+            app:layout_constraintRight_toLeftOf="@id/ibSetContact"
+            app:layout_constraintTop_toBottomOf="@id/tvHeader"
             app:boxBackgroundColor="@android:color/transparent">
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/et_name"
+                android:id="@+id/etName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/header_customer_name"
                 android:layout_marginTop="8dp"
-                android:nextFocusDown="@id/et_phone"
+                android:nextFocusDown="@id/etPhone"
                 android:imeOptions="actionNext"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <androidx.appcompat.widget.AppCompatImageButton
-            android:id="@+id/ib_set_contact"
-            app:layout_constraintRight_toRightOf="@id/gl_vertical_right"
-            app:layout_constraintTop_toTopOf="@id/til_name"
-            app:layout_constraintBottom_toBottomOf="@id/til_name"
+            android:id="@+id/ibSetContact"
+            app:layout_constraintRight_toRightOf="@id/glVerticalRight"
+            app:layout_constraintTop_toTopOf="@id/tilName"
+            app:layout_constraintBottom_toBottomOf="@id/tilName"
             style="@style/ImageButton.PickContact"/>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/til_birth_date"
+            android:id="@+id/tilBirthDate"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintLeft_toLeftOf="@id/gl_vertical_left"
-            app:layout_constraintRight_toLeftOf="@id/ib_set_birth_date"
-            app:layout_constraintTop_toBottomOf="@id/til_name"
+            app:layout_constraintLeft_toLeftOf="@id/glVerticalLeft"
+            app:layout_constraintRight_toLeftOf="@id/ibSetBirthDate"
+            app:layout_constraintTop_toBottomOf="@id/tilName"
             app:boxBackgroundColor="@android:color/transparent"
             android:layout_marginTop="8dp">
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/et_birth_date"
+                android:id="@+id/etBirthDate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/header_customer_birth_date"
                 android:enabled="false"
-                android:nextFocusDown="@id/et_phone"
+                android:nextFocusDown="@id/etPhone"
                 android:imeOptions="actionNext"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <androidx.appcompat.widget.AppCompatImageButton
-            android:id="@+id/ib_set_birth_date"
-            app:layout_constraintRight_toRightOf="@id/gl_vertical_right"
-            app:layout_constraintTop_toTopOf="@id/til_birth_date"
-            app:layout_constraintBottom_toBottomOf="@id/til_birth_date"
+            android:id="@+id/ibSetBirthDate"
+            app:layout_constraintRight_toRightOf="@id/glVerticalRight"
+            app:layout_constraintTop_toTopOf="@id/tilBirthDate"
+            app:layout_constraintBottom_toBottomOf="@id/tilBirthDate"
             style="@style/ImageButton.SetDate"/>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/til_phone"
+            android:id="@+id/tilPhone"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintLeft_toLeftOf="@id/gl_vertical_left"
-            app:layout_constraintRight_toLeftOf="@id/ib_call"
-            app:layout_constraintTop_toBottomOf="@id/til_birth_date"
+            app:layout_constraintLeft_toLeftOf="@id/glVerticalLeft"
+            app:layout_constraintRight_toLeftOf="@id/ibCall"
+            app:layout_constraintTop_toBottomOf="@id/tilBirthDate"
             app:boxBackgroundColor="@android:color/transparent"
             android:layout_marginTop="8dp">
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/et_phone"
+                android:id="@+id/etPhone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/header_customer_phone"
-                android:nextFocusDown="@id/et_social_instagram"
+                android:nextFocusDown="@id/etSocialInstagram"
                 android:imeOptions="actionNext"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <androidx.appcompat.widget.AppCompatImageButton
-            android:id="@+id/ib_call"
-            app:layout_constraintRight_toRightOf="@id/gl_vertical_right"
-            app:layout_constraintTop_toTopOf="@id/til_phone"
-            app:layout_constraintBottom_toBottomOf="@id/til_phone"
+            android:id="@+id/ibCall"
+            app:layout_constraintRight_toRightOf="@id/glVerticalRight"
+            app:layout_constraintTop_toTopOf="@id/tilPhone"
+            app:layout_constraintBottom_toBottomOf="@id/tilPhone"
             style="@style/ImageButton.Call"/>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/til_social_instagram"
+            android:id="@+id/tilSocialInstagram"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintLeft_toLeftOf="@id/gl_vertical_left"
-            app:layout_constraintRight_toLeftOf="@id/ib_instagram_message"
-            app:layout_constraintTop_toBottomOf="@id/til_phone"
+            app:layout_constraintLeft_toLeftOf="@id/glVerticalLeft"
+            app:layout_constraintRight_toLeftOf="@id/ibInstagramMessage"
+            app:layout_constraintTop_toBottomOf="@id/tilPhone"
             app:boxBackgroundColor="@android:color/transparent"
             android:layout_marginTop="8dp">
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/et_social_instagram"
+                android:id="@+id/etSocialInstagram"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/header_customer_instagram"
@@ -130,26 +130,19 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <androidx.appcompat.widget.AppCompatImageButton
-            android:id="@+id/ib_instagram_message"
-            app:layout_constraintRight_toRightOf="@id/gl_vertical_right"
-            app:layout_constraintTop_toTopOf="@id/til_social_instagram"
-            app:layout_constraintBottom_toBottomOf="@id/til_social_instagram"
+            android:id="@+id/ibInstagramMessage"
+            app:layout_constraintRight_toRightOf="@id/glVerticalRight"
+            app:layout_constraintTop_toTopOf="@id/tilSocialInstagram"
+            app:layout_constraintBottom_toBottomOf="@id/tilSocialInstagram"
             style="@style/ImageButton.SendMessage"/>
 
-        <androidx.constraintlayout.widget.Barrier
-            android:id="@+id/b_end"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:barrierDirection="bottom"
-            app:constraint_referenced_ids="til_name,til_birth_date,til_phone,til_social_instagram"/>
-
         <TextView
-            android:id="@+id/tv_category"
+            android:id="@+id/tvCategory"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintLeft_toLeftOf="@id/gl_vertical_left"
-            app:layout_constraintRight_toRightOf="@id/gl_vertical_right"
-            app:layout_constraintTop_toBottomOf="@id/b_end"
+            app:layout_constraintLeft_toLeftOf="@id/glVerticalLeft"
+            app:layout_constraintRight_toRightOf="@id/glVerticalRight"
+            app:layout_constraintTop_toBottomOf="@id/ibInstagramMessage"
             android:text="@string/header_customer_category"
             android:textSize="16sp"
             android:textStyle="bold"
@@ -157,15 +150,15 @@
             android:paddingBottom="16dp"/>
 
         <RadioGroup
-            android:id="@+id/rg_category"
+            android:id="@+id/rgCategory"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintLeft_toLeftOf="@id/gl_vertical_left"
-            app:layout_constraintRight_toRightOf="@id/gl_vertical_right"
-            app:layout_constraintTop_toBottomOf="@id/tv_category">
+            app:layout_constraintLeft_toLeftOf="@id/glVerticalLeft"
+            app:layout_constraintRight_toRightOf="@id/glVerticalRight"
+            app:layout_constraintTop_toBottomOf="@id/tvCategory">
 
             <RadioButton
-                android:id="@+id/rb_work"
+                android:id="@+id/rbWork"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/category_work"
@@ -174,7 +167,7 @@
                 android:drawablePadding="8dp"/>
 
             <RadioButton
-                android:id="@+id/rb_work_done"
+                android:id="@+id/rbWorkDone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/category_work_done"
@@ -183,7 +176,7 @@
                 android:drawablePadding="8dp"/>
 
             <RadioButton
-                android:id="@+id/rb_no_help"
+                android:id="@+id/rbNoHelp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/category_no_help"

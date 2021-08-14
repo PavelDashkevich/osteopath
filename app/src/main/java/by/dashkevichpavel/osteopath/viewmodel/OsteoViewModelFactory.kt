@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import by.dashkevichpavel.osteopath.repositories.localdb.OsteoDbRepositorySingleton
 import by.dashkevichpavel.osteopath.features.customerlist.CustomerListViewModel
+import by.dashkevichpavel.osteopath.features.customerlistfilter.CustomerListFilterViewModel
 import by.dashkevichpavel.osteopath.features.customerprofile.CustomerProfileViewModel
 import by.dashkevichpavel.osteopath.features.disfunction.DisfunctionViewModel
 import by.dashkevichpavel.osteopath.features.selectdisfunctions.SelectDisfunctionsViewModel
@@ -17,7 +18,12 @@ class OsteoViewModelFactory(
     override fun <T : ViewModel?> create(modelClass: Class<T>): T =
         when (modelClass) {
             CustomerListViewModel::class.java ->
-                CustomerListViewModel(OsteoDbRepositorySingleton.getInstance(applicationContext))
+                CustomerListViewModel(
+                    applicationContext,
+                    OsteoDbRepositorySingleton.getInstance(applicationContext)
+                )
+            CustomerListFilterViewModel::class.java ->
+                CustomerListFilterViewModel(applicationContext)
             CustomerProfileViewModel::class.java ->
                 CustomerProfileViewModel(OsteoDbRepositorySingleton.getInstance(applicationContext))
             DisfunctionViewModel::class.java ->

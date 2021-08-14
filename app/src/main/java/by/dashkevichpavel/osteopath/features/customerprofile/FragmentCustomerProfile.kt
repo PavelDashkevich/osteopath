@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.viewpager2.widget.ViewPager2
 import by.dashkevichpavel.osteopath.R
+import by.dashkevichpavel.osteopath.databinding.FragmentCustomerProfileBinding
 import by.dashkevichpavel.osteopath.features.BackClickHandler
 import by.dashkevichpavel.osteopath.features.BackClickListener
 import by.dashkevichpavel.osteopath.helpers.savechanges.SaveChangesFragmentHelper
@@ -24,43 +25,22 @@ class FragmentCustomerProfile :
     private val viewModel: CustomerProfileViewModel by viewModels(
         factoryProducer = { OsteoViewModelFactory(requireContext().applicationContext) }
     )
-    private lateinit var tbActions: Toolbar
-    private lateinit var tlTabs: TabLayout
-    private lateinit var vpPager: ViewPager2
-    private lateinit var adapter: CustomerProfileAdapter
+
+    private var fragmentCustomerProfileBinding: FragmentCustomerProfileBinding? = null
+    private val binding get() = fragmentCustomerProfileBinding!!
 
     private lateinit var saveChangesHelper: SaveChangesFragmentHelper
     private var backClickHandler: BackClickHandler? = null
 
-    override fun onAttach(context: Context) {
-        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
-        super.onAttach(context)
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
-        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
         super.onCreate(savedInstanceState)
 
         viewModel.selectCustomer(arguments?.getLong(ARG_KEY_CUSTOMER_ID) ?: 0L)
-
         setHasOptionsMenu(true)
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
-        return super.onCreateView(inflater, container, savedInstanceState)
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
         setupViews(view)
-        setupToolbar(tbActions)
-        setupViewPager()
-        setupTabLayout()
         setupObservers()
         setupHelpers()
     }
@@ -82,26 +62,29 @@ class FragmentCustomerProfile :
     override fun onDestroyView() {
         super.onDestroyView()
         backClickHandler?.removeBackClickListener(this)
+        fragmentCustomerProfileBinding = null
     }
 
     private fun setupViews(view: View) {
-        tbActions = view.findViewById(R.id.tb_actions)
-        tlTabs = view.findViewById(R.id.tl_customer_tabs)
-        vpPager = view.findViewById(R.id.vp2_view_pager)
+        fragmentCustomerProfileBinding = FragmentCustomerProfileBinding.bind(view)
+        setupToolbar(binding.tbActions)
+        setupViewPager()
+        setupTabLayout()
     }
 
     private fun setupViewPager() {
-        adapter = CustomerProfileAdapter(this)
-        vpPager.adapter = adapter
-        vpPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
-            override fun onPageSelected(position: Int) {
-                viewModel.swipe(position)
+        binding.vpViewPager.adapter = CustomerProfileAdapter(this)
+        binding.vpViewPager.registerOnPageChangeCallback(
+            object : ViewPager2.OnPageChangeCallback() {
+                override fun onPageSelected(position: Int) {
+                    viewModel.swipe(position)
+                }
             }
-        })
+        )
     }
 
     private fun setupTabLayout() {
-        TabLayoutMediator(tlTabs, vpPager) { tab, pos ->
+        TabLayoutMediator(binding.tlCustomerTabs, binding.vpViewPager) { tab, pos ->
             tab.icon = AppCompatResources.getDrawable(
                 requireContext(),
                 when (pos) {
@@ -125,8 +108,7 @@ class FragmentCustomerProfile :
     }
 
     private fun onChangeToolbarTitle(newName: String?) {
-        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
-        tbActions.title = newName ?: getString(R.string.customer_profile_new_customer)
+        binding.tbActions.title = newName ?: getString(R.string.customer_profile_new_customer)
     }
 
     override fun onBackClick(): Boolean {
@@ -135,6 +117,13 @@ class FragmentCustomerProfile :
     }
 
     companion object {
-        const val ARG_KEY_CUSTOMER_ID = "ARG_KEY_CUSTOMER_ID"
+        private const val ARG_KEY_CUSTOMER_ID = "ARG_KEY_CUSTOMER_ID"
+
+        fun packBundle(customerId: Long): Bundle {
+            val bundle = Bundle()
+            bundle.putLong(ARG_KEY_CUSTOMER_ID, customerId)
+
+            return bundle
+        }
     }
 }

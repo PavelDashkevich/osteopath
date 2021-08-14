@@ -2,7 +2,6 @@ package by.dashkevichpavel.osteopath.features.customerprofile.contacts
 
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.RadioButton
 import android.widget.RadioGroup
@@ -12,6 +11,7 @@ import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import by.dashkevichpavel.osteopath.R
+import by.dashkevichpavel.osteopath.databinding.FragmentCustomerProfileContactsBinding
 import by.dashkevichpavel.osteopath.features.customerprofile.CustomerProfileViewModel
 import by.dashkevichpavel.osteopath.features.pickers.FragmentDatePicker
 import by.dashkevichpavel.osteopath.helpers.actionCallPhoneNumber
@@ -34,22 +34,8 @@ class FragmentCustomerProfileContacts :
         factoryProducer = { OsteoViewModelFactory(requireContext().applicationContext) }
     )
 
-    private lateinit var tilName: TextInputLayout
-    private lateinit var etName: TextInputEditText
-    private lateinit var ibSetContact: AppCompatImageButton
-    private lateinit var tilBirthDate: TextInputLayout
-    private lateinit var etBirthDate: TextInputEditText
-    private lateinit var ibSetBirthDate: AppCompatImageButton
-    private lateinit var tilPhone: TextInputLayout
-    private lateinit var etPhone: TextInputEditText
-    private lateinit var ibCall: AppCompatImageButton
-    private lateinit var tilSocialInstagram: TextInputLayout
-    private lateinit var etSocialInstagram: TextInputEditText
-    private lateinit var ibInstagramMessage: AppCompatImageButton
-    private lateinit var rgCategory: RadioGroup
-    private lateinit var rbCategoryWork: RadioButton
-    private lateinit var rbCategoryWorkDone: RadioButton
-    private lateinit var rbCategoryNoHelp: RadioButton
+    private var fragmentCustomerProfileContactsBinding: FragmentCustomerProfileContactsBinding? = null
+    private val binding get() = fragmentCustomerProfileContactsBinding!!
 
     private val getContact = registerForActivityResult(ActivityResultContracts.PickContact()) {
         contactUri: Uri? -> onContactSet(contactUri)
@@ -63,87 +49,74 @@ class FragmentCustomerProfileContacts :
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
-
         setupViews(view)
-        setupListeners()
+        setupEventListeners()
+        setupObservers()
+    }
 
-        viewModel.customer.observe(viewLifecycleOwner, this::updateFields)
+    override fun onDestroyView() {
+        super.onDestroyView()
+        fragmentCustomerProfileContactsBinding = null
     }
 
     private fun updateFields(newCustomer: Customer?) {
         newCustomer?.let { customer ->
-            etName.text = customer.name.toEditable()
+            binding.etName.text = customer.name.toEditable()
             updateFieldBirthDate(customer.birthDate)
-            etPhone.text = customer.phone.toEditable()
-            etSocialInstagram.text = customer.instagram.toEditable()
+            binding.etPhone.text = customer.phone.toEditable()
+            binding.etSocialInstagram.text = customer.instagram.toEditable()
             when (customer.customerStatusId) {
-                CustomerStatus.WORK.id -> rbCategoryWork.isChecked = true
-                CustomerStatus.WORK_DONE.id -> rbCategoryWorkDone.isChecked = true
-                CustomerStatus.NO_HELP.id -> rbCategoryNoHelp.isChecked = true
+                CustomerStatus.WORK.id -> binding.rbWork.isChecked = true
+                CustomerStatus.WORK_DONE.id -> binding.rbWorkDone.isChecked = true
+                CustomerStatus.NO_HELP.id -> binding.rbNoHelp.isChecked = true
             }
         }
     }
 
     private fun updateFieldBirthDate(birthDate: Date) {
-        etBirthDate.text = birthDate.formatDateAsEditable()
+        binding.etBirthDate.text = birthDate.formatDateAsEditable()
     }
 
     private fun setupViews(view: View) {
-        tilName = view.findViewById(R.id.til_name)
-        etName = view.findViewById(R.id.et_name)
-        ibSetContact = view.findViewById(R.id.ib_set_contact)
-        tilBirthDate = view.findViewById(R.id.til_birth_date)
-        etBirthDate = view.findViewById(R.id.et_birth_date)
-        ibSetBirthDate = view.findViewById(R.id.ib_set_birth_date)
-        tilPhone = view.findViewById(R.id.til_phone)
-        etPhone = view.findViewById(R.id.et_phone)
-        ibCall = view.findViewById(R.id.ib_call)
-        tilSocialInstagram = view.findViewById(R.id.til_social_instagram)
-        etSocialInstagram = view.findViewById(R.id.et_social_instagram)
-        ibInstagramMessage = view.findViewById(R.id.ib_instagram_message)
-        rgCategory = view.findViewById(R.id.rg_category)
-        rbCategoryWork = view.findViewById(R.id.rb_work)
-        rbCategoryWorkDone = view.findViewById(R.id.rb_work_done)
-        rbCategoryNoHelp = view.findViewById(R.id.rb_no_help)
+        fragmentCustomerProfileContactsBinding = FragmentCustomerProfileContactsBinding.bind(view)
     }
 
-    private fun setupListeners() {
+    private fun setupEventListeners() {
         childFragmentManager.setFragmentResultListener(
             FragmentDatePicker.KEY_RESULT,
             viewLifecycleOwner,
             ::onDatePickerDateSet
         )
 
-        etName.doOnTextChanged { text, _, _, _ ->
+        binding.etName.doOnTextChanged { text, _, _, _ ->
             viewModel.setCustomerName(text.toString())
         }
 
-        etPhone.doOnTextChanged { text, _, _, _ ->
+        binding.etPhone.doOnTextChanged { text, _, _, _ ->
             viewModel.setCustomerPhone(text.toString())
         }
 
-        etSocialInstagram.doOnTextChanged { text, _, _, _ ->
+        binding.etSocialInstagram.doOnTextChanged { text, _, _, _ ->
             viewModel.setCustomerInstagram(text.toString())
         }
 
-        rgCategory.setOnCheckedChangeListener { group, checkedId ->
+        binding.rgCategory.setOnCheckedChangeListener { group, checkedId ->
             viewModel.customer.value?.let { customer ->
                 customer.customerStatusId =
                     when (checkedId) {
-                        R.id.rb_work -> CustomerStatus.WORK.id
-                        R.id.rb_work_done -> CustomerStatus.WORK_DONE.id
-                        R.id.rb_no_help -> CustomerStatus.NO_HELP.id
+                        R.id.rbWork -> CustomerStatus.WORK.id
+                        R.id.rbWorkDone -> CustomerStatus.WORK_DONE.id
+                        R.id.rbNoHelp -> CustomerStatus.NO_HELP.id
                         else -> CustomerStatus.WORK.id
                     }
             }
         }
 
-        ibSetContact.setOnClickListener {
+        binding.ibSetContact.setOnClickListener {
             readContactsPermissionsHelper.requestPermissions()
         }
 
-        ibSetBirthDate.setOnClickListener {
+        binding.ibSetBirthDate.setOnClickListener {
             FragmentDatePicker.show(
                 childFragmentManager,
                 "SET_BIRTH_DATE",
@@ -151,13 +124,17 @@ class FragmentCustomerProfileContacts :
             )
         }
 
-        ibCall.setOnClickListener {
-            actionCallPhoneNumber(etPhone.text.toString())
+        binding.ibCall.setOnClickListener {
+            actionCallPhoneNumber(binding.etPhone.text.toString())
         }
 
-        ibInstagramMessage.setOnClickListener {
-            actionOpenInstagram(etSocialInstagram.text.toString())
+        binding.ibInstagramMessage.setOnClickListener {
+            actionOpenInstagram(binding.etSocialInstagram.text.toString())
         }
+    }
+
+    private fun setupObservers() {
+        viewModel.customer.observe(viewLifecycleOwner, this::updateFields)
     }
 
     private fun onDatePickerDateSet(key: String, bundle: Bundle) {

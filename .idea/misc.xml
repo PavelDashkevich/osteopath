@@ -7,8 +7,9 @@
         <entry key="..\:/AndroidDev/Projects/Osteopath/app/src/main/res/drawable/button_shape_circle.xml" value="0.17962962962962964" />
         <entry key="..\:/AndroidDev/Projects/Osteopath/app/src/main/res/layout/activity_main.xml" value="0.2692502532928065" />
         <entry key="..\:/AndroidDev/Projects/Osteopath/app/src/main/res/layout/fragment_customer_list.xml" value="0.5" />
-        <entry key="..\:/AndroidDev/Projects/Osteopath/app/src/main/res/layout/fragment_customer_list_filter.xml" value="0.26038500506585616" />
+        <entry key="..\:/AndroidDev/Projects/Osteopath/app/src/main/res/layout/fragment_customer_list_filter.xml" value="0.25" />
         <entry key="..\:/AndroidDev/Projects/Osteopath/app/src/main/res/layout/fragment_customer_profile.xml" value="0.26038500506585616" />
+        <entry key="..\:/AndroidDev/Projects/Osteopath/app/src/main/res/layout/fragment_customer_profile_attachments.xml" value="0.32608695652173914" />
         <entry key="..\:/AndroidDev/Projects/Osteopath/app/src/main/res/layout/fragment_customer_profile_contacts.xml" value="0.1" />
         <entry key="..\:/AndroidDev/Projects/Osteopath/app/src/main/res/layout/fragment_customer_profile_disfunctions.xml" value="0.26038500506585616" />
         <entry key="..\:/AndroidDev/Projects/Osteopath/app/src/main/res/layout/fragment_customer_profile_sessions.xml" value="0.26038500506585616" />

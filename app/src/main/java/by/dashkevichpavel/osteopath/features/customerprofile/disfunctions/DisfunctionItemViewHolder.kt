@@ -6,6 +6,8 @@ import androidx.appcompat.widget.AppCompatImageButton
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import by.dashkevichpavel.osteopath.R
+import by.dashkevichpavel.osteopath.databinding.ListitemDisfunctionCategoryBinding
+import by.dashkevichpavel.osteopath.databinding.ListitemDisfunctionDataBinding
 import com.google.android.material.card.MaterialCardView
 
 abstract class DisfunctionItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -16,34 +18,29 @@ class DisfunctionItemCategoryViewHolder(
     itemView: View,
     private val categoryCollapseExpandClickListener: DisfunctionCategoryCollapseExpandClickListener
 ): DisfunctionItemViewHolder(itemView) {
-
-    private var tvCategoryName: TextView = itemView.findViewById(R.id.tv_category_name)
-    private var ibCollapseExpand: AppCompatImageButton = itemView.findViewById(R.id.ib_expand_collapse)
-
+    private val binding = ListitemDisfunctionCategoryBinding.bind(itemView)
     private var isCollapsed: Boolean = false
 
     override fun bind(disfunctionListItem: DisfunctionListItem) {
-        if (disfunctionListItem !is DisfunctionListItemCategory) {
-            return
-        }
+        if (disfunctionListItem !is DisfunctionListItemCategory) { return }
 
         val disfunctionListItemCategory: DisfunctionListItemCategory = disfunctionListItem
 
-        tvCategoryName.text =
+        binding.tvCategoryName.text =
             itemView.context.getString(disfunctionListItemCategory.disfunctionStatus.nameStringId)
 
         isCollapsed = disfunctionListItemCategory.collapsed
 
         if (disfunctionListItemCategory.isEmpty) {
-            ibCollapseExpand.visibility = View.GONE
-            tvCategoryName.isEnabled = false
+            binding.ibExpandCollapse.visibility = View.GONE
+            binding.tvCategoryName.isEnabled = false
         } else {
-            ibCollapseExpand.visibility = View.VISIBLE
-            tvCategoryName.isEnabled = true
+            binding.ibExpandCollapse.visibility = View.VISIBLE
+            binding.tvCategoryName.isEnabled = true
 
             setCollapseExpandDrawable()
 
-            ibCollapseExpand.setOnClickListener {
+            binding.ibExpandCollapse.setOnClickListener {
                 setCollapseExpandDrawable(true)
                 categoryCollapseExpandClickListener
                     .onCategoryClick(disfunctionListItemCategory.disfunctionStatus)
@@ -56,7 +53,7 @@ class DisfunctionItemCategoryViewHolder(
             isCollapsed = !isCollapsed
         }
 
-        ibCollapseExpand.setImageDrawable(
+        binding.ibExpandCollapse.setImageDrawable(
             ContextCompat.getDrawable(
                 itemView.context,
                 if (isCollapsed) {
@@ -73,9 +70,7 @@ class DisfunctionItemDataViewHolder(
     itemView: View,
     private val disfunctionClickListener: DisfunctionClickListener):
     DisfunctionItemViewHolder(itemView) {
-
-    private val tvDescription: TextView = itemView.findViewById(R.id.tv_description)
-    private val cvCard: MaterialCardView = itemView.findViewById(R.id.cv_card)
+    private val binding = ListitemDisfunctionDataBinding.bind(itemView)
 
     override fun bind(disfunctionListItem: DisfunctionListItem) {
         if (disfunctionListItem !is DisfunctionListItemData) {
@@ -84,9 +79,9 @@ class DisfunctionItemDataViewHolder(
 
         val disfunctionListItemData: DisfunctionListItemData = disfunctionListItem
 
-        tvDescription.text = disfunctionListItemData.disfunction.description
+        binding.tvDescription.text = disfunctionListItemData.disfunction.description
 
-        cvCard.setOnClickListener {
+        binding.cvCard.setOnClickListener {
             disfunctionClickListener.onDisfunctionClick(
                 disfunctionListItemData.disfunction.customerId,
                 disfunctionListItemData.disfunction.id

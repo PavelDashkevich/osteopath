@@ -4,11 +4,10 @@ import android.os.Bundle
 import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
-import android.widget.RadioGroup
-import androidx.appcompat.widget.Toolbar
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.viewModels
 import by.dashkevichpavel.osteopath.R
+import by.dashkevichpavel.osteopath.databinding.FragmentDisfunctionBinding
 import by.dashkevichpavel.osteopath.features.BackClickHandler
 import by.dashkevichpavel.osteopath.features.BackClickListener
 import by.dashkevichpavel.osteopath.helpers.savechanges.SaveChangesFragmentHelper
@@ -16,7 +15,6 @@ import by.dashkevichpavel.osteopath.helpers.setupToolbar
 import by.dashkevichpavel.osteopath.helpers.toEditable
 import by.dashkevichpavel.osteopath.model.*
 import by.dashkevichpavel.osteopath.viewmodel.OsteoViewModelFactory
-import com.google.android.material.textfield.TextInputEditText
 
 class FragmentDisfunction :
     Fragment(R.layout.fragment_disfunction),
@@ -25,24 +23,22 @@ class FragmentDisfunction :
         factoryProducer = { OsteoViewModelFactory(requireContext().applicationContext) }
     )
 
+    private var fragmentDisfunctionBinding: FragmentDisfunctionBinding? = null
+    private val binding get() = fragmentDisfunctionBinding!!
+
     private var backClickHandler: BackClickHandler? = null
     private val mapStatusIdToResId: Map<Int, Int> =
         mapOf(
-            DisfunctionStatus.WORK.id to R.id.rb_work,
-            DisfunctionStatus.WORK_DONE.id to R.id.rb_work_done,
-            DisfunctionStatus.WORK_FAIL.id to R.id.rb_no_help,
-            DisfunctionStatus.WRONG_DIAGNOSED.id to R.id.rb_wrong_diagnosed
+            DisfunctionStatus.WORK.id to R.id.rbWork,
+            DisfunctionStatus.WORK_DONE.id to R.id.rbWorkDone,
+            DisfunctionStatus.WORK_FAIL.id to R.id.rbNoHelp,
+            DisfunctionStatus.WRONG_DIAGNOSED.id to R.id.rbWrongDiagnosed
         )
     private val mapResIdToStatusId = mapStatusIdToResId.entries.associateBy({ it.value }) { it.key }
-
-    private lateinit var etDescription: TextInputEditText
-    private lateinit var rgStatus: RadioGroup
-    private lateinit var tbActions: Toolbar
 
     private lateinit var saveChangesHelper: SaveChangesFragmentHelper
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
         super.onCreate(savedInstanceState)
 
         viewModel.selectDisfunction(
@@ -54,11 +50,8 @@ class FragmentDisfunction :
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
-
         setupViews(view)
-        setupToolbar(tbActions)
-        setupListeners()
+        setupEventListeners()
         setupObservers()
         setupHelpers()
     }
@@ -79,16 +72,14 @@ class FragmentDisfunction :
     }
 
     override fun onDestroyView() {
-        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
         super.onDestroyView()
         backClickHandler?.removeBackClickListener(this)
+        fragmentDisfunctionBinding = null
     }
 
     private fun setupViews(view: View) {
-        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
-        etDescription = view.findViewById(R.id.et_description)
-        rgStatus = view.findViewById(R.id.rg_category)
-        tbActions = view.findViewById(R.id.tb_actions)
+        fragmentDisfunctionBinding = FragmentDisfunctionBinding.bind(view)
+        setupToolbar(binding.lToolbar.tbActions)
     }
 
     private fun setupObservers() {
@@ -99,24 +90,24 @@ class FragmentDisfunction :
         saveChangesHelper = SaveChangesFragmentHelper(this, viewModel.saveChangesHelper)
     }
 
-    private fun setupListeners() {
+    private fun setupEventListeners() {
         backClickHandler = (requireActivity() as BackClickHandler)
         backClickHandler?.addBackClickListener(this)
 
-        etDescription.doOnTextChanged { text, _, _, _ ->
+        binding.etDescription.doOnTextChanged { text, _, _, _ ->
             viewModel.setDescription(text.toString())
         }
 
-        rgStatus.setOnCheckedChangeListener { _, checkedId ->
+        binding.rgCategory.setOnCheckedChangeListener { _, checkedId ->
             viewModel.setStatus(mapResIdToStatusId[checkedId] ?: 0)
         }
     }
 
     private fun onChangeDisfunction(newDisfunction: Disfunction?) {
         newDisfunction?.let { disfunction ->
-            etDescription.text = disfunction.description.toEditable()
-            rgStatus.check(mapStatusIdToResId[disfunction.disfunctionStatusId] ?: -1)
-            tbActions.title =
+            binding.etDescription.text = disfunction.description.toEditable()
+            binding.rgCategory.check(mapStatusIdToResId[disfunction.disfunctionStatusId] ?: -1)
+            binding.lToolbar.tbActions.title =
                 if (disfunction.id != 0L) {
                     ""
                 } else {
@@ -131,7 +122,15 @@ class FragmentDisfunction :
     }
 
     companion object {
-        const val ARG_KEY_CUSTOMER_ID = "ARG_KEY_CUSTOMER_ID"
-        const val ARG_KEY_DISFUNCTION_ID = "ARG_KEY_DISFUNCTION_ID"
+        private const val ARG_KEY_CUSTOMER_ID = "ARG_KEY_CUSTOMER_ID"
+        private const val ARG_KEY_DISFUNCTION_ID = "ARG_KEY_DISFUNCTION_ID"
+
+        fun packBundle(customerId: Long, disfunctionId: Long): Bundle {
+            val bundle = Bundle()
+            bundle.putLong(ARG_KEY_CUSTOMER_ID, customerId)
+            bundle.putLong(ARG_KEY_DISFUNCTION_ID, disfunctionId)
+
+            return bundle
+        }
     }
 }

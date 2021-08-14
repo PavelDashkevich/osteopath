@@ -4,24 +4,17 @@ import android.view.View
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import by.dashkevichpavel.osteopath.R
+import by.dashkevichpavel.osteopath.databinding.ListitemSessionBinding
 import by.dashkevichpavel.osteopath.model.Session
 import by.dashkevichpavel.osteopath.helpers.formatDateTimeAsString
 import com.google.android.material.card.MaterialCardView
 
 class SessionItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-    private val cvCard: MaterialCardView = itemView.findViewById(R.id.cv_card)
-    private val tvDateTime: TextView = itemView.findViewById(R.id.tv_date_time)
-    private val tvDone: TextView = itemView.findViewById(R.id.tv_done)
-    private val tvHeaderDisfunctions: TextView = itemView.findViewById(R.id.tv_header_disfunctions)
-    private val tvDisfunctions: TextView = itemView.findViewById(R.id.tv_disfunctions)
-    private val tvHeaderPlan: TextView = itemView.findViewById(R.id.tv_header_plan)
-    private val tvPlan: TextView = itemView.findViewById(R.id.tv_plan)
-    private val tvHeaderBodyCondition: TextView = itemView.findViewById(R.id.tv_header_body_condition)
-    private val tvBodyCondition: TextView = itemView.findViewById(R.id.tv_body_condition)
+    private val binding = ListitemSessionBinding.bind(itemView)
 
     fun bind(session: Session, sessionItemClickListener: SessionItemClickListener) {
-        tvDateTime.text = session.dateTime.formatDateTimeAsString()
-        tvDone.text = itemView.context.getString(
+        binding.tvDateTime.text = session.dateTime.formatDateTimeAsString()
+        binding.tvDone.text = itemView.context.getString(
             if (session.isDone) {
                 R.string.session_status_done
             } else {
@@ -38,11 +31,13 @@ class SessionItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) 
             }
         }
 
-        setContentAndVisibilityOfBlock(tvHeaderDisfunctions, tvDisfunctions, disfunctionsDescriptions)
-        setContentAndVisibilityOfBlock(tvHeaderPlan, tvPlan, session.plan)
-        setContentAndVisibilityOfBlock(tvHeaderBodyCondition, tvBodyCondition, session.bodyCondition)
+        setContentAndVisibilityOfBlock(binding.tvHeaderDisfunctions, binding.tvDisfunctions,
+            disfunctionsDescriptions)
+        setContentAndVisibilityOfBlock(binding.tvHeaderPlan, binding.tvPlan, session.plan)
+        setContentAndVisibilityOfBlock(binding.tvHeaderBodyCondition, binding.tvBodyCondition,
+            session.bodyCondition)
 
-        cvCard.setOnClickListener {
+        binding.cvCard.setOnClickListener {
             sessionItemClickListener.onSessionItemClick(session.customerId, session.id)
         }
     }

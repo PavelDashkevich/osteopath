@@ -10,6 +10,7 @@ import by.dashkevichpavel.osteopath.repositories.localdb.LocalDbRepository
 import by.dashkevichpavel.osteopath.repositories.sharedprefs.CustomerFilterSharedPreferences
 
 class CustomerListViewModel(
+    applicationContext: Context,
     repository: LocalDbRepository
 ) : ViewModel(), CustomerListProcessorSubscriber, CustomerListLoaderSubscriber {
     // searchViewState* vars save state of SearchView on configuration change
@@ -17,10 +18,11 @@ class CustomerListViewModel(
     var searchViewStateKeyboardShown: Boolean = true
     var searchViewStateQueryString: CharSequence = ""
 
-    private var filterSharedPreferences: CustomerFilterSharedPreferences? = null
+    private var filterSharedPreferences: CustomerFilterSharedPreferences =
+        CustomerFilterSharedPreferences(applicationContext)
 
-    private var filteredCustomerList = MutableLiveData<List<Customer>>(listOf())
-    private var isCustomersLoading = MutableLiveData(false)
+    var filteredCustomerList = MutableLiveData<List<Customer>>(listOf())
+    var isCustomersLoading = MutableLiveData(false)
     var isSearchOrFilterResult: Boolean = false
         private set
 
@@ -31,21 +33,8 @@ class CustomerListViewModel(
         viewModelScope
     )
 
-    fun init(context: Context) {
-        filterSharedPreferences = CustomerFilterSharedPreferences(context)
-        setFilter()
-    }
-
-    fun observeLoadingProgressChanges(owner: LifecycleOwner, onChanged: (Boolean) -> Unit) {
-        isCustomersLoading.observe(owner, onChanged)
-    }
-
-    fun observeCustomerListChanges(owner: LifecycleOwner, onChanged: (List<Customer>) -> Unit) {
-        filteredCustomerList.observe(owner, onChanged)
-    }
-
-    private fun setFilter() {
-        val filterValues = filterSharedPreferences?.loadValues() ?: FilterValues()
+    fun setFilter() {
+        val filterValues = filterSharedPreferences.loadValues()
         customerListProcessor.setFilter(filterValues)
     }
 
@@ -66,10 +55,5 @@ class CustomerListViewModel(
 
     override fun onCustomersLoaded(customers: List<Customer>) {
         customerListProcessor.setList(customers)
-    }
-
-    override fun onCleared() {
-        filterSharedPreferences = null
-        super.onCleared()
     }
 }

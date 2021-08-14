@@ -1,10 +1,11 @@
 package by.dashkevichpavel.osteopath.features.customerlistfilter
 
 import android.content.Context
+import androidx.lifecycle.ViewModel
 import by.dashkevichpavel.osteopath.model.FilterValues
 import by.dashkevichpavel.osteopath.repositories.sharedprefs.CustomerFilterSharedPreferences
 
-class CustomerListFilterViewModel(context: Context) {
+class CustomerListFilterViewModel(context: Context) : ViewModel() {
     private val customerFilterSharedPreferences = CustomerFilterSharedPreferences(context)
 
     private var filterValues = FilterValues()
