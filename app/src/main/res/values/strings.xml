@@ -5,6 +5,7 @@
     <string name="header_plan">План работ и что было сделано</string>
     <string name="header_body_condition">Состояние тела</string>
     <string name="header_sessions">Сеансы</string>
+    <string name="header_attachments">Файлы</string>
     <string name="header_customer_name">Фамилия, имя</string>
     <string name="header_customer_birth_date">Дата рождения</string>
     <string name="header_customer_phone">Телефон</string>

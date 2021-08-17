@@ -3,20 +3,17 @@ package by.dashkevichpavel.osteopath.features.session
 import android.os.Bundle
 import android.util.Log
 import android.view.*
-import androidx.appcompat.widget.AppCompatImageButton
-import androidx.appcompat.widget.Toolbar
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import by.dashkevichpavel.osteopath.R
 import by.dashkevichpavel.osteopath.databinding.FragmentSessionBinding
 import by.dashkevichpavel.osteopath.features.BackClickHandler
 import by.dashkevichpavel.osteopath.features.BackClickListener
-import by.dashkevichpavel.osteopath.features.customerlist.SpaceItemDecoration
+import by.dashkevichpavel.osteopath.helpers.recyclerviewutils.SpaceItemDecoration
 import by.dashkevichpavel.osteopath.features.pickers.FragmentDatePicker
 import by.dashkevichpavel.osteopath.features.pickers.FragmentTimePicker
 import by.dashkevichpavel.osteopath.features.selectdisfunctions.FragmentSelectDisfunctions
@@ -27,9 +24,6 @@ import by.dashkevichpavel.osteopath.helpers.setupToolbar
 import by.dashkevichpavel.osteopath.helpers.toEditable
 import by.dashkevichpavel.osteopath.model.*
 import by.dashkevichpavel.osteopath.viewmodel.OsteoViewModelFactory
-import com.google.android.material.switchmaterial.SwitchMaterial
-import com.google.android.material.textfield.TextInputEditText
-import com.google.android.material.textfield.TextInputLayout
 import java.lang.IllegalArgumentException
 import java.util.*
 

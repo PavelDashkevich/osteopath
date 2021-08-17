@@ -1,44 +1,46 @@
 package by.dashkevichpavel.osteopath.features.customerprofile.disfunctions
 
+import by.dashkevichpavel.osteopath.helpers.recyclerviewutils.DiffUtilComparable
 import by.dashkevichpavel.osteopath.model.Disfunction
 import by.dashkevichpavel.osteopath.model.DisfunctionStatus
 
-abstract class DisfunctionListItem {
-    abstract fun isTheSame(other: DisfunctionListItem): Boolean
-    abstract fun contentsTheSame(other: DisfunctionListItem): Boolean
-}
+abstract class DisfunctionListItem : DiffUtilComparable
 
 data class DisfunctionListItemCategory(
     val disfunctionStatus: DisfunctionStatus,
     var isEmpty: Boolean,
     var collapsed: Boolean = disfunctionStatus != DisfunctionStatus.WORK
 ) : DisfunctionListItem() {
-    override fun isTheSame(other: DisfunctionListItem): Boolean {
-        if (other !is DisfunctionListItemCategory) return false
+    override fun isTheSameItemAs(item: DiffUtilComparable?): Boolean {
+        if (item == null) return false
+        if (item !is DisfunctionListItemCategory) return false
 
-        return other.disfunctionStatus == this.disfunctionStatus
+        return item.disfunctionStatus == this.disfunctionStatus
     }
 
-    override fun contentsTheSame(other: DisfunctionListItem): Boolean {
-        if (other !is DisfunctionListItemCategory) return false
+    override fun contentsTheSameAs(item: DiffUtilComparable?): Boolean {
+        if (item == null) return false
+        if (item !is DisfunctionListItemCategory) return false
 
-        return other.isEmpty == this.isEmpty
+        return item.isEmpty == this.isEmpty
     }
 }
 
 data class DisfunctionListItemData(
     var disfunction: Disfunction
 ) : DisfunctionListItem() {
-    override fun isTheSame(other: DisfunctionListItem): Boolean {
-        if (other !is DisfunctionListItemData) return false
+    override fun isTheSameItemAs(item: DiffUtilComparable?): Boolean {
+        if (item == null) return false
+        if (item !is DisfunctionListItemData) return false
 
-        return other.disfunction.isTheSameById(this.disfunction)
+        return item.disfunction.isTheSameItemAs(this.disfunction)
     }
 
-    override fun contentsTheSame(other: DisfunctionListItem): Boolean {
-        if (other !is DisfunctionListItemData) return false
+    override fun contentsTheSameAs(item: DiffUtilComparable?): Boolean {
+        if (item == null) return false
+        if (item !is DisfunctionListItemData) return false
 
-        return other.disfunction == this.disfunction
+        return item.disfunction == this.disfunction
     }
 }
 
@@ -46,16 +48,17 @@ data class DisfunctionsListSelectableItemData(
     var disfunction: Disfunction,
     var isSelected: Boolean
 ) : DisfunctionListItem() {
-    override fun isTheSame(other: DisfunctionListItem): Boolean {
-        if (other !is DisfunctionsListSelectableItemData) return false
+    override fun isTheSameItemAs(item: DiffUtilComparable?): Boolean {
+        if (item == null) return false
+        if (item !is DisfunctionsListSelectableItemData) return false
 
-        return other.disfunction.isTheSameById(this.disfunction)
+        return item.disfunction.isTheSameItemAs(this.disfunction)
     }
 
-    override fun contentsTheSame(other: DisfunctionListItem): Boolean {
-        if (other !is DisfunctionsListSelectableItemData) return false
+    override fun contentsTheSameAs(item: DiffUtilComparable?): Boolean {
+        if (item == null) return false
+        if (item !is DisfunctionsListSelectableItemData) return false
 
-        return other.disfunction == this.disfunction
+        return item.disfunction == this.disfunction
     }
-
 }

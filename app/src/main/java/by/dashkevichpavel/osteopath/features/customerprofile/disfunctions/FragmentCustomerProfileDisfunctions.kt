@@ -7,10 +7,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import by.dashkevichpavel.osteopath.R
 import by.dashkevichpavel.osteopath.databinding.FragmentCustomerProfileDisfunctionsBinding
-import by.dashkevichpavel.osteopath.features.customerlist.SpaceItemDecoration
+import by.dashkevichpavel.osteopath.helpers.recyclerviewutils.SpaceItemDecoration
 import by.dashkevichpavel.osteopath.model.Disfunction
 import by.dashkevichpavel.osteopath.model.DisfunctionStatus
 import by.dashkevichpavel.osteopath.features.disfunction.FragmentDisfunction

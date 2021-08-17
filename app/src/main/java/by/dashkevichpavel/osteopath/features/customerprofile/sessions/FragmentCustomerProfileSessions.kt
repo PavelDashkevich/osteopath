@@ -9,7 +9,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import by.dashkevichpavel.osteopath.R
 import by.dashkevichpavel.osteopath.databinding.FragmentCustomerProfileSessionsBinding
-import by.dashkevichpavel.osteopath.features.customerlist.SpaceItemDecoration
+import by.dashkevichpavel.osteopath.helpers.recyclerviewutils.SpaceItemDecoration
 import by.dashkevichpavel.osteopath.model.Session
 import by.dashkevichpavel.osteopath.features.customerprofile.CustomerProfileViewModel
 import by.dashkevichpavel.osteopath.features.session.FragmentSession

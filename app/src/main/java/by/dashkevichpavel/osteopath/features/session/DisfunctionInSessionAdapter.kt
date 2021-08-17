@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import by.dashkevichpavel.osteopath.R
+import by.dashkevichpavel.osteopath.helpers.recyclerviewutils.DefaultDiffUtil
 import by.dashkevichpavel.osteopath.model.Disfunction
 
 class DisfunctionInSessionAdapter(
@@ -28,7 +29,7 @@ class DisfunctionInSessionAdapter(
     override fun getItemCount(): Int = disfunctionsInSession.size
 
     fun setItems(newItems: MutableList<Disfunction>) {
-        val result = DiffUtil.calculateDiff(DisfunctionsInSessionDiffUtil(disfunctionsInSession, newItems))
+        val result = DiffUtil.calculateDiff(DefaultDiffUtil(disfunctionsInSession, newItems))
         disfunctionsInSession.clear()
         disfunctionsInSession.addAll(newItems)
         result.dispatchUpdatesTo(this)

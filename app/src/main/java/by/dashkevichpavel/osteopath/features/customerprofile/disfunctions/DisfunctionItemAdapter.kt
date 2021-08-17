@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import by.dashkevichpavel.osteopath.R
+import by.dashkevichpavel.osteopath.helpers.recyclerviewutils.DefaultDiffUtil
 import by.dashkevichpavel.osteopath.model.Disfunction
 import by.dashkevichpavel.osteopath.model.DisfunctionStatus
 
@@ -71,7 +72,7 @@ class DisfunctionItemAdapter(
             }
         }
 
-        val result = DiffUtil.calculateDiff(DisfunctionsListDiffUtil(disfunctionItems, newList))
+        val result = DiffUtil.calculateDiff(DefaultDiffUtil(disfunctionItems, newList))
         disfunctionItems.clear()
         disfunctionItems.addAll(newList)
         result.dispatchUpdatesTo(this)

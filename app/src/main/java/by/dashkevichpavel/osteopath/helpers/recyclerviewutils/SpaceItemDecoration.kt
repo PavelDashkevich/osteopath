@@ -1,4 +1,4 @@
-package by.dashkevichpavel.osteopath.features.customerlist
+package by.dashkevichpavel.osteopath.helpers.recyclerviewutils
 
 import android.graphics.Rect
 import android.view.View

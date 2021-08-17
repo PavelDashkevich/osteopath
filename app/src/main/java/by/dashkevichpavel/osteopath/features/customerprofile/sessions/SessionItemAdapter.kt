@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import by.dashkevichpavel.osteopath.R
+import by.dashkevichpavel.osteopath.helpers.recyclerviewutils.DefaultDiffUtil
 import by.dashkevichpavel.osteopath.model.Session
 
 class SessionItemAdapter(
@@ -25,7 +26,7 @@ class SessionItemAdapter(
     override fun getItemCount(): Int = sessions.size
 
     fun setItems(newItems: List<Session>) {
-        val result = DiffUtil.calculateDiff(SessionsListDiffUtil(sessions, newItems))
+        val result = DiffUtil.calculateDiff(DefaultDiffUtil(sessions, newItems))
         sessions.clear()
         sessions.addAll(newItems)
         result.dispatchUpdatesTo(this)

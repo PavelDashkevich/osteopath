@@ -5,9 +5,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import by.dashkevichpavel.osteopath.R
-import by.dashkevichpavel.osteopath.features.customerprofile.disfunctions.DisfunctionsListDiffUtil
 import by.dashkevichpavel.osteopath.features.customerprofile.disfunctions.DisfunctionsListSelectableItemData
-import by.dashkevichpavel.osteopath.features.session.DisfunctionsInSessionDiffUtil
+import by.dashkevichpavel.osteopath.helpers.recyclerviewutils.DefaultDiffUtil
 import by.dashkevichpavel.osteopath.model.Disfunction
 
 class DisfunctionSelectableAdapter(
@@ -43,7 +42,7 @@ class DisfunctionSelectableAdapter(
             }
         }
 
-        val result = DiffUtil.calculateDiff(DisfunctionsListDiffUtil(disfunctionItems, newList))
+        val result = DiffUtil.calculateDiff(DefaultDiffUtil(disfunctionItems, newList))
         disfunctionItems.clear()
         disfunctionItems.addAll(newList)
         result.dispatchUpdatesTo(this)

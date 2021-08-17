@@ -1,5 +1,6 @@
 package by.dashkevichpavel.osteopath.model
 
+import by.dashkevichpavel.osteopath.helpers.recyclerviewutils.DiffUtilComparable
 import by.dashkevichpavel.osteopath.repositories.localdb.SessionAndDisfunctions
 import by.dashkevichpavel.osteopath.repositories.localdb.entity.DisfunctionEntity
 import by.dashkevichpavel.osteopath.repositories.localdb.entity.SessionEntity
@@ -13,7 +14,7 @@ data class Session(
     var bodyCondition: String = "",
     var isDone: Boolean = false,
     var disfunctions: MutableList<Disfunction> = mutableListOf()
-) {
+) : DiffUtilComparable {
     constructor(
         sessionEntity: SessionEntity,
         disfunctionEntities: List<DisfunctionEntity>
@@ -34,18 +35,28 @@ data class Session(
         disfunctionEntities = sessionAndDisfunctions.disfunctionEntities
             )
 
-    fun isContentTheSame(other: Session?): Boolean {
-        if (other == null) return false
+    fun isModified(other: Session?): Boolean = !contentsTheSameAs(other)
 
-        if ((dateTime != other.dateTime)
-            || (plan != other.plan)
-            || (bodyCondition != other.bodyCondition)
-            || (isDone != other.isDone)) {
+    override fun isTheSameItemAs(item: DiffUtilComparable?): Boolean {
+        if (item !is Session) return false
+
+        return this.id == item.id
+    }
+
+    override fun contentsTheSameAs(item: DiffUtilComparable?): Boolean {
+        if (item == null) return false
+
+        if (item !is Session) return false
+
+        if ((dateTime != item.dateTime)
+            || (plan != item.plan)
+            || (bodyCondition != item.bodyCondition)
+            || (isDone != item.isDone)) {
             return false
         }
 
         val mapOfDisfunctions = disfunctions.associateBy { disfunction -> disfunction.id }
-        val mapOfDisfunctionsOther = other.disfunctions.associateBy { disfunction -> disfunction.id }
+        val mapOfDisfunctionsOther = item.disfunctions.associateBy { disfunction -> disfunction.id }
 
         if (mapOfDisfunctions.keys != mapOfDisfunctionsOther.keys) {
             return false
@@ -59,6 +70,4 @@ data class Session(
 
         return true
     }
-
-    fun isModified(other: Session?): Boolean = !isContentTheSame(other)
 }
