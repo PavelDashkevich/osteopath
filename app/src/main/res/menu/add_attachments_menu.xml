@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/pick_file"
+        android:icon="@drawable/ic_baseline_attach_file_24"
+        android:title="@string/add_attachments_menu_pick_file"
+        />
+    <item
+        android:id="@+id/take_photo"
+        android:icon="@drawable/ic_baseline_camera_alt_24"
+        android:title="@string/add_attachments_menu_take_photo"
+        />
+    <item
+        android:id="@+id/record_audio"
+        android:icon="@drawable/ic_baseline_mic_24"
+        android:title="@string/add_attachments_menu_record_audio"
+        />
+    <item
+        android:id="@+id/record_video"
+        android:icon="@drawable/ic_baseline_videocam_24"
+        android:title="@string/add_attachments_menu_record_video"
+        />
+</menu>

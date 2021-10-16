@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group
+        android:id="@+id/gMain">
+        <item
+            android:id="@+id/fragmentSessionList"
+            android:title="@string/header_sessions"
+            android:icon="@drawable/ic_baseline_date_range_24"/>
+        <item
+            android:id="@+id/fragmentCustomerList"
+            android:title="@string/header_customers"
+            android:icon="@drawable/ic_baseline_people_24"/>
+    </group>
+    <group
+        android:id="@+id/gUtils">
+        <item
+            android:id="@+id/fragmentAllSettings"
+            android:title="@string/drawer_menu_item_settings"
+            android:icon="@drawable/ic_baseline_settings_24"/>
+    </group>
+</menu>

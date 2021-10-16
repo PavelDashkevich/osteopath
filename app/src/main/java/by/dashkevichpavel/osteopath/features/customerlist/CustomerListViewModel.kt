@@ -1,7 +1,7 @@
 package by.dashkevichpavel.osteopath.features.customerlist
 
 import android.content.Context
-import androidx.lifecycle.LifecycleOwner
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -48,6 +48,10 @@ class CustomerListViewModel(
 
     fun getCustomerList(): List<Customer> = filteredCustomerList.value ?: listOf()
 
+    fun startCustomerListObserving() = customerListLoader.startCustomersTableObserving()
+
+    fun stopCustomerListObserving() = customerListLoader.stopCustomersTableObserving()
+
     override fun onCustomersProcessed(customers: List<Customer>, isSearchOrFilterResult: Boolean) {
         filteredCustomerList.value = customers
         this.isSearchOrFilterResult = isSearchOrFilterResult
@@ -55,5 +59,10 @@ class CustomerListViewModel(
 
     override fun onCustomersLoaded(customers: List<Customer>) {
         customerListProcessor.setList(customers)
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        Log.d("OsteoApp", "CustomerListViewModel: onCleared()")
     }
 }

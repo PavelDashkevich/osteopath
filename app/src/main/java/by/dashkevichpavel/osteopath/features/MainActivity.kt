@@ -7,13 +7,13 @@ import android.util.Log
 import android.view.Menu
 import by.dashkevichpavel.osteopath.R
 
-class MainActivity : AppCompatActivity(), BackClickHandler {
+class MainActivity : AppCompatActivity(R.layout.activity_main), BackClickHandler {
     private val backClickListeners = mutableListOf<BackClickListener?>()
 
+    /*
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
     }
 
     override fun onPostCreate(savedInstanceState: Bundle?) {
@@ -94,10 +94,10 @@ class MainActivity : AppCompatActivity(), BackClickHandler {
     override fun onDestroy() {
         Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
         super.onDestroy()
-    }
+    }*/
 
     override fun onBackPressed() {
-        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
+        //Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
         if (!isBackInterceptedByFragments()) {
             super.onBackPressed()
         }
@@ -110,18 +110,18 @@ class MainActivity : AppCompatActivity(), BackClickHandler {
             intercepted = intercepted || (backClickListener?.onBackClick() == true)
         }
 
-        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}: intercepted = $intercepted")
+        //Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}: intercepted = $intercepted")
 
         return intercepted
     }
 
     override fun addBackClickListener(backClickListener: BackClickListener) {
-        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
+        //Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
         backClickListeners.add(backClickListener)
     }
 
     override fun removeBackClickListener(backClickListener: BackClickListener) {
-        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
+        //Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
         backClickListeners.remove(backClickListener)
     }
 }

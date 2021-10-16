@@ -11,6 +11,8 @@ import androidx.fragment.app.Fragment
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.NavigationUI
+import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import by.dashkevichpavel.osteopath.R
 import by.dashkevichpavel.osteopath.databinding.FragmentCustomerListBinding
@@ -60,21 +62,24 @@ class FragmentCustomerList :
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.mi_filter) {
-            try {
-                findNavController().navigate(R.id.action_fragmentCustomerList_to_fragmentCustomerListFilter)
-            } catch (e: IllegalArgumentException) {
-                Log.d("OsteoApp", "onOptionsItemSelected(): exception: ${e.message}")
+        when (item.itemId) {
+            R.id.mi_filter -> {
+                try {
+                    findNavController().navigate(R.id.action_fragmentCustomerList_to_fragmentCustomerListFilter)
+                } catch (e: IllegalArgumentException) {
+                    Log.d("OsteoApp", "onOptionsItemSelected(): exception: ${e.message}")
+                }
             }
-
-            return true
+            android.R.id.home -> binding.dlDrawerLayout.open()
+            else -> return super.onOptionsItemSelected(item)
         }
 
-        return super.onOptionsItemSelected(item)
+        return true
     }
 
     override fun onStop() {
         super.onStop()
+        viewModel.stopCustomerListObserving()
         saveStateOfSearchView()
     }
 
@@ -93,6 +98,7 @@ class FragmentCustomerList :
     private fun setupViews(view: View) {
         fragmentCustomerListBinding = FragmentCustomerListBinding.bind(view)
         setupToolbar(binding.tbActions)
+        binding.lNavMenu.nvMain.setupWithNavController(findNavController())
     }
 
     private fun setupSearch() {
@@ -190,6 +196,7 @@ class FragmentCustomerList :
     private fun setupObservers() {
         viewModel.isCustomersLoading.observe(viewLifecycleOwner, ::updateLoadingProgress)
         viewModel.filteredCustomerList.observe(viewLifecycleOwner, ::updateCustomersList)
+        viewModel.startCustomerListObserving()
     }
 
     private fun openCustomerProfileScreen(customerId: Long) {

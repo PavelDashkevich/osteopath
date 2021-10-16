@@ -11,7 +11,7 @@ class CustomerFilterSharedPreferences(
     private var filterValuesByKey: MutableMap<String, Boolean> = mutableMapOf()
 
     init {
-        Log.d("OsteoApp", "CustomerFilterSharedPreferences: init()")
+        //Log.d("OsteoApp", "CustomerFilterSharedPreferences: init()")
         fillFilterValuesByKey()
     }
 
@@ -34,7 +34,7 @@ class CustomerFilterSharedPreferences(
     }
 
     fun loadValues(): FilterValues {
-        Log.d("OsteoApp", "CustomerFilterSharedPreferences: loadValues()")
+        //Log.d("OsteoApp", "CustomerFilterSharedPreferences: loadValues()")
         for(key in filterValuesByKey.keys) {
             filterValuesByKey[key] = context
                 .getSharedPreferences(SHARED_PREFS_NAME, Context.MODE_PRIVATE)
@@ -47,7 +47,7 @@ class CustomerFilterSharedPreferences(
     }
 
     fun saveValues(newFilterValues: FilterValues) {
-        Log.d("OsteoApp", "CustomerFilterSharedPreferences: saveValues()")
+        //Log.d("OsteoApp", "CustomerFilterSharedPreferences: saveValues()")
 
         filterValues = newFilterValues
         fillFilterValuesByKey()

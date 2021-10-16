@@ -5,42 +5,53 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import by.dashkevichpavel.osteopath.repositories.localdb.dao.CustomerDao
-import by.dashkevichpavel.osteopath.repositories.localdb.dao.DisfunctionDao
-import by.dashkevichpavel.osteopath.repositories.localdb.dao.SessionDao
-import by.dashkevichpavel.osteopath.repositories.localdb.dao.SessionDisfunctionDao
-import by.dashkevichpavel.osteopath.repositories.localdb.entity.CustomerEntity
-import by.dashkevichpavel.osteopath.repositories.localdb.entity.DisfunctionEntity
-import by.dashkevichpavel.osteopath.repositories.localdb.entity.SessionEntity
-import by.dashkevichpavel.osteopath.repositories.localdb.entity.SessionDisfunctionsEntity
+import by.dashkevichpavel.osteopath.repositories.localdb.dao.*
+import by.dashkevichpavel.osteopath.repositories.localdb.entity.*
+import by.dashkevichpavel.osteopath.repositories.localdb.migrations.Migration_2_3
+import by.dashkevichpavel.osteopath.repositories.localdb.migrations.Migration_3_4
+import java.io.File
 
 @Database(
     entities = [
+        AttachmentEntity::class,
         CustomerEntity::class,
         DisfunctionEntity::class,
         SessionEntity::class,
         SessionDisfunctionsEntity::class
     ],
-    version = 2
+    version = 4
 )
 @TypeConverters(DbTypeConverters::class)
 abstract class LocalDb : RoomDatabase() {
+    abstract val attachmentDao: AttachmentDao
     abstract val customerDao: CustomerDao
     abstract val disfunctionDao: DisfunctionDao
     abstract val sessionDao: SessionDao
     abstract val sessionDisfunctionDao: SessionDisfunctionDao
+    abstract val utilDao: UtilDao
 
     companion object {
         private var instance: LocalDb? = null
 
         fun getInstance(applicationContext: Context): LocalDb {
-            if (instance == null) {
+            if (instance == null || instance?.isOpen == false) {
+                val currentDb: File = applicationContext.getDatabasePath(DbContract.DATABASE_NAME)
+                val tempDb = File((currentDb.parent ?: "") + DbContract.TEMP_DATABASE_NAME)
+
+                if (tempDb.exists() && !currentDb.exists()) {
+                    tempDb.renameTo(currentDb)
+                }
+
                 instance = Room.databaseBuilder(
                     applicationContext,
                     LocalDb::class.java,
                     DbContract.DATABASE_NAME
                 )
-                    .fallbackToDestructiveMigration()
+                    .addMigrations(
+                        Migration_2_3,
+                        Migration_3_4
+                    )
+                    .setJournalMode(JournalMode.TRUNCATE)
                     .build()
             }
 

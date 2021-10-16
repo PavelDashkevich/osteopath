@@ -10,6 +10,8 @@ import by.dashkevichpavel.osteopath.features.customerprofile.CustomerProfileView
 import by.dashkevichpavel.osteopath.features.disfunction.DisfunctionViewModel
 import by.dashkevichpavel.osteopath.features.selectdisfunctions.SelectDisfunctionsViewModel
 import by.dashkevichpavel.osteopath.features.session.SessionViewModel
+import by.dashkevichpavel.osteopath.features.sessionlist.SessionListViewModel
+import by.dashkevichpavel.osteopath.features.settings.backup.create.BackupCreateViewModel
 
 class OsteoViewModelFactory(
     private val applicationContext: Context
@@ -25,13 +27,23 @@ class OsteoViewModelFactory(
             CustomerListFilterViewModel::class.java ->
                 CustomerListFilterViewModel(applicationContext)
             CustomerProfileViewModel::class.java ->
-                CustomerProfileViewModel(OsteoDbRepositorySingleton.getInstance(applicationContext))
+                CustomerProfileViewModel(
+                    applicationContext,
+                    OsteoDbRepositorySingleton.getInstance(applicationContext)
+                )
             DisfunctionViewModel::class.java ->
                 DisfunctionViewModel(OsteoDbRepositorySingleton.getInstance(applicationContext))
             SessionViewModel::class.java ->
                 SessionViewModel(OsteoDbRepositorySingleton.getInstance(applicationContext))
             SelectDisfunctionsViewModel::class.java ->
                 SelectDisfunctionsViewModel(OsteoDbRepositorySingleton.getInstance(applicationContext))
+            SessionListViewModel::class.java ->
+                SessionListViewModel()
+            BackupCreateViewModel::class.java ->
+                BackupCreateViewModel(
+                    applicationContext,
+                    OsteoDbRepositorySingleton.getInstance(applicationContext)
+                )
             else ->
                 throw IllegalArgumentException("$modelClass is not registered ViewModel")
         } as T

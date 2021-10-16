@@ -2,40 +2,44 @@ package by.dashkevichpavel.osteopath.repositories.localdb
 
 import android.content.Context
 import android.util.Log
+import androidx.sqlite.db.SimpleSQLiteQuery
+import by.dashkevichpavel.osteopath.model.Attachment
 import by.dashkevichpavel.osteopath.model.Customer
 import by.dashkevichpavel.osteopath.model.Disfunction
 import by.dashkevichpavel.osteopath.model.Session
-import by.dashkevichpavel.osteopath.repositories.localdb.entity.CustomerEntity
-import by.dashkevichpavel.osteopath.repositories.localdb.entity.DisfunctionEntity
-import by.dashkevichpavel.osteopath.repositories.localdb.entity.SessionDisfunctionsEntity
-import by.dashkevichpavel.osteopath.repositories.localdb.entity.SessionEntity
+import by.dashkevichpavel.osteopath.repositories.localdb.entity.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 
 class LocalDbRepository(applicationContext: Context) {
-    private val localDb = LocalDb.getInstance(applicationContext)
+    private var localDb = LocalDb.getInstance(applicationContext)
 
-    suspend fun getAllCustomers(): List<CustomerEntity> = withContext(Dispatchers.IO) {
-        return@withContext localDb.customerDao.getAll()
+    fun refreshDbInstance(applicationContext: Context) {
+        localDb = LocalDb.getInstance(applicationContext)
     }
 
     suspend fun getCustomerById(
         customerId: Long,
         loadDisfunctions: Boolean = false,
-        loadSessions: Boolean = false
+        loadSessions: Boolean = false,
+        loadAttachments: Boolean = false
     ): Customer? = withContext(Dispatchers.IO) {
         val customerEntities = localDb.customerDao.getById(customerId)
-        val customers = customerEntities.map {
+        val customers = customerEntities.map { customerEntity ->
             Customer(
-                it,
+                customerEntity,
                 if (loadDisfunctions)
                     localDb.disfunctionDao.getByCustomerId(customerId)
                 else
                     listOf(),
                 if (loadSessions)
                     localDb.sessionDao.getByCustomerId(customerId)
+                else
+                    listOf(),
+                if (loadAttachments)
+                    localDb.attachmentDao.getByCustomerId(customerId)
                 else
                     listOf()
             )
@@ -62,7 +66,9 @@ class LocalDbRepository(applicationContext: Context) {
 
     fun getAllCustomersAsFlow(): Flow<List<Customer>> =
         localDb.customerDao.getAllAsFlow().map { customerEntities ->
-            customerEntities.map { customerEntity -> Customer(customerEntity, listOf(), listOf()) }
+            customerEntities.map { customerEntity ->
+                Customer(customerEntity, listOf(), listOf(), listOf())
+            }
         }
 
     fun getAllDisfunctionsByCustomerIdAsFlow(customerId: Long): Flow<List<Disfunction>> =
@@ -83,7 +89,7 @@ class LocalDbRepository(applicationContext: Context) {
         return@withContext localDb.disfunctionDao.insert(DisfunctionEntity(disfunction))
     }
 
-    fun getSessionsWithDisfunctionsByCustomerId(customerId: Long): Flow<List<Session>> =
+    fun getSessionsWithDisfunctionsByCustomerIdAsFlow(customerId: Long): Flow<List<Session>> =
         localDb.sessionDao.getSessionsWithDisfunctionsByCustomerId(customerId).map {
             sessionsWithDisfunction ->
                 sessionsWithDisfunction.map { sessionWithDisfunctions ->
@@ -121,6 +127,23 @@ class LocalDbRepository(applicationContext: Context) {
             }
         )
     }
+
+    fun getAttachmentsByCustomerIdAsFlow(customerId: Long): Flow<List<Attachment>> =
+        localDb.attachmentDao.getAllByCustomerIdAsFlow(customerId).map { attachmentsEntities ->
+            attachmentsEntities.map { attachmentEntity-> Attachment(attachmentEntity) }
+        }
+
+    suspend fun insertAttachment(attachment: Attachment) = withContext(Dispatchers.IO) {
+        localDb.attachmentDao.insert(AttachmentEntity(attachment))
+    }
+
+    suspend fun updateAttachment(attachment: Attachment) = withContext(Dispatchers.IO) {
+        localDb.attachmentDao.update(AttachmentEntity(attachment))
+    }
+
+    suspend fun checkPoint() = withContext(Dispatchers.IO) {
+        localDb.utilDao.checkPoint(SimpleSQLiteQuery("pragma wal_checkpoint(full)"))
+    }
 }
 
 object OsteoDbRepositorySingleton {
@@ -130,6 +153,8 @@ object OsteoDbRepositorySingleton {
         if (repository == null) {
             repository = LocalDbRepository(applicationContext)
         }
+
+        repository?.refreshDbInstance(applicationContext)
 
         return repository as LocalDbRepository
     }

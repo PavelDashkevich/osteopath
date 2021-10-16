@@ -4,6 +4,7 @@ import android.provider.BaseColumns
 
 object DbContract {
     const val DATABASE_NAME = "osteopath.db"
+    const val TEMP_DATABASE_NAME = "osteopath_backup.db"
 
     object Disfunctions {
         const val TABLE_NAME = "disfunctions"
@@ -43,5 +44,15 @@ object DbContract {
 
         const val COLUMN_NAME_SESSION_ID = "session_id"
         const val COLUMN_NAME_DISFUNCTION_ID = "disfunction_id"
+    }
+
+    object Attachments {
+        const val TABLE_NAME = "attachments"
+
+        const val COLUMN_NAME_ID = BaseColumns._ID
+        const val COLUMN_NAME_CUSTOMER_ID = "customer_id"
+        const val COLUMN_NAME_THUMBNAIL = "thumbnail"
+        const val COLUMN_NAME_PATH = "path"
+        const val COLUMN_NAME_MIME_TYPE = "mime_type"
     }
 }

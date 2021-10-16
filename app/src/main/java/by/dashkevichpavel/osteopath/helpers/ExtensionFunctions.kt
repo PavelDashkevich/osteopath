@@ -1,13 +1,21 @@
 package by.dashkevichpavel.osteopath.helpers
 
 import android.content.ActivityNotFoundException
+import android.content.Context
 import android.content.Intent
 import android.database.Cursor
+import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.text.Editable
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
+import by.dashkevichpavel.osteopath.R
+import by.dashkevichpavel.osteopath.model.Attachment
+import com.bumptech.glide.Glide
+import com.bumptech.glide.RequestBuilder
+import com.bumptech.glide.RequestManager
 import java.util.*
 
 fun String.toEditable(): Editable =
@@ -21,6 +29,9 @@ fun Date.formatTimeAsString(): String =
 
 fun Date.formatDateTimeAsString(): String =
     android.text.format.DateFormat.format("dd.MM.yyyy HH:mm", this).toString()
+
+fun Date.formatAsDateTimeStamp(): String =
+    android.text.format.DateFormat.format("yyyy_MM_dd_HH_mm", this).toString()
 
 fun Date.formatDateAsEditable(): Editable =
     this.formatDateAsString().toEditable()
@@ -113,3 +124,24 @@ fun Cursor.getIntByColumnName(columnName: String, defaultValue: Int): Int {
 
     return defaultValue
 }
+
+fun RequestManager.loadThumbnailFromAttachmentByMimeType(
+    context: Context,
+    attachment: Attachment
+): RequestBuilder<Drawable> = this.load(
+            when {
+                attachment.mimeType.contains("audio/") ->
+                    AppCompatResources.getDrawable(
+                        context,
+                        R.drawable.thumbnail_audio
+                    )
+                attachment.mimeType == "application/pdf" ->
+                    attachment.thumbnail
+                else ->
+                    AppCompatResources.getDrawable(
+                        context,
+                        R.drawable.thumbnail_unknown
+                    )
+
+            }
+    )

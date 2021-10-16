@@ -5,6 +5,7 @@
     <string name="header_plan">План работ и что было сделано</string>
     <string name="header_body_condition">Состояние тела</string>
     <string name="header_sessions">Сеансы</string>
+    <string name="header_customers">Клиенты</string>
     <string name="header_attachments">Файлы</string>
     <string name="header_customer_name">Фамилия, имя</string>
     <string name="header_customer_birth_date">Дата рождения</string>
@@ -53,10 +54,35 @@
     <string name="header_session_done">Сеанс проведен</string>
     <string name="header_new_session">Новый сеанс</string>
     <string name="header_new_disfunction">Новая дисфункция</string>
-
     <string name="permissions_not_granted">Нельзя использовать эту функцию - не получено разрешений.</string>
     <string name="permissions_explanation_template">Чтобы использовать функцию %1$s, пожалуйста, предоставьте разрешения: %2$s.</string>
     <string name="permissions_function_get_data_from_contact">заполнения имени и телефона из адресной книги</string>
     <string name="permissions_read_contact">чтения адресной книги</string>
     <string name="permissions_denied_template">Функция %1$s недоступна без следующих разрешений: %2$s. Открыть настройки программы, чтобы Вы могли установить эти разрешения?</string>
+    <string name="add_attachments_menu_pick_file">выбрать файл</string>
+    <string name="add_attachments_menu_take_photo">сделать фото</string>
+    <string name="add_attachments_menu_record_audio">записать аудио</string>
+    <string name="add_attachments_menu_record_video">записать видео</string>
+    <string name="drawer_menu_item_settings">Настройки</string>
+    <string name="settings_header_backup">Резервное копирование базы данных</string>
+    <string name="settings_backup_make">Создание резервных копий</string>
+    <string name="settings_backup_make_hint">Вы можете сохранить базу данных в файл. После переустановки программы на другое устройство можно восстановить базу данных из сохраненного файла. Доступно как ручное, так и автоматическое сохранение копий.</string>
+    <string name="settings_backup_restore">Восстановление базы из резервной копии</string>
+    <string name="settings_backup_restore_hint">Загрузите базу данных из сохраненного ранее файла.</string>
+    <string name="header_backup_directory">Папка для хранения копий</string>
+    <string name="backup_create_hint">Выберите папку, в которой будут сохраняться резервные копии базы данных:</string>
+    <string name="backup_create_max_copies">Будет храниться не более %1$d %2$s. Программа автоматически удалит самую старую копию.</string>
+    <plurals name="backups_number">
+        <item quantity="one">копии</item>
+        <item quantity="other">копий</item>
+    </plurals>
+    <string name="last_backup_status_successful">Последняя копия создана %1$s в %2$s %3$s.</string>
+    <string name="last_backup_status_failed">Последняя попытка создать копию БД %1$s %2$s в %3$s завершилась ошибкой: %4$s</string>
+    <string name="backup_type_manual">вручную</string>
+    <string name="backup_type_auto">автоматически</string>
+    <string name="create_backup_manual">Сохранить копию вручную</string>
+    <string name="create_backup_auto">Сохранять копии автоматически\nкаждые 6 часов</string>
+    <string name="backup_dir_not_exists">Указанная директория не обнаружена, выберите другую.</string>
+    <string name="backup_dir_not_accessible">Нет доступа к указанной директории, перевыберите ее или выберите другую.</string>
+    <string name="backup_creation_progress">Пожалуйста, дождитесь завершения операции</string>
 </resources>

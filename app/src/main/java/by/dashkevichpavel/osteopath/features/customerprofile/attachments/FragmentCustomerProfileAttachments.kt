@@ -1,93 +1,128 @@
 package by.dashkevichpavel.osteopath.features.customerprofile.attachments
 
-import android.content.Context
+import android.app.Instrumentation
+import android.database.Cursor
+import android.net.Uri
 import android.os.Bundle
+import android.provider.DocumentsContract
+import android.provider.MediaStore
+import android.provider.OpenableColumns
 import android.util.Log
-import android.view.*
+import android.view.MenuItem
+import android.view.View
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.widget.PopupMenu
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.GridLayoutManager
 import by.dashkevichpavel.osteopath.R
+import by.dashkevichpavel.osteopath.databinding.FragmentCustomerProfileAttachmentsBinding
+import by.dashkevichpavel.osteopath.features.customerprofile.CustomerProfileViewModel
+import by.dashkevichpavel.osteopath.helpers.getStringByColumnName
+import by.dashkevichpavel.osteopath.model.Attachment
+import by.dashkevichpavel.osteopath.viewmodel.OsteoViewModelFactory
+import java.io.File
 
-class FragmentCustomerProfileAttachments : Fragment(R.layout.fragment_customer_profile_attachments) {
-    override fun onAttach(context: Context) {
-        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
-        super.onAttach(context)
-    }
+class FragmentCustomerProfileAttachments :
+    Fragment(R.layout.fragment_customer_profile_attachments) {
+    private val viewModel: CustomerProfileViewModel by viewModels(
+        ownerProducer = { requireParentFragment() },
+        factoryProducer = { OsteoViewModelFactory(requireContext().applicationContext) }
+    )
+    private var fragmentBinding: FragmentCustomerProfileAttachmentsBinding? = null
+    private val binding get() = fragmentBinding!!
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
-        super.onCreate(savedInstanceState)
-    }
+    private var adapter = AttachmentItemAdapter()
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
-        return super.onCreateView(inflater, container, savedInstanceState)
+    private val openFile = registerForActivityResult(OpenLocalDocument()) { fileUri: Uri ->
+        /*val cursor = requireContext().contentResolver.query(
+            fileUri,
+            null,
+            null,
+            null,
+            null
+        ) ?: return@registerForActivityResult
+
+        cursor.moveToFirst()
+
+        Log.d("OsteoApp", "Uri: $fileUri")
+        Log.d("OsteoApp", "type of Uri: ${requireContext().contentResolver.getType(fileUri)}")
+        Log.d("OsteoApp", "display name: ${cursor.getStringByColumnName(OpenableColumns.DISPLAY_NAME, "")}")
+        Log.d("OsteoApp", "canonical Uri: ${requireContext().contentResolver.canonicalize(fileUri)}")
+        Log.d("OsteoApp", "uncanonicalized Uri: ${requireContext().contentResolver.uncanonicalize(fileUri)}")
+
+        for (colIndex in 0 until cursor.columnCount) {
+            when (cursor.getType(colIndex)) {
+                Cursor.FIELD_TYPE_NULL ->
+                    Log.d("OsteoApp", "column #$colIndex is null")
+                Cursor.FIELD_TYPE_STRING ->
+                    Log.d("OsteoApp", "column #$colIndex = ${cursor.getString(colIndex)}")
+                Cursor.FIELD_TYPE_INTEGER ->
+                    Log.d("OsteoApp", "column #$colIndex = ${cursor.getInt(colIndex)}")
+                Cursor.FIELD_TYPE_FLOAT ->
+                    Log.d("OsteoApp", "column #$colIndex = ${cursor.getFloat(colIndex)}")
+                Cursor.FIELD_TYPE_BLOB ->
+                    Log.d("OsteoApp", "column #$colIndex = ${cursor.getBlob(colIndex)}")
+            }
+        }
+
+        val file = File(fileUri.path)
+
+        Log.d("OsteoApp", "file = $file")*/
+
+        viewModel.addAttachment(fileUri)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
-    }
-
-    override fun onViewStateRestored(savedInstanceState: Bundle?) {
-        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
-        super.onViewStateRestored(savedInstanceState)
-    }
-
-    override fun onStart() {
-        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
-        super.onStart()
-    }
-
-    override fun onResume() {
-        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
-        super.onResume()
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
-        super.onCreateOptionsMenu(menu, inflater)
-    }
-
-    override fun onPrepareOptionsMenu(menu: Menu) {
-        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
-        super.onPrepareOptionsMenu(menu)
-    }
-
-    override fun onPause() {
-        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
-        super.onPause()
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
-        super.onSaveInstanceState(outState)
-    }
-
-    override fun onStop() {
-        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
-        super.onStop()
+        setupViews(view)
+        setupEventListeners()
+        setupObservers()
     }
 
     override fun onDestroyView() {
-        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
         super.onDestroyView()
+        fragmentBinding = null
     }
 
-    override fun onDestroy() {
-        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
-        super.onDestroy()
+    private fun setupViews(view: View) {
+        fragmentBinding = FragmentCustomerProfileAttachmentsBinding.bind(view)
+        binding.rvAttachmentsList.layoutManager = GridLayoutManager(requireContext(), 3)
+        binding.rvAttachmentsList.adapter = adapter
     }
 
-    override fun onDestroyOptionsMenu() {
-        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
-        super.onDestroyOptionsMenu()
+    private fun setupEventListeners() {
+        binding.fabAddAttachment.setOnClickListener {
+            openMenu()
+        }
     }
 
-    override fun onDetach() {
-        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
-        super.onDetach()
+    private fun setupObservers() {
+        viewModel.attachments.observe(viewLifecycleOwner, this::updateAttachmentsList)
+        viewModel.startListeningForAttachmentsChanges()
+    }
+
+    private fun openMenu() {
+        val popupMenu = PopupMenu(requireContext(), binding.fabAddAttachment)
+        popupMenu.inflate(R.menu.add_attachments_menu)
+        popupMenu.setForceShowIcon(true)
+        popupMenu.setOnMenuItemClickListener { menuItem: MenuItem ->
+            when(menuItem.itemId) {
+                R.id.pick_file -> openFile.launch(
+                    arrayOf(
+                        "application/pdf",
+                        "image/*",
+                        "video/*",
+                        "audio/*"
+                    )
+                )
+                else -> return@setOnMenuItemClickListener false
+            }
+            true
+        }
+        popupMenu.show()
+    }
+
+    private fun updateAttachmentsList(newAttachmentsList: MutableList<Attachment>) {
+        adapter.setItems(newAttachmentsList)
     }
 }

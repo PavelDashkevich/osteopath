@@ -1,5 +1,6 @@
-package by.dashkevichpavel.osteopath.model
+package by.dashkevichpavel.osteopath.features.customerlist
 
+import by.dashkevichpavel.osteopath.model.*
 import by.dashkevichpavel.osteopath.repositories.localdb.LocalDbRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
@@ -15,16 +16,23 @@ class CustomerListLoader(
     private var jobFlow: Job? = null
 
     init {
-        startCustomersTableChangeListening()
+        startCustomersTableObserving()
     }
 
-    private fun startCustomersTableChangeListening() {
+    fun startCustomersTableObserving() {
         if (jobFlow == null) {
             jobFlow = scope.launch {
                 repository.getAllCustomersAsFlow().collect { listOfCustomers ->
                     customerListLoaderSubscriber.onCustomersLoaded(listOfCustomers)
                 }
             }
+        }
+    }
+
+    fun stopCustomersTableObserving() {
+        if (jobFlow?.isCompleted == false) {
+            jobFlow?.cancel(null)
+            jobFlow = null
         }
     }
 
@@ -82,7 +90,7 @@ class CustomerListLoader(
                         disfunctionStatusId = DisfunctionStatus.WORK_DONE.id)
                 ),
                 sessions = mutableListOf(
-                    Session(isDone = true),Session(isDone = false),
+                    Session(isDone = true), Session(isDone = false),
                     Session(isDone = true),
                     Session(isDone = true)
                 )

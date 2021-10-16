@@ -1,5 +1,6 @@
 package by.dashkevichpavel.osteopath.model
 
+import by.dashkevichpavel.osteopath.repositories.localdb.entity.AttachmentEntity
 import by.dashkevichpavel.osteopath.repositories.localdb.entity.CustomerEntity
 import by.dashkevichpavel.osteopath.repositories.localdb.entity.DisfunctionEntity
 import by.dashkevichpavel.osteopath.repositories.localdb.entity.SessionEntity
@@ -15,12 +16,14 @@ data class Customer(
     var facebook: String = "",
     var customerStatusId: Int = CustomerStatus.WORK.id,
     var disfunctions: MutableList<Disfunction> = mutableListOf(),
-    var sessions: MutableList<Session> = mutableListOf()
+    var sessions: MutableList<Session> = mutableListOf(),
+    var attachments: MutableList<Attachment> = mutableListOf()
 ) {
     constructor(
         customerEntity: CustomerEntity,
         disfunctionEntities: List<DisfunctionEntity>,
-        sessionEntities: List<SessionEntity>
+        sessionEntities: List<SessionEntity>,
+        attachmentEntities: List<AttachmentEntity>
     ) : this (
         id = customerEntity.id,
         name = customerEntity.name,
@@ -30,10 +33,9 @@ data class Customer(
         instagram = customerEntity.instagram,
         facebook = customerEntity.facebook,
         customerStatusId = customerEntity.customerStatusId,
-        disfunctions = disfunctionEntities.map { Disfunction(it) } as MutableList<Disfunction>,
-        sessions = sessionEntities.map { sessionEntity ->
-            Session(sessionEntity, emptyList())
-        } as MutableList<Session>
+        disfunctions = disfunctionEntities.map { Disfunction(it) }.toMutableList(),
+        sessions = sessionEntities.map { Session(it, emptyList()) }.toMutableList(),
+        attachments = attachmentEntities.map { Attachment(it) }.toMutableList()
                 )
 
     fun isModified(other: Customer?): Boolean {

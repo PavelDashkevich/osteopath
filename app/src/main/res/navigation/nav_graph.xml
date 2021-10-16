@@ -71,4 +71,25 @@
             app:argType="long"
             android:defaultValue="0L" />
     </fragment>
+    <fragment
+        android:id="@+id/fragmentAllSettings"
+        android:name="by.dashkevichpavel.osteopath.features.settings.all.FragmentAllSettings"
+        android:label="FragmentAllSettings"
+        tools:layout="@layout/fragment_settings_all">
+        <action
+            android:id="@+id/action_fragmentAllSettings_to_fragmentBackupCreate"
+            app:destination="@id/fragmentBackupCreate" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragmentBackupCreate"
+        android:name="by.dashkevichpavel.osteopath.features.settings.backup.create.FragmentBackupCreate"
+        android:label="FragmentBackupCreate"
+        tools:layout="@layout/fragment_backup_create">
+    </fragment>
+    <fragment
+        android:id="@+id/fragmentSessionList"
+        android:name="by.dashkevichpavel.osteopath.features.sessionlist.FragmentSessionList"
+        android:label="FragmentSessionList"
+        tools:layout="@layout/fragment_session_list">
+    </fragment>
 </navigation>

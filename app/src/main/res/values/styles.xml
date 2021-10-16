@@ -52,6 +52,9 @@
     <style name="ImageButton.Add" parent="ImageButton">
         <item name="android:src">@drawable/ic_baseline_add_24</item>
     </style>
+    <style name="ImageButton.SetDir" parent="ImageButton">
+        <item name="android:src">@drawable/ic_baseline_folder_24</item>
+    </style>
 
     <!--  Tab layout  -->
     <style name="TabLayout" parent="Widget.MaterialComponents.TabLayout">
