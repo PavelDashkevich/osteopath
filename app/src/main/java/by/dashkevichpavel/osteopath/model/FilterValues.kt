@@ -5,8 +5,15 @@ data class FilterValues(
     var byAgeAdults: Boolean = false,
     var byCategoryWork: Boolean = false,
     var byCategoryWorkDone: Boolean = false,
-    var byCategoryNoHelp: Boolean = false
+    var byCategoryNoHelp: Boolean = false,
+    var showArchived: Boolean = false
 ) {
     fun isFilterOff() =
-        !(byAgeChildren || byAgeAdults || byCategoryWork || byCategoryWorkDone || byCategoryNoHelp)
+        !(byAgeChildren ||
+                byAgeAdults ||
+                byCategoryWork ||
+                byCategoryWorkDone ||
+                byCategoryNoHelp ||
+                showArchived
+                )
 }

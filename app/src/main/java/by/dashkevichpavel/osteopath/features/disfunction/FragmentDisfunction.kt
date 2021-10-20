@@ -3,13 +3,13 @@ package by.dashkevichpavel.osteopath.features.disfunction
 import android.os.Bundle
 import android.util.Log
 import android.view.*
-import androidx.fragment.app.Fragment
 import androidx.core.widget.doOnTextChanged
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import by.dashkevichpavel.osteopath.R
 import by.dashkevichpavel.osteopath.databinding.FragmentDisfunctionBinding
-import by.dashkevichpavel.osteopath.features.BackClickHandler
-import by.dashkevichpavel.osteopath.features.BackClickListener
+import by.dashkevichpavel.osteopath.BackClickHandler
+import by.dashkevichpavel.osteopath.BackClickListener
 import by.dashkevichpavel.osteopath.helpers.savechanges.SaveChangesFragmentHelper
 import by.dashkevichpavel.osteopath.helpers.setupToolbar
 import by.dashkevichpavel.osteopath.helpers.toEditable

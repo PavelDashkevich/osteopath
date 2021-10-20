@@ -1,5 +1,8 @@
-package by.dashkevichpavel.osteopath.model
+package by.dashkevichpavel.osteopath.features.customerlist
 
+import by.dashkevichpavel.osteopath.model.Customer
+import by.dashkevichpavel.osteopath.model.CustomerStatus
+import by.dashkevichpavel.osteopath.model.FilterValues
 import java.util.*
 
 class CustomerListProcessor(
@@ -31,6 +34,7 @@ class CustomerListProcessor(
     private fun processCustomersList() {
         var newFilteredList: List<Customer> = allCustomers
         var isSearchOrFilterResult = false
+        var hideArchived = true
 
         // filter by category ang by age
         if (!filterValues.isFilterOff()) {
@@ -79,7 +83,14 @@ class CustomerListProcessor(
                 }
             }
 
+            hideArchived = !filterValues.showArchived
+
             isSearchOrFilterResult = true
+        }
+
+        // remove archived if needed
+        if (hideArchived) {
+            newFilteredList = newFilteredList.filter { customer -> !customer.isArchived }
         }
 
         // filter by search query

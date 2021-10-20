@@ -13,10 +13,20 @@ import by.dashkevichpavel.osteopath.model.CustomerStatus
 class CustomerItemViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
     private val binding = ListitemCustomerBinding.bind(itemView)
 
-    fun bind(customer: Customer, customerClickListener: CustomerClickListener) {
+    fun bind(
+        customer: Customer,
+        customerClickListener: CustomerClickListener,
+        customerContextMenuClickListener: CustomerContextMenuClickListener
+    ) {
         binding.tvCustomerName.text = customer.name
         binding.tvCustomerName.setOnClickListener {
             customerClickListener.onCustomerClick(customer.id)
+        }
+        binding.ibContextActions.setOnClickListener {
+            customerContextMenuClickListener.onCustomerContextMenuClick(
+                customer,
+                binding.ibContextActions
+            )
         }
 
         binding.ivColorLabel.setColorFilter(

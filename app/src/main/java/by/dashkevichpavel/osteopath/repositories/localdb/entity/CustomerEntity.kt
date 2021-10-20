@@ -37,7 +37,10 @@ data class CustomerEntity (
     var facebook: String = "",
 
     @ColumnInfo(name = DbContract.Customers.COLUMN_NAME_CUSTOMER_STATUS_ID)
-    var customerStatusId: Int = CustomerStatus.WORK.id
+    var customerStatusId: Int = CustomerStatus.WORK.id,
+
+    @ColumnInfo(name = DbContract.Customers.COLUMN_NAME_IS_ARCHIVED)
+    var isArchived: Boolean = false
 ) {
     constructor(customer: Customer) : this(
         id = customer.id,
@@ -47,6 +50,7 @@ data class CustomerEntity (
         email = customer.email,
         instagram = customer.instagram,
         facebook = customer.facebook,
-        customerStatusId = customer.customerStatusId
+        customerStatusId = customer.customerStatusId,
+        isArchived = customer.isArchived
     )
 }

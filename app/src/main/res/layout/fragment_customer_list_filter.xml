@@ -135,6 +135,31 @@
                 app:layout_constraintStart_toStartOf="@id/glVerticalLeft"
                 app:layout_constraintTop_toBottomOf="@id/ivByCategoryWorkDone" />
 
+            <TextView
+                android:id="@+id/tvArchived"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:paddingVertical="16dp"
+                android:text="@string/header_filter_is_archived"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintLeft_toLeftOf="@id/glVerticalLeft"
+                app:layout_constraintRight_toRightOf="@id/glVerticalRight"
+                app:layout_constraintTop_toBottomOf="@id/cbByCategoryNoHelp" />
+
+            <androidx.appcompat.widget.AppCompatCheckBox
+                android:id="@+id/cbShowArchived"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:button="@null"
+                android:drawableEnd="?android:attr/listChoiceIndicatorMultiple"
+                android:paddingStart="16dp"
+                android:text="@string/filter_show_archived"
+                app:layout_constraintLeft_toLeftOf="@id/glVerticalLeft"
+                app:layout_constraintRight_toRightOf="@id/glVerticalRight"
+                app:layout_constraintTop_toBottomOf="@id/tvArchived"
+                tools:ignore="RtlSymmetry" />
+
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/glVerticalLeft"
                 android:layout_width="0dp"

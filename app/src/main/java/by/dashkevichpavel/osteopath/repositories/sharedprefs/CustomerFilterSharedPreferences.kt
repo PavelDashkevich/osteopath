@@ -21,6 +21,7 @@ class CustomerFilterSharedPreferences(
         filterValuesByKey[KEY_FILTER_BY_CATEGORY_WORK] = filterValues.byCategoryWork
         filterValuesByKey[KEY_FILTER_BY_CATEGORY_WORK_DONE] = filterValues.byCategoryWorkDone
         filterValuesByKey[KEY_FILTER_BY_CATEGORY_NO_HELP] = filterValues.byCategoryNoHelp
+        filterValuesByKey[KEY_FILTER_SHOW_ARCHIVED] = filterValues.showArchived
     }
 
     private fun fillFilterValues() {
@@ -29,7 +30,8 @@ class CustomerFilterSharedPreferences(
             byAgeAdults = filterValuesByKey[KEY_FILTER_BY_AGE_ADULTS] ?: false,
             byCategoryWork = filterValuesByKey[KEY_FILTER_BY_CATEGORY_WORK] ?: false,
             byCategoryWorkDone = filterValuesByKey[KEY_FILTER_BY_CATEGORY_WORK_DONE] ?: false,
-            byCategoryNoHelp = filterValuesByKey[KEY_FILTER_BY_CATEGORY_NO_HELP] ?: false
+            byCategoryNoHelp = filterValuesByKey[KEY_FILTER_BY_CATEGORY_NO_HELP] ?: false,
+            showArchived = filterValuesByKey[KEY_FILTER_SHOW_ARCHIVED] ?: false
         )
     }
 
@@ -69,5 +71,6 @@ class CustomerFilterSharedPreferences(
         const val KEY_FILTER_BY_CATEGORY_WORK = "FILTER_BY_CATEGORY_WORK"
         const val KEY_FILTER_BY_CATEGORY_WORK_DONE = "FILTER_BY_CATEGORY_WORK_DONE"
         const val KEY_FILTER_BY_CATEGORY_NO_HELP = "FILTER_BY_CATEGORY_NO_HELP"
+        const val KEY_FILTER_SHOW_ARCHIVED = "FILTER_SHOW_ARCHIVED"
     }
 }

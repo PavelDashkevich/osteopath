@@ -11,8 +11,8 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import by.dashkevichpavel.osteopath.R
 import by.dashkevichpavel.osteopath.databinding.FragmentBackupCreateBinding
-import by.dashkevichpavel.osteopath.features.BackClickHandler
-import by.dashkevichpavel.osteopath.features.BackClickListener
+import by.dashkevichpavel.osteopath.BackClickHandler
+import by.dashkevichpavel.osteopath.BackClickListener
 import by.dashkevichpavel.osteopath.helpers.backups.BackupHelper
 import by.dashkevichpavel.osteopath.helpers.permissions.PermissionsGrantedListener
 import by.dashkevichpavel.osteopath.helpers.setupToolbar
@@ -74,6 +74,10 @@ class FragmentBackupCreate :
                 R.plurals.backups_number,
                 BackupHelper.MAX_BACKUPS_NUMBER
             )
+        )
+        binding.swEnableAutoBackup.text = getString(
+            R.string.create_backup_auto,
+            BackupHelper.INTERVAL_HOURS
         )
     }
 

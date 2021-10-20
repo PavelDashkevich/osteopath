@@ -26,6 +26,7 @@ object DbContract {
         const val COLUMN_NAME_INSTAGRAM = "instagram"
         const val COLUMN_NAME_FACEBOOK = "facebook"
         const val COLUMN_NAME_CUSTOMER_STATUS_ID = "customer_status_id"
+        const val COLUMN_NAME_IS_ARCHIVED = "is_archived"
     }
 
     object Sessions {

@@ -22,11 +22,13 @@ class CustomerListFilterViewModel(context: Context) : ViewModel() {
         byAgeAdults: Boolean? = null,
         byCategoryWork: Boolean? = null,
         byCategoryWorkDone: Boolean? = null,
-        byCategoryNoHelp: Boolean? = null) {
+        byCategoryNoHelp: Boolean? = null,
+        showArchived: Boolean? = null) {
         filterValues.byAgeChildren = byAgeChildren ?: filterValues.byAgeChildren
         filterValues.byAgeAdults = byAgeAdults ?: filterValues.byAgeAdults
         filterValues.byCategoryWork = byCategoryWork ?: filterValues.byCategoryWork
         filterValues.byCategoryWorkDone = byCategoryWorkDone ?: filterValues.byCategoryWorkDone
         filterValues.byCategoryNoHelp = byCategoryNoHelp ?: filterValues.byCategoryNoHelp
+        filterValues.showArchived = showArchived ?: filterValues.showArchived
     }
 }

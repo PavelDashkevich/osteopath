@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.*
 import android.view.inputmethod.InputMethodManager
 import android.widget.LinearLayout
+import androidx.appcompat.widget.PopupMenu
 import androidx.fragment.app.Fragment
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.viewModels
@@ -18,13 +19,16 @@ import by.dashkevichpavel.osteopath.R
 import by.dashkevichpavel.osteopath.databinding.FragmentCustomerListBinding
 import by.dashkevichpavel.osteopath.model.Customer
 import by.dashkevichpavel.osteopath.features.customerprofile.FragmentCustomerProfile
+import by.dashkevichpavel.osteopath.helpers.backups.BackupHelper
 import by.dashkevichpavel.osteopath.helpers.setupToolbar
+import by.dashkevichpavel.osteopath.repositories.localdb.OsteoDbRepositorySingleton
 import by.dashkevichpavel.osteopath.viewmodel.OsteoViewModelFactory
 import java.lang.IllegalArgumentException
 
 class FragmentCustomerList :
     Fragment(R.layout.fragment_customer_list),
-    CustomerClickListener {
+    CustomerClickListener,
+    CustomerContextMenuClickListener {
     private val viewModel: CustomerListViewModel by viewModels(
         factoryProducer = { OsteoViewModelFactory(requireContext().applicationContext) }
     )
@@ -48,6 +52,11 @@ class FragmentCustomerList :
         setupEventListeners()
         setupObservers()
         viewModel.setFilter()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        viewModel.startCustomerListObserving()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -99,6 +108,7 @@ class FragmentCustomerList :
         fragmentCustomerListBinding = FragmentCustomerListBinding.bind(view)
         setupToolbar(binding.tbActions)
         binding.lNavMenu.nvMain.setupWithNavController(findNavController())
+        registerForContextMenu(binding.rvCustomerList)
     }
 
     private fun setupSearch() {
@@ -152,7 +162,7 @@ class FragmentCustomerList :
 
     private fun setupRecyclerView() {
         binding.rvCustomerList.layoutManager = LinearLayoutManager(requireContext())
-        adapter = CustomerItemAdapter(viewModel.getCustomerList(), this)
+        adapter = CustomerItemAdapter(viewModel.getCustomerList(), this, this)
         binding.rvCustomerList.adapter = adapter
     }
 
@@ -210,11 +220,37 @@ class FragmentCustomerList :
         }
     }
 
-    override fun onCustomerClick(customerId: Long) {
-        openCustomerProfileScreen(customerId)
+    private fun showCustomerContextMenu(customer: Customer, anchorView: View) {
+        val popupMenu = PopupMenu(requireContext(), anchorView)
+        popupMenu.inflate(
+            if (customer.isArchived)
+                R.menu.customer_archived_context_menu
+            else
+                R.menu.customer_unarchived_context_menu
+        )
+        popupMenu.setForceShowIcon(true)
+        popupMenu.setOnMenuItemClickListener { menuItem: MenuItem ->
+            when(menuItem.itemId) {
+                R.id.mi_archive -> viewModel.putCustomerToArchive(customer.id)
+                R.id.mi_unarchive -> viewModel.removeCustomerFromArchive(customer.id)
+                R.id.mi_delete -> {}
+                else -> return@setOnMenuItemClickListener false
+            }
+
+            true
+        }
+        popupMenu.show()
     }
+
+    override fun onCustomerClick(customerId: Long) = openCustomerProfileScreen(customerId)
+    override fun onCustomerContextMenuClick(customer: Customer, anchorView: View) =
+        showCustomerContextMenu(customer, anchorView)
 }
 
 interface CustomerClickListener {
     fun onCustomerClick(customerId: Long)
+}
+
+interface CustomerContextMenuClickListener {
+    fun onCustomerContextMenuClick(customer: Customer, anchorView: View)
 }

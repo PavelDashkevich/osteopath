@@ -144,6 +144,11 @@ class LocalDbRepository(applicationContext: Context) {
     suspend fun checkPoint() = withContext(Dispatchers.IO) {
         localDb.utilDao.checkPoint(SimpleSQLiteQuery("pragma wal_checkpoint(full)"))
     }
+
+    suspend fun updateCustomerIsArchived(customerId: Long, isArchived: Boolean) =
+        withContext(Dispatchers.IO) {
+            localDb.customerDao.updateIsArchived(customerId, isArchived)
+        }
 }
 
 object OsteoDbRepositorySingleton {

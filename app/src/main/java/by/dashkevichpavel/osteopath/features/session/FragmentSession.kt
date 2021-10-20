@@ -11,8 +11,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import by.dashkevichpavel.osteopath.R
 import by.dashkevichpavel.osteopath.databinding.FragmentSessionBinding
-import by.dashkevichpavel.osteopath.features.BackClickHandler
-import by.dashkevichpavel.osteopath.features.BackClickListener
+import by.dashkevichpavel.osteopath.BackClickHandler
+import by.dashkevichpavel.osteopath.BackClickListener
 import by.dashkevichpavel.osteopath.helpers.recyclerviewutils.SpaceItemDecoration
 import by.dashkevichpavel.osteopath.features.pickers.FragmentDatePicker
 import by.dashkevichpavel.osteopath.features.pickers.FragmentTimePicker

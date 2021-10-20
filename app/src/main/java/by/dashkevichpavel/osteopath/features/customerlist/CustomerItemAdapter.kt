@@ -8,7 +8,8 @@ import by.dashkevichpavel.osteopath.model.Customer
 
 class CustomerItemAdapter(
     var customers: List<Customer>,
-    private var customerClickListener: CustomerClickListener
+    private var customerClickListener: CustomerClickListener,
+    private var customerContextMenuClickListener: CustomerContextMenuClickListener
     ): RecyclerView.Adapter<CustomerItemViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CustomerItemViewHolder =
         CustomerItemViewHolder(
@@ -18,7 +19,7 @@ class CustomerItemAdapter(
         )
 
     override fun onBindViewHolder(holder: CustomerItemViewHolder, position: Int) {
-        holder.bind(customers[position], customerClickListener)
+        holder.bind(customers[position], customerClickListener, customerContextMenuClickListener)
     }
 
     override fun getItemCount(): Int = customers.size

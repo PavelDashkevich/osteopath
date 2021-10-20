@@ -9,6 +9,7 @@ import by.dashkevichpavel.osteopath.repositories.localdb.dao.*
 import by.dashkevichpavel.osteopath.repositories.localdb.entity.*
 import by.dashkevichpavel.osteopath.repositories.localdb.migrations.Migration_2_3
 import by.dashkevichpavel.osteopath.repositories.localdb.migrations.Migration_3_4
+import by.dashkevichpavel.osteopath.repositories.localdb.migrations.Migration_4_5
 import java.io.File
 
 @Database(
@@ -19,7 +20,7 @@ import java.io.File
         SessionEntity::class,
         SessionDisfunctionsEntity::class
     ],
-    version = 4
+    version = 5
 )
 @TypeConverters(DbTypeConverters::class)
 abstract class LocalDb : RoomDatabase() {
@@ -49,7 +50,8 @@ abstract class LocalDb : RoomDatabase() {
                 )
                     .addMigrations(
                         Migration_2_3,
-                        Migration_3_4
+                        Migration_3_4,
+                        Migration_4_5
                     )
                     .setJournalMode(JournalMode.TRUNCATE)
                     .build()

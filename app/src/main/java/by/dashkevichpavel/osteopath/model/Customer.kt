@@ -14,6 +14,7 @@ data class Customer(
     var email: String = "",
     var instagram: String = "",
     var facebook: String = "",
+    var isArchived: Boolean = false,
     var customerStatusId: Int = CustomerStatus.WORK.id,
     var disfunctions: MutableList<Disfunction> = mutableListOf(),
     var sessions: MutableList<Session> = mutableListOf(),
@@ -33,6 +34,7 @@ data class Customer(
         instagram = customerEntity.instagram,
         facebook = customerEntity.facebook,
         customerStatusId = customerEntity.customerStatusId,
+        isArchived = customerEntity.isArchived,
         disfunctions = disfunctionEntities.map { Disfunction(it) }.toMutableList(),
         sessions = sessionEntities.map { Session(it, emptyList()) }.toMutableList(),
         attachments = attachmentEntities.map { Attachment(it) }.toMutableList()
@@ -47,6 +49,7 @@ data class Customer(
                 email != other.email ||
                 instagram != other.instagram ||
                 facebook != other.facebook ||
-                customerStatusId != other.customerStatusId
+                customerStatusId != other.customerStatusId ||
+                isArchived != other.isArchived
     }
 }

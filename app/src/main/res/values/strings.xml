@@ -25,10 +25,15 @@
     <string name="hint_customer_list_empty">Список клиентов пуст. \nДля добавления нажмите эту кнопку</string>
     <string name="customer_menu_item_search">Поиск</string>
     <string name="customer_menu_item_filter">Фильтр</string>
+    <string name="customer_context_menu_item_archive">В архив</string>
+    <string name="customer_context_menu_item_unarchive">Извлечь из архива</string>
+    <string name="customer_context_menu_item_delete">Удалить</string>
     <string name="header_filter_by_age">По возрасту</string>
     <string name="filter_by_age_children">дети (до 18 лет)</string>
     <string name="filter_by_age_adults">взрослые (от 18 лет)</string>
     <string name="header_filter_by_category">По категории</string>
+    <string name="header_filter_is_archived">Клиенты, помещенные в архив</string>
+    <string name="filter_show_archived">отображать</string>
     <string name="standard_edit_screen_menu_item_cancel">Отмена</string>
     <string name="customer_filter_menu_item_select_all">Установить все</string>
     <string name="customer_filter_menu_item_deselect_all">Сбросить все</string>
@@ -81,7 +86,7 @@
     <string name="backup_type_manual">вручную</string>
     <string name="backup_type_auto">автоматически</string>
     <string name="create_backup_manual">Сохранить копию вручную</string>
-    <string name="create_backup_auto">Сохранять копии автоматически\nкаждые 6 часов</string>
+    <string name="create_backup_auto">Сохранять копии автоматически\nкаждые %1$d ч</string>
     <string name="backup_dir_not_exists">Указанная директория не обнаружена, выберите другую.</string>
     <string name="backup_dir_not_accessible">Нет доступа к указанной директории, перевыберите ее или выберите другую.</string>
     <string name="backup_creation_progress">Пожалуйста, дождитесь завершения операции</string>

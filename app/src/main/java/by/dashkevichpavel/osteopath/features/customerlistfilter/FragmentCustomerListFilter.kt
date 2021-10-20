@@ -75,12 +75,14 @@ class FragmentCustomerListFilter : Fragment(R.layout.fragment_customer_list_filt
         binding.cbByCategoryWork.isChecked = filterValues.byCategoryWork
         binding.cbByCategoryWorkDone.isChecked = filterValues.byCategoryWorkDone
         binding.cbByCategoryNoHelp.isChecked = filterValues.byCategoryNoHelp
+        binding.cbShowArchived.isChecked = filterValues.showArchived
 
         allCheckBoxes.add(binding.cbByAgeChildren)
         allCheckBoxes.add(binding.cbByAgeAdults)
         allCheckBoxes.add(binding.cbByCategoryWork)
         allCheckBoxes.add(binding.cbByCategoryWorkDone)
         allCheckBoxes.add(binding.cbByCategoryNoHelp)
+        allCheckBoxes.add(binding.cbShowArchived)
     }
 
     private fun setupEventListeners() {
@@ -98,6 +100,9 @@ class FragmentCustomerListFilter : Fragment(R.layout.fragment_customer_list_filt
         }
         binding.cbByCategoryNoHelp.setOnCheckedChangeListener { _, isChecked ->
             viewModel.changeFilterValue(byCategoryNoHelp = isChecked)
+        }
+        binding.cbShowArchived.setOnCheckedChangeListener { _, isChecked ->
+            viewModel.changeFilterValue(showArchived = isChecked)
         }
     }
 

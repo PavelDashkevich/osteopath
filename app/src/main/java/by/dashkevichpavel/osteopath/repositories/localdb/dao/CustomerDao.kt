@@ -24,4 +24,9 @@ interface CustomerDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(customerEntity: CustomerEntity): Long
+
+    @Query("""UPDATE ${DbContract.Customers.TABLE_NAME} 
+        SET ${DbContract.Customers.COLUMN_NAME_IS_ARCHIVED} = :isArchived 
+        WHERE ${DbContract.Customers.COLUMN_NAME_ID} == :customerId""")
+    suspend fun updateIsArchived(customerId: Long, isArchived: Boolean)
 }

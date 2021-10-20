@@ -5,13 +5,16 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import by.dashkevichpavel.osteopath.helpers.backups.BackupHelper
 import by.dashkevichpavel.osteopath.model.*
 import by.dashkevichpavel.osteopath.repositories.localdb.LocalDbRepository
+import by.dashkevichpavel.osteopath.repositories.localdb.OsteoDbRepositorySingleton
 import by.dashkevichpavel.osteopath.repositories.sharedprefs.CustomerFilterSharedPreferences
+import kotlinx.coroutines.launch
 
 class CustomerListViewModel(
     applicationContext: Context,
-    repository: LocalDbRepository
+    private val repository: LocalDbRepository
 ) : ViewModel(), CustomerListProcessorSubscriber, CustomerListLoaderSubscriber {
     // searchViewState* vars save state of SearchView on configuration change
     var searchViewStateIconified: Boolean = true
@@ -38,19 +41,22 @@ class CustomerListViewModel(
         customerListProcessor.setFilter(filterValues)
     }
 
-    fun setQueryString(newSearchQuery: String) {
+    fun setQueryString(newSearchQuery: String) =
         customerListProcessor.setQueryString(newSearchQuery)
-    }
 
-    fun loadTestData() {
-        customerListLoader.loadTestData()
-    }
+    fun loadTestData() = customerListLoader.loadTestData()
 
     fun getCustomerList(): List<Customer> = filteredCustomerList.value ?: listOf()
 
     fun startCustomerListObserving() = customerListLoader.startCustomersTableObserving()
 
     fun stopCustomerListObserving() = customerListLoader.stopCustomersTableObserving()
+
+    fun putCustomerToArchive(customerId: Long) =
+        customerListLoader.putCustomerInArchive(customerId)
+
+    fun removeCustomerFromArchive(customerId: Long) =
+        customerListLoader.removeCustomerFromArchive(customerId)
 
     override fun onCustomersProcessed(customers: List<Customer>, isSearchOrFilterResult: Boolean) {
         filteredCustomerList.value = customers

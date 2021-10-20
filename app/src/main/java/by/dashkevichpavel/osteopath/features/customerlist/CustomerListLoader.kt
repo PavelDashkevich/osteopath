@@ -20,7 +20,7 @@ class CustomerListLoader(
     }
 
     fun startCustomersTableObserving() {
-        if (jobFlow == null) {
+        if (jobFlow == null || jobFlow?.isCompleted == true) {
             jobFlow = scope.launch {
                 repository.getAllCustomersAsFlow().collect { listOfCustomers ->
                     customerListLoaderSubscriber.onCustomersLoaded(listOfCustomers)
@@ -32,7 +32,16 @@ class CustomerListLoader(
     fun stopCustomersTableObserving() {
         if (jobFlow?.isCompleted == false) {
             jobFlow?.cancel(null)
-            jobFlow = null
+        }
+    }
+
+    fun putCustomerInArchive(customerId: Long) = updateCustomerIsArchived(customerId, true)
+
+    fun removeCustomerFromArchive(customerId: Long) = updateCustomerIsArchived(customerId, false)
+
+    private fun updateCustomerIsArchived(customerId: Long, isArchived: Boolean) {
+        scope.launch {
+            repository.updateCustomerIsArchived(customerId, isArchived)
         }
     }
 

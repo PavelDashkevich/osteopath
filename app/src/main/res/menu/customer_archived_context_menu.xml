@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/mi_unarchive"
+        android:icon="@drawable/ic_baseline_unarchive_24"
+        android:title="@string/customer_context_menu_item_unarchive"
+        app:showAsAction="always"/>
+    <item
+        android:id="@+id/mi_delete"
+        android:icon="@drawable/ic_baseline_delete_24"
+        android:title="@string/customer_context_menu_item_delete"
+        app:showAsAction="always"/>
+</menu>
