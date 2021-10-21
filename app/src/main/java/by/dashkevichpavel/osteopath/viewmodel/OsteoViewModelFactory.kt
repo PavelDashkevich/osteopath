@@ -40,10 +40,7 @@ class OsteoViewModelFactory(
             SessionListViewModel::class.java ->
                 SessionListViewModel()
             BackupCreateViewModel::class.java ->
-                BackupCreateViewModel(
-                    applicationContext,
-                    OsteoDbRepositorySingleton.getInstance(applicationContext)
-                )
+                BackupCreateViewModel(applicationContext)
             else ->
                 throw IllegalArgumentException("$modelClass is not registered ViewModel")
         } as T

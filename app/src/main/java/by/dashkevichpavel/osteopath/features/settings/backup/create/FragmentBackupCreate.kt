@@ -17,6 +17,7 @@ import by.dashkevichpavel.osteopath.helpers.backups.BackupHelper
 import by.dashkevichpavel.osteopath.helpers.permissions.PermissionsGrantedListener
 import by.dashkevichpavel.osteopath.helpers.setupToolbar
 import by.dashkevichpavel.osteopath.helpers.toEditable
+import by.dashkevichpavel.osteopath.services.AutoBackupWorkManager
 import by.dashkevichpavel.osteopath.viewmodel.OsteoViewModelFactory
 
 class FragmentBackupCreate :
@@ -77,7 +78,7 @@ class FragmentBackupCreate :
         )
         binding.swEnableAutoBackup.text = getString(
             R.string.create_backup_auto,
-            BackupHelper.INTERVAL_HOURS
+            AutoBackupWorkManager.INTERVAL_HOURS
         )
     }
 

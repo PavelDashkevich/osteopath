@@ -23,10 +23,9 @@ import java.io.FileNotFoundException
 import java.util.*
 
 class BackupCreateViewModel(
-    applicationContext: Context,
-    repository: LocalDbRepository
+    applicationContext: Context
 ) : ViewModel() {
-    private val backupHelper = BackupHelper(applicationContext, repository)
+    private val backupHelper = BackupHelper(applicationContext)
 
     val backupDir = MutableLiveData(backupHelper.backupSettingsSharedPrefs.backupDir)
     val autoBackupEnabled = MutableLiveData(backupHelper.backupSettingsSharedPrefs.autoBackupEnabled)

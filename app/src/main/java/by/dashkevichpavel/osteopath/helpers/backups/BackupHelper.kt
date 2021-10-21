@@ -6,7 +6,7 @@ import android.util.Log
 import androidx.documentfile.provider.DocumentFile
 import by.dashkevichpavel.osteopath.helpers.formatAsDateTimeStamp
 import by.dashkevichpavel.osteopath.repositories.localdb.DbContract
-import by.dashkevichpavel.osteopath.repositories.localdb.LocalDbRepository
+import by.dashkevichpavel.osteopath.repositories.localdb.OsteoDbRepositorySingleton
 import by.dashkevichpavel.osteopath.repositories.sharedprefs.BackupSettingsSharedPreferences
 import java.io.Closeable
 import java.io.IOException
@@ -15,8 +15,7 @@ import java.io.OutputStream
 import java.util.*
 
 class BackupHelper(
-    private val applicationContext: Context,
-    private val repository: LocalDbRepository
+    private val applicationContext: Context
 ) {
     private var backupDirFile: DocumentFile? = null
     val backupSettingsSharedPrefs = BackupSettingsSharedPreferences(applicationContext)
@@ -51,6 +50,7 @@ class BackupHelper(
         var backupCreateResult: BackupCreateResult = BackupCreateResult.Success()
 
         if (backupDirCheckResult == BackupDirCheckResult.EXISTS_ACCESSIBLE) {
+            val repository = OsteoDbRepositorySingleton.getInstance(applicationContext)
             deleteOldestBackupFile()
             repository.checkPoint()
             backupCreateResult = createBackupFile()
