@@ -18,6 +18,7 @@ import by.dashkevichpavel.osteopath.R
 import by.dashkevichpavel.osteopath.databinding.FragmentCustomerListBinding
 import by.dashkevichpavel.osteopath.model.Customer
 import by.dashkevichpavel.osteopath.features.customerprofile.FragmentCustomerProfile
+import by.dashkevichpavel.osteopath.helpers.safelyNavigateTo
 import by.dashkevichpavel.osteopath.helpers.setupToolbar
 import by.dashkevichpavel.osteopath.viewmodel.OsteoViewModelFactory
 import java.lang.IllegalArgumentException
@@ -69,13 +70,8 @@ class FragmentCustomerList :
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.mi_filter -> {
-                try {
-                    findNavController().navigate(R.id.action_fragmentCustomerList_to_fragmentCustomerListFilter)
-                } catch (e: IllegalArgumentException) {
-                    Log.d("OsteoApp", "onOptionsItemSelected(): exception: ${e.message}")
-                }
-            }
+            R.id.mi_filter ->
+                safelyNavigateTo(R.id.action_fragmentCustomerList_to_fragmentCustomerListFilter)
             android.R.id.home -> binding.dlDrawerLayout.open()
             else -> return super.onOptionsItemSelected(item)
         }
@@ -207,14 +203,10 @@ class FragmentCustomerList :
     }
 
     private fun openCustomerProfileScreen(customerId: Long) {
-        try {
-            findNavController().navigate(
-                R.id.action_fragmentCustomerList_to_fragmentCustomer,
-                FragmentCustomerProfile.packBundle(customerId)
-            )
-        } catch (e: IllegalArgumentException) {
-            Log.d("OsteoApp", "openCustomerProfileScreen(): exception: ${e.message}")
-        }
+        safelyNavigateTo(
+            R.id.action_fragmentCustomerList_to_fragmentCustomer,
+            FragmentCustomerProfile.packBundle(customerId)
+        )
     }
 
     private fun showCustomerContextMenu(customer: Customer, anchorView: View) {

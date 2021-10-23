@@ -14,6 +14,7 @@ import by.dashkevichpavel.osteopath.model.Disfunction
 import by.dashkevichpavel.osteopath.model.DisfunctionStatus
 import by.dashkevichpavel.osteopath.features.disfunction.FragmentDisfunction
 import by.dashkevichpavel.osteopath.features.customerprofile.CustomerProfileViewModel
+import by.dashkevichpavel.osteopath.helpers.safelyNavigateTo
 import by.dashkevichpavel.osteopath.viewmodel.OsteoViewModelFactory
 import java.lang.IllegalArgumentException
 
@@ -36,7 +37,7 @@ class FragmentCustomerProfileDisfunctions :
     )
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
+        //Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
 
         setupViews(view)
         setupEventListeners()
@@ -71,14 +72,10 @@ class FragmentCustomerProfileDisfunctions :
     }
 
     private fun openDisfunctionScreen(customerId: Long, disfunctionId: Long) {
-        try {
-            findNavController().navigate(
-                R.id.action_fragmentCustomerProfile_to_fragmentDisfunction,
-                FragmentDisfunction.packBundle(customerId, disfunctionId)
-            )
-        } catch (e: IllegalArgumentException) {
-            Log.d("OsteoApp", "openDisfunctionScreen(): exception: ${e.message}")
-        }
+        safelyNavigateTo(
+            R.id.action_fragmentCustomerProfile_to_fragmentDisfunction,
+            FragmentDisfunction.packBundle(customerId, disfunctionId)
+        )
     }
 
     override fun onCategoryClick(disfunctionStatus: DisfunctionStatus) {

@@ -13,6 +13,7 @@ import by.dashkevichpavel.osteopath.helpers.recyclerviewutils.SpaceItemDecoratio
 import by.dashkevichpavel.osteopath.model.Session
 import by.dashkevichpavel.osteopath.features.customerprofile.CustomerProfileViewModel
 import by.dashkevichpavel.osteopath.features.session.FragmentSession
+import by.dashkevichpavel.osteopath.helpers.safelyNavigateTo
 import by.dashkevichpavel.osteopath.viewmodel.OsteoViewModelFactory
 import java.lang.IllegalArgumentException
 
@@ -30,7 +31,7 @@ class FragmentCustomerProfileSessions :
     private var adapter = SessionItemAdapter(this)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
+        //Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
 
         setupViews(view)
         setupEventListeners()
@@ -66,14 +67,10 @@ class FragmentCustomerProfileSessions :
     }
 
     private fun openSessionScreen(customerId: Long, sessionId: Long) {
-        try {
-            findNavController().navigate(
-                R.id.action_fragmentCustomerProfile_to_fragmentSession,
-                FragmentSession.packBundle(customerId, sessionId)
-            )
-        } catch (e: IllegalArgumentException) {
-            Log.d("OsteoApp", "openDisfunctionScreen(): exception: ${e.message}")
-        }
+        safelyNavigateTo(
+            R.id.action_fragmentCustomerProfile_to_fragmentSession,
+            FragmentSession.packBundle(customerId, sessionId)
+        )
     }
 
     override fun onSessionItemClick(customerId: Long, sessionId: Long) {

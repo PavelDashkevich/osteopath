@@ -17,11 +17,8 @@ import by.dashkevichpavel.osteopath.helpers.recyclerviewutils.SpaceItemDecoratio
 import by.dashkevichpavel.osteopath.features.pickers.FragmentDatePicker
 import by.dashkevichpavel.osteopath.features.pickers.FragmentTimePicker
 import by.dashkevichpavel.osteopath.features.selectdisfunctions.FragmentSelectDisfunctions
-import by.dashkevichpavel.osteopath.helpers.formatDateAsEditable
-import by.dashkevichpavel.osteopath.helpers.formatTimeAsEditable
+import by.dashkevichpavel.osteopath.helpers.*
 import by.dashkevichpavel.osteopath.helpers.savechanges.SaveChangesFragmentHelper
-import by.dashkevichpavel.osteopath.helpers.setupToolbar
-import by.dashkevichpavel.osteopath.helpers.toEditable
 import by.dashkevichpavel.osteopath.model.*
 import by.dashkevichpavel.osteopath.viewmodel.OsteoViewModelFactory
 import java.lang.IllegalArgumentException
@@ -127,17 +124,13 @@ class FragmentSession :
         }
 
         binding.ibAddDisfunction.setOnClickListener {
-            try {
-                findNavController().navigate(
-                    R.id.action_fragmentSession_to_fragmentSelectDisfunctions,
-                    FragmentSelectDisfunctions.createBundle(
-                        viewModel.getCustomerId(),
-                        viewModel.getSelectedDisfunctionsIds()
-                    )
+            safelyNavigateTo(
+                R.id.action_fragmentSession_to_fragmentSelectDisfunctions,
+                FragmentSelectDisfunctions.createBundle(
+                    viewModel.getCustomerId(),
+                    viewModel.getSelectedDisfunctionsIds()
                 )
-            } catch (e: IllegalArgumentException) {
-                Log.d("OsteoApp", "setupListeners(): ibAddDisfunction.onClickListener: exception: ${e.message}")
-            }
+            )
         }
 
         binding.etPlan.doOnTextChanged { text, _, _, _ ->

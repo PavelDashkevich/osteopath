@@ -10,6 +10,7 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupWithNavController
 import by.dashkevichpavel.osteopath.R
 import by.dashkevichpavel.osteopath.databinding.FragmentSettingsAllBinding
+import by.dashkevichpavel.osteopath.helpers.safelyNavigateTo
 import by.dashkevichpavel.osteopath.helpers.setupToolbar
 import java.lang.IllegalArgumentException
 
@@ -49,19 +50,11 @@ class FragmentAllSettings : Fragment(R.layout.fragment_settings_all) {
 
     private fun setupEventListeners() {
         binding.vMenuItemMakeBackup.setOnClickListener {
-            try {
-                findNavController().navigate(R.id.action_fragmentAllSettings_to_fragmentBackupCreate)
-            } catch (e: IllegalArgumentException) {
-                Log.d("OsteoApp", "FragmentAllSettings: setupEventListeners(): exception: ${e.message}")
-            }
+            safelyNavigateTo(R.id.action_fragmentAllSettings_to_fragmentBackupCreate)
         }
 
         binding.vMenuItemRestoreFromBackup.setOnClickListener {
-            try {
-                findNavController().navigate(R.id.action_fragmentAllSettings_to_fragmentBackupRestore)
-            } catch (e: IllegalArgumentException) {
-                Log.d("OsteoApp", "FragmentAllSettings: setupEventListeners(): exception: ${e.message}")
-            }
+            safelyNavigateTo(R.id.action_fragmentAllSettings_to_fragmentBackupRestore)
         }
     }
 }

@@ -6,16 +6,20 @@ import android.content.Intent
 import android.database.Cursor
 import android.graphics.drawable.Drawable
 import android.net.Uri
+import android.os.Bundle
 import android.text.Editable
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import by.dashkevichpavel.osteopath.R
 import by.dashkevichpavel.osteopath.model.Attachment
 import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestBuilder
 import com.bumptech.glide.RequestManager
+import java.lang.IllegalArgumentException
 import java.util.*
 
 fun String.toEditable(): Editable =
@@ -105,6 +109,17 @@ fun Fragment.setupToolbar(toolbar: Toolbar) {
     (activity as AppCompatActivity).setSupportActionBar(toolbar)
 }
 
+fun Fragment.safelyNavigateTo(actionId: Int, args: Bundle? = null) {
+    try {
+        this.findNavController().navigate(actionId, args)
+    } catch (e: IllegalArgumentException) {
+        // fires when navigation action repeated before destination is opened,
+        // i. e. user taps second time on the same control which must navigate user
+        // to some destination
+        Log.d("OsteoApp", "Navigation exception: ${e.message}")
+    }
+}
+
 fun Cursor.getStringByColumnName(columnName: String, defaultValue: String): String {
     val colIndex = this.getColumnIndex(columnName)
 
@@ -115,35 +130,26 @@ fun Cursor.getStringByColumnName(columnName: String, defaultValue: String): Stri
     return defaultValue
 }
 
-fun Cursor.getIntByColumnName(columnName: String, defaultValue: Int): Int {
-    val colIndex = this.getColumnIndex(columnName)
-
-    if (colIndex >= 0) {
-        return this.getInt(colIndex)
-    }
-
-    return defaultValue
-}
-
 fun RequestManager.loadThumbnailFromAttachmentByMimeType(
     context: Context,
     attachment: Attachment
-): RequestBuilder<Drawable> = this.load(
-            when {
-                attachment.mimeType.contains("audio/") ->
-                    AppCompatResources.getDrawable(
-                        context,
-                        R.drawable.thumbnail_audio
-                    )
-                attachment.mimeType == "application/pdf" ->
-                    attachment.thumbnail
-                else ->
-                    AppCompatResources.getDrawable(
-                        context,
-                        R.drawable.thumbnail_unknown
-                    )
+): RequestBuilder<Drawable> =
+    this.load(
+        when {
+            attachment.mimeType.contains("audio/") ->
+                AppCompatResources.getDrawable(
+                    context,
+                    R.drawable.thumbnail_audio
+                )
+            attachment.mimeType == "application/pdf" ->
+                attachment.thumbnail
+            else ->
+                AppCompatResources.getDrawable(
+                    context,
+                    R.drawable.thumbnail_unknown
+                )
 
-            }
+        }
     )
 
 fun Uri.takePersistableReadWritePermissions(context: Context) {
