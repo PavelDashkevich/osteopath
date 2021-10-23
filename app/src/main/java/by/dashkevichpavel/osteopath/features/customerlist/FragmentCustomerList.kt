@@ -12,16 +12,13 @@ import androidx.fragment.app.Fragment
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import by.dashkevichpavel.osteopath.R
 import by.dashkevichpavel.osteopath.databinding.FragmentCustomerListBinding
 import by.dashkevichpavel.osteopath.model.Customer
 import by.dashkevichpavel.osteopath.features.customerprofile.FragmentCustomerProfile
-import by.dashkevichpavel.osteopath.helpers.backups.BackupHelper
 import by.dashkevichpavel.osteopath.helpers.setupToolbar
-import by.dashkevichpavel.osteopath.repositories.localdb.OsteoDbRepositorySingleton
 import by.dashkevichpavel.osteopath.viewmodel.OsteoViewModelFactory
 import java.lang.IllegalArgumentException
 
@@ -222,11 +219,12 @@ class FragmentCustomerList :
 
     private fun showCustomerContextMenu(customer: Customer, anchorView: View) {
         val popupMenu = PopupMenu(requireContext(), anchorView)
-        popupMenu.inflate(
+        popupMenu.inflate(R.menu.customer_listitem_context_menu)
+        popupMenu.menu.removeItem(
             if (customer.isArchived)
-                R.menu.customer_archived_context_menu
+                R.id.mi_archive
             else
-                R.menu.customer_unarchived_context_menu
+                R.id.mi_unarchive
         )
         popupMenu.setForceShowIcon(true)
         popupMenu.setOnMenuItemClickListener { menuItem: MenuItem ->
