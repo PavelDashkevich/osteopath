@@ -70,6 +70,7 @@ class FragmentCustomerProfileContacts :
                 CustomerStatus.WORK_DONE.id -> binding.rbWorkDone.isChecked = true
                 CustomerStatus.NO_HELP.id -> binding.rbNoHelp.isChecked = true
             }
+            binding.cbArchived.isChecked = customer.isArchived
         }
     }
 
@@ -130,6 +131,10 @@ class FragmentCustomerProfileContacts :
 
         binding.ibInstagramMessage.setOnClickListener {
             actionOpenInstagram(binding.etSocialInstagram.text.toString())
+        }
+
+        binding.cbArchived.setOnCheckedChangeListener { _, isChecked ->
+            viewModel.setCustomerIsArchived(isChecked)
         }
     }
 

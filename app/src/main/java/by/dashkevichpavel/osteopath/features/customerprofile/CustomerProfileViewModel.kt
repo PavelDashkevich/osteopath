@@ -137,6 +137,10 @@ class CustomerProfileViewModel(
         customer.value?.birthDate?.time = birthDateInMillis
     }
 
+    fun setCustomerIsArchived(isArchived: Boolean) {
+        customer.value?.isArchived = isArchived
+    }
+
     fun extractContactData(contentResolver: ContentResolver, contactUri: Uri?) {
         contactUri?.let { uri ->
             viewModelScope.launch {

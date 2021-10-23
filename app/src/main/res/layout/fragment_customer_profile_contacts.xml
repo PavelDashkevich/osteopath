@@ -185,5 +185,28 @@
                 android:drawablePadding="8dp"/>
         </RadioGroup>
 
+        <TextView
+            android:id="@+id/tvArchived"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toLeftOf="@id/glVerticalLeft"
+            app:layout_constraintRight_toRightOf="@id/glVerticalRight"
+            app:layout_constraintTop_toBottomOf="@id/rgCategory"
+            android:text="@string/header_customer_archive"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:paddingTop="40dp"
+            android:paddingBottom="16dp"/>
+
+        <com.google.android.material.checkbox.MaterialCheckBox
+            android:id="@+id/cbArchived"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="@id/glVerticalLeft"
+            app:layout_constraintEnd_toEndOf="@id/glVerticalRight"
+            app:layout_constraintTop_toBottomOf="@id/tvArchived"
+            android:text="@string/customer_profile_archive"/>
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
