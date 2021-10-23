@@ -11,20 +11,23 @@ import by.dashkevichpavel.osteopath.repositories.localdb.LocalDb
 import by.dashkevichpavel.osteopath.repositories.localdb.OsteoDbRepositorySingleton
 import by.dashkevichpavel.osteopath.repositories.sharedprefs.BackupSettingsSharedPreferences
 import java.io.*
+import java.lang.Exception
 import java.util.*
 
 class BackupHelper(
     private val applicationContext: Context
 ) {
     private var backupDirFile: DocumentFile? = null
+    private val databaseDir: String =
+        applicationContext.getDatabasePath(DbContract.DATABASE_NAME).parent ?: ""
     val backupSettingsSharedPrefs = BackupSettingsSharedPreferences(applicationContext)
 
     fun rollbackRestoringFromBackupIfNeeded() {
         val currentDb: File = applicationContext.getDatabasePath(DbContract.DATABASE_NAME)
-        val rollBackDb = File((currentDb.parent ?: "") + ROLLBACK_FILE_NAME)
+        val rollbackDb = File(currentDb.parent ?: "", ROLLBACK_FILE_NAME)
 
-        if (rollBackDb.exists() && !currentDb.exists()) {
-            rollBackDb.renameTo(currentDb)
+        if (rollbackDb.exists() && !currentDb.exists()) {
+            rollbackDb.renameTo(currentDb)
         }
     }
 
@@ -70,48 +73,19 @@ class BackupHelper(
     }
 
     fun restoreFromBackup(backupFileUri: Uri): OperationResult {
-        var result: OperationResult
-
-        // delete rollback file
-        val fileDbDir: File = applicationContext
-            .getDatabasePath(DbContract.DATABASE_NAME)
-            .parentFile
-            ?:
-            return OperationResult.Error("Database path no found.")
-
-        val fileRollback = File(fileDbDir, ROLLBACK_FILE_NAME)
-
-        if (fileRollback.exists()) {
-            val docFileRollback = DocumentFile.fromFile(fileRollback)
-            docFileRollback.delete()
-        }
+        // delete rollback file if exists
+        var result: OperationResult = deleteFile(File(databaseDir, ROLLBACK_FILE_NAME))
+        if (result is OperationResult.Error) return result
 
         // copy backup file to database folder
-        val docFileDbDir: DocumentFile = DocumentFile.fromFile(fileDbDir)
-        val fileBackupFileInDbDir = File(fileDbDir, BACKUP_FILE_NAME)
-        val docFileBackupFileInBackupDir: DocumentFile =
-            DocumentFile.fromSingleUri(applicationContext, backupFileUri)
-                ?:
-                return OperationResult.Error("Can't work with backup file.")
-
-        val docFileBackupFileInDbDir: DocumentFile =
-            if (!fileBackupFileInDbDir.exists()) {
-                docFileDbDir.createFile(MIME_TYPE, BACKUP_FILE_NAME)
-                    ?:
-                    return OperationResult.Error("Can't create backup file in database dir.")
-            } else {
-                DocumentFile.fromFile(fileBackupFileInDbDir)
-            }
-
-        result = copyDocumentFile(docFileBackupFileInBackupDir, docFileBackupFileInDbDir)
-
+        result = copyBackupFileToDatabaseFolder(backupFileUri)
         if (result is OperationResult.Error) return result
 
         // check backup file: can it be used for work or not
         result = LocalDb.tryToOpen(applicationContext, BACKUP_FILE_NAME)
 
         if (result is OperationResult.Error) {
-            docFileBackupFileInDbDir.delete()
+            deleteFile(File(databaseDir, BACKUP_FILE_NAME))
             return result
         }
 
@@ -119,35 +93,80 @@ class BackupHelper(
         OsteoDbRepositorySingleton.getInstance(applicationContext).close()
 
         // rename current db file to rollback file
-        val docFileCurrentDb = DocumentFile.fromFile(
-            applicationContext.getDatabasePath(DbContract.DATABASE_NAME)
-        )
-        if (!docFileCurrentDb.renameTo(ROLLBACK_FILE_NAME)) {
-            return OperationResult.Error("Can't make rollback file.")
-        }
+        result = renameDbFile(DbContract.DATABASE_NAME, ROLLBACK_FILE_NAME)
+        if (result is OperationResult.Error) return result
 
         // rename backup file in database directory to current db file name
-        if (!docFileBackupFileInDbDir.renameTo(DbContract.DATABASE_NAME)) {
-            return OperationResult.Error("Can't rename backup file.")
-        }
+        result = renameDbFile(BACKUP_FILE_NAME, DbContract.DATABASE_NAME)
+        if (result is OperationResult.Error) return result
 
         // try to open new current db file
         result = LocalDb.tryToOpen(applicationContext, DbContract.DATABASE_NAME)
 
         if (result is OperationResult.Success) {
-            docFileCurrentDb.delete()
-            return result
+            deleteFile(File(databaseDir, ROLLBACK_FILE_NAME))
+        } else {
+            // rollback changes: return to rollback file
+            deleteFile(File(databaseDir, DbContract.DATABASE_NAME))
+            renameDbFile(ROLLBACK_FILE_NAME, DbContract.DATABASE_NAME)
         }
 
-        // rollback changes:
-        // 1) delete file of current db
-        docFileBackupFileInDbDir.delete()
-
-        // 2) rename rollback file to current db filename
-        docFileCurrentDb.renameTo(DbContract.DATABASE_NAME)
-
-        // 3) init db
+        // re-init current db
         OsteoDbRepositorySingleton.getInstance(applicationContext)
+
+        return result
+    }
+
+    private fun deleteFile(file: File): OperationResult {
+        if (file.exists()) {
+            try {
+                file.delete()
+            } catch (e: SecurityException) {
+                return OperationResult.Error(
+                    "File ${file.name} can't be deleted by security reasons."
+                )
+            }
+        }
+
+        return OperationResult.Success()
+    }
+
+    private fun copyBackupFileToDatabaseFolder(backupFileUri: Uri): OperationResult {
+        var result: OperationResult = OperationResult.Success()
+
+        val fileOutputStreamResult: Result<FileOutputStream> = kotlin.runCatching {
+            FileOutputStream(File(databaseDir, BACKUP_FILE_NAME))
+        }
+
+        val outputStream: FileOutputStream? = fileOutputStreamResult.getOrNull()
+
+        val inputStreamResult: Result<InputStream?> = kotlin.runCatching {
+            applicationContext.contentResolver.openInputStream(backupFileUri)
+        }
+
+        val inputStream: InputStream? = inputStreamResult.getOrNull()
+
+        val docFileBackup: DocumentFile =
+            DocumentFile.fromSingleUri(applicationContext, backupFileUri)
+                ?: return OperationResult.Error("Can't work with backup file.")
+
+        if (inputStream != null && outputStream != null) {
+            val bytesWritten = copyFromStreamToStream(inputStream, outputStream)
+
+            if (bytesWritten == docFileBackup.length()) {
+                result = OperationResult.Success()
+            } else {
+                val errorMessage = "Error occurred in file copying."
+
+                result = deleteFile(File(databaseDir, BACKUP_FILE_NAME))
+
+                if (result is OperationResult.Error) {
+                    result = OperationResult.Error(
+                        "${errorMessage}. ${result.errorMessage}"
+                    )
+                }
+            }
+        }
 
         return result
     }
@@ -247,46 +266,51 @@ class BackupHelper(
         val inputStream: InputStream? = inputStreamResult.getOrNull()
 
         if (inputStream != null && outputStream != null) {
-            val buffer = ByteArray(BUFFER_SIZE)
-            var bytesRead: Int
-            var bytesWritten = 0L
+            val bytesWritten = copyFromStreamToStream(inputStream, outputStream)
 
-            try {
-                outputStream.flush()
-
-                do {
-                    bytesRead = inputStream.read(buffer)
-
-                    if (bytesRead > 0) {
-                        outputStream.write(buffer, 0, bytesRead)
-                        bytesWritten += bytesRead
-                    }
-                } while (bytesRead > 0)
-            } catch (e: IOException) {
-                e.printStackTrace()
-
+            if (bytesWritten == docFileSrc.length()) {
+                result = OperationResult.Success()
+            } else {
                 result = OperationResult.Error(
-                    "Exception occurred in copying process."
+                    "Error occurred in file copying."
                 )
-            } finally {
-                closeStream(inputStream)
-                closeStream(outputStream)
 
-                if (bytesWritten < docFileSrc.length()) {
-                    result = OperationResult.Error(
-                        "Copied $bytesWritten bytes from ${docFileSrc.length()}."
+                if (!docFileDst.delete()) {
+                    docFileDst.renameTo(
+                        "${INVALID_FILE_PREFIX}.$INVALID_FILE_EXTENSION"
                     )
-
-                    if (!docFileDst.delete()) {
-                        docFileDst.renameTo(
-                            "${INVALID_FILE_PREFIX}.$INVALID_FILE_EXTENSION"
-                        )
-                    }
                 }
             }
         }
 
         return result
+    }
+
+    // returns number of bytes written
+    private fun copyFromStreamToStream(inputStream: InputStream, outputStream: OutputStream): Long {
+        val buffer = ByteArray(BUFFER_SIZE)
+        var bytesRead: Int
+        var bytesWritten = 0L
+
+        try {
+            outputStream.flush()
+
+            do {
+                bytesRead = inputStream.read(buffer)
+
+                if (bytesRead > 0) {
+                    outputStream.write(buffer, 0, bytesRead)
+                    bytesWritten += bytesRead
+                }
+            } while (bytesRead > 0)
+        } catch (e: IOException) {
+            e.printStackTrace()
+        } finally {
+            closeStream(inputStream)
+            closeStream(outputStream)
+        }
+
+        return bytesWritten
     }
 
     private fun closeStream(stream: Closeable) {
@@ -314,6 +338,20 @@ class BackupHelper(
         }
 
         backupSettingsSharedPrefs.saveSettings()
+    }
+
+    private fun renameDbFile(fromName: String, toName: String): OperationResult {
+        var result: OperationResult = OperationResult.Error(
+            "Can't rename file from $fromName to $toName."
+        )
+
+        try {
+            if (File(databaseDir, fromName).renameTo(File(databaseDir, toName))) {
+                result = OperationResult.Success()
+            }
+        } catch (e: Exception) { }
+
+        return result
     }
 
     companion object {

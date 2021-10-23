@@ -48,7 +48,10 @@ class CustomerListViewModel(
 
     fun getCustomerList(): List<Customer> = filteredCustomerList.value ?: listOf()
 
-    fun startCustomerListObserving() = customerListLoader.startCustomersTableObserving()
+    fun startCustomerListObserving(applicationContext: Context) {
+        repository.refreshDbInstance(applicationContext)
+        customerListLoader.startCustomersTableObserving()
+    }
 
     fun stopCustomerListObserving() = customerListLoader.stopCustomersTableObserving()
 

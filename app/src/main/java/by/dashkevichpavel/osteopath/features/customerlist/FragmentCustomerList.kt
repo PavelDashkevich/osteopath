@@ -56,7 +56,7 @@ class FragmentCustomerList :
 
     override fun onStart() {
         super.onStart()
-        viewModel.startCustomerListObserving()
+        viewModel.startCustomerListObserving(requireContext().applicationContext)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -206,7 +206,7 @@ class FragmentCustomerList :
     private fun setupObservers() {
         viewModel.isCustomersLoading.observe(viewLifecycleOwner, ::updateLoadingProgress)
         viewModel.filteredCustomerList.observe(viewLifecycleOwner, ::updateCustomersList)
-        viewModel.startCustomerListObserving()
+        viewModel.startCustomerListObserving(requireContext().applicationContext)
     }
 
     private fun openCustomerProfileScreen(customerId: Long) {
