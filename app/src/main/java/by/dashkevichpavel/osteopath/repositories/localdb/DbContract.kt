@@ -4,7 +4,6 @@ import android.provider.BaseColumns
 
 object DbContract {
     const val DATABASE_NAME = "osteopath.db"
-    const val TEMP_DATABASE_NAME = "osteopath_backup.db"
 
     object Disfunctions {
         const val TABLE_NAME = "disfunctions"

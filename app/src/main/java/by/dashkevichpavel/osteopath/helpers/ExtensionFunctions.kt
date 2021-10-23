@@ -145,3 +145,12 @@ fun RequestManager.loadThumbnailFromAttachmentByMimeType(
 
             }
     )
+
+fun Uri.takePersistableReadWritePermissions(context: Context) {
+    context.contentResolver.takePersistableUriPermission(
+        this,
+        Intent.FLAG_GRANT_READ_URI_PERMISSION
+                or
+                Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+    )
+}

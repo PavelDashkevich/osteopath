@@ -57,7 +57,11 @@ class FragmentAllSettings : Fragment(R.layout.fragment_settings_all) {
         }
 
         binding.vMenuItemRestoreFromBackup.setOnClickListener {
-            // TODO go to Restore from backup screen
+            try {
+                findNavController().navigate(R.id.action_fragmentAllSettings_to_fragmentBackupRestore)
+            } catch (e: IllegalArgumentException) {
+                Log.d("OsteoApp", "FragmentAllSettings: setupEventListeners(): exception: ${e.message}")
+            }
         }
     }
 }

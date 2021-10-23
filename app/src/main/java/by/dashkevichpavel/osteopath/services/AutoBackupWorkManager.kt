@@ -1,15 +1,14 @@
 package by.dashkevichpavel.osteopath.services
 
 import android.content.Context
-import androidx.work.ExistingPeriodicWorkPolicy
-import androidx.work.PeriodicWorkRequestBuilder
-import androidx.work.WorkInfo
-import androidx.work.WorkManager
+import androidx.lifecycle.LiveData
+import androidx.work.*
 import java.util.concurrent.TimeUnit
 
 class AutoBackupWorkManager(private val applicationContext: Context) {
+    private val workManager = WorkManager.getInstance(applicationContext)
+
     fun setupWork() {
-        val workManager = WorkManager.getInstance(applicationContext)
         val workInfo = workManager.getWorkInfosForUniqueWorkLiveData(AutoBackupWorker.WORK_NAME)
         var workWithCurrentTagExists = false
 
@@ -41,6 +40,9 @@ class AutoBackupWorkManager(private val applicationContext: Context) {
             workRequest
         )
     }
+
+    fun stopWork(): LiveData<Operation.State> =
+        workManager.cancelUniqueWork(AutoBackupWorker.WORK_NAME).state
 
     companion object {
         // if you change work request parameters (like intervals etc) then change version of settings

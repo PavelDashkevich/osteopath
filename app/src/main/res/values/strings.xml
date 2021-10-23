@@ -1,4 +1,8 @@
 <resources>
+    <plurals name="backups_number">
+        <item quantity="one">копии</item>
+        <item quantity="other">копий</item>
+    </plurals>
     <string name="app_name">Osteopath</string>
     <string name="header_contacts">Контактные данные</string>
     <string name="header_disfunctions">Дисфункции</string>
@@ -13,8 +17,8 @@
     <string name="header_customer_instagram">Instagram</string>
     <string name="header_customer_category">Категория</string>
     <string name="header_disfunction_description">Описание дисфункции</string>
-    <string name="header_session_disfunctions">Дисфункции для отработки на сеансе</string>
 
+    <string name="header_session_disfunctions">Дисфункции для отработки на сеансе</string>
     <string name="category_work">В работе</string>
     <string name="category_work_done">Работа завершена</string>
     <string name="category_no_help">Не удалось помочь</string>
@@ -38,16 +42,16 @@
     <string name="customer_filter_menu_item_select_all">Установить все</string>
     <string name="customer_filter_menu_item_deselect_all">Сбросить все</string>
     <string name="hint_customer_filter_or_search_result">По заданным условиям\nни одного клиента не найдено.</string>
-    <string name="customer_profile_new_customer">Новый клиент</string>
     <!-- TODO: Remove or change this placeholder text -->
+    <string name="customer_profile_new_customer">Новый клиент</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="disfunction_status_work">В работе</string>
     <string name="disfunction_status_work_done_group">Отработаны</string>
     <string name="disfunction_status_work_done">Отработана</string>
     <string name="disfunction_status_no_help">Не удалось отработать</string>
     <string name="disfunction_status_wrong_diagnosed_group">Неверно диагностированы</string>
-    <string name="disfunction_status_wrong_diagnosed">Неверно диагностирована</string>
 
+    <string name="disfunction_status_wrong_diagnosed">Неверно диагностирована</string>
     <string name="alert_dialog_cancel_changes">Данные были изменены. Сохранить изменения?</string>
     <string name="alert_dialog_button_yes">Да</string>
     <string name="alert_dialog_button_no">Нет</string>
@@ -75,19 +79,20 @@
     <string name="settings_backup_restore">Восстановление базы из резервной копии</string>
     <string name="settings_backup_restore_hint">Загрузите базу данных из сохраненного ранее файла.</string>
     <string name="header_backup_directory">Папка для хранения копий</string>
+    <string name="header_backup_file">Файл резервной копии БД</string>
     <string name="backup_create_hint">Выберите папку, в которой будут сохраняться резервные копии базы данных:</string>
+    <string name="backup_restore_hint">Выберите файл резервной копии, из которого нужно восстановить базу данных:</string>
     <string name="backup_create_max_copies">Будет храниться не более %1$d %2$s. Программа автоматически удалит самую старую копию.</string>
-    <plurals name="backups_number">
-        <item quantity="one">копии</item>
-        <item quantity="other">копий</item>
-    </plurals>
     <string name="last_backup_status_successful">Последняя копия создана %1$s в %2$s %3$s.</string>
     <string name="last_backup_status_failed">Последняя попытка создать копию БД %1$s %2$s в %3$s завершилась ошибкой: %4$s</string>
     <string name="backup_type_manual">вручную</string>
     <string name="backup_type_auto">автоматически</string>
     <string name="create_backup_manual">Сохранить копию вручную</string>
+    <string name="restore_from_backup">Восстановить БД из файла</string>
     <string name="create_backup_auto">Сохранять копии автоматически\nкаждые %1$d ч</string>
     <string name="backup_dir_not_exists">Указанная директория не обнаружена, выберите другую.</string>
     <string name="backup_dir_not_accessible">Нет доступа к указанной директории, перевыберите ее или выберите другую.</string>
-    <string name="backup_creation_progress">Пожалуйста, дождитесь завершения операции</string>
+    <string name="backup_operation_progress">Пожалуйста, дождитесь завершения операции</string>
+    <string name="backup_restore_success_message">Восстановление из резервной копии завершено успешно.</string>
+    <string name="backup_restore_fail_message">Восстановление из резервной копии завершено с ошибкой: %1$s</string>
 </resources>

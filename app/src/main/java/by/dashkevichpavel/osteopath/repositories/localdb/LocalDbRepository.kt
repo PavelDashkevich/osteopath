@@ -149,6 +149,8 @@ class LocalDbRepository(applicationContext: Context) {
         withContext(Dispatchers.IO) {
             localDb.customerDao.updateIsArchived(customerId, isArchived)
         }
+
+    fun close() = LocalDb.close()
 }
 
 object OsteoDbRepositorySingleton {

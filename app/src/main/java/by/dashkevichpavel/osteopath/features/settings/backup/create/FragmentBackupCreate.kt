@@ -16,6 +16,7 @@ import by.dashkevichpavel.osteopath.BackClickListener
 import by.dashkevichpavel.osteopath.helpers.backups.BackupHelper
 import by.dashkevichpavel.osteopath.helpers.permissions.PermissionsGrantedListener
 import by.dashkevichpavel.osteopath.helpers.setupToolbar
+import by.dashkevichpavel.osteopath.helpers.takePersistableReadWritePermissions
 import by.dashkevichpavel.osteopath.helpers.toEditable
 import by.dashkevichpavel.osteopath.services.AutoBackupWorkManager
 import by.dashkevichpavel.osteopath.viewmodel.OsteoViewModelFactory
@@ -191,19 +192,13 @@ class FragmentBackupCreate :
             if (showProgressIndicator) View.GONE else View.VISIBLE
         binding.lpiProgress.visibility =
             if (showProgressIndicator) View.VISIBLE else View.GONE
-        binding.tvBackupCreationProgress.visibility =
+        binding.tvBackupOperationProgress.visibility =
             if (showProgressIndicator) View.VISIBLE else View.GONE
         binding.ibSetBackupDir.isEnabled = !showProgressIndicator
     }
 
     private fun onBackupDirPicked(uriDir: Uri) {
-        requireContext().contentResolver.takePersistableUriPermission(
-            uriDir,
-            Intent.FLAG_GRANT_READ_URI_PERMISSION
-                    or
-                    Intent.FLAG_GRANT_WRITE_URI_PERMISSION
-        )
-
+        uriDir.takePersistableReadWritePermissions(requireContext())
         viewModel.pickDirectory(uriDir)
         viewModel.checkSettings()
     }

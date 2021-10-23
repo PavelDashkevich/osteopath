@@ -5,12 +5,13 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import by.dashkevichpavel.osteopath.helpers.backups.BackupHelper
+import by.dashkevichpavel.osteopath.helpers.operationresult.OperationResult
 import by.dashkevichpavel.osteopath.repositories.localdb.dao.*
 import by.dashkevichpavel.osteopath.repositories.localdb.entity.*
 import by.dashkevichpavel.osteopath.repositories.localdb.migrations.Migration_2_3
 import by.dashkevichpavel.osteopath.repositories.localdb.migrations.Migration_3_4
 import by.dashkevichpavel.osteopath.repositories.localdb.migrations.Migration_4_5
-import java.io.File
 
 @Database(
     entities = [
@@ -36,28 +37,53 @@ abstract class LocalDb : RoomDatabase() {
 
         fun getInstance(applicationContext: Context): LocalDb {
             if (instance == null || instance?.isOpen == false) {
-                val currentDb: File = applicationContext.getDatabasePath(DbContract.DATABASE_NAME)
-                val tempDb = File((currentDb.parent ?: "") + DbContract.TEMP_DATABASE_NAME)
-
-                if (tempDb.exists() && !currentDb.exists()) {
-                    tempDb.renameTo(currentDb)
-                }
-
-                instance = Room.databaseBuilder(
-                    applicationContext,
-                    LocalDb::class.java,
-                    DbContract.DATABASE_NAME
-                )
-                    .addMigrations(
-                        Migration_2_3,
-                        Migration_3_4,
-                        Migration_4_5
-                    )
-                    .setJournalMode(JournalMode.TRUNCATE)
-                    .build()
+                BackupHelper(applicationContext).rollbackRestoringFromBackupIfNeeded()
+                instance = openDatabase(applicationContext, DbContract.DATABASE_NAME)
             }
 
             return instance as LocalDb
+        }
+
+        private fun openDatabase(
+            applicationContext: Context,
+            databaseName: String = DbContract.DATABASE_NAME
+        ): LocalDb {
+            return Room.databaseBuilder(
+                applicationContext,
+                LocalDb::class.java,
+                databaseName
+            )
+                .addMigrations(
+                    Migration_2_3,
+                    Migration_3_4,
+                    Migration_4_5
+                )
+                .setJournalMode(JournalMode.TRUNCATE)
+                .build()
+        }
+
+        fun tryToOpen(
+            applicationContext: Context,
+            databaseName: String = DbContract.DATABASE_NAME
+        ): OperationResult {
+            var result: OperationResult = OperationResult.Success()
+
+            val resultOfTry: Result<LocalDb> = kotlin.runCatching {
+                openDatabase(applicationContext, databaseName)
+            }
+
+            if (resultOfTry.isSuccess) {
+                resultOfTry.getOrNull()?.close()
+            } else {
+                result = OperationResult.Error("The app can't use this database file.")
+            }
+
+            return result
+        }
+
+        fun close() {
+            instance?.close()
+            instance = null
         }
     }
 }

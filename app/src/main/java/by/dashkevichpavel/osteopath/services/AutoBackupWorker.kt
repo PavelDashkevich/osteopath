@@ -3,7 +3,7 @@ package by.dashkevichpavel.osteopath.services
 import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
-import by.dashkevichpavel.osteopath.helpers.backups.BackupCreateResult
+import by.dashkevichpavel.osteopath.helpers.operationresult.OperationResult
 import by.dashkevichpavel.osteopath.helpers.backups.BackupHelper
 
 class AutoBackupWorker(
@@ -15,7 +15,7 @@ class AutoBackupWorker(
         val backupHelper = BackupHelper(applicationContext)
 
         if (backupHelper.backupSettingsSharedPrefs.autoBackupEnabled) {
-            if (backupHelper.createBackup() is BackupCreateResult.Error) {
+            if (backupHelper.createBackup() is OperationResult.Error) {
                 result = Result.retry()
             }
         }

@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".features.settings.backup.create.FragmentBackupCreate">
+    tools:context=".features.settings.backup.restore.FragmentBackupRestore">
 
     <include
         android:id="@+id/lToolbar"
@@ -35,80 +35,58 @@
                 app:layout_constraintGuide_end="16dp"/>
 
             <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/tvBackupCreateHint"
+                android:id="@+id/tvBackupRestoreHint"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 app:layout_constraintStart_toStartOf="@id/glVerticalLeft"
                 app:layout_constraintEnd_toEndOf="@id/glVerticalRight"
                 app:layout_constraintTop_toTopOf="parent"
                 android:layout_marginTop="16dp"
-                android:text="@string/backup_create_hint"
+                android:text="@string/backup_restore_hint"
                 style="@style/TextAppearance.AppCompat.Body1"/>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/tilBackupDir"
+                android:id="@+id/tilBackupFile"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 app:layout_constraintLeft_toLeftOf="@id/glVerticalLeft"
-                app:layout_constraintRight_toLeftOf="@id/ibSetBackupDir"
-                app:layout_constraintTop_toBottomOf="@id/tvBackupCreateHint"
+                app:layout_constraintRight_toLeftOf="@id/ibPickBackupFile"
+                app:layout_constraintTop_toBottomOf="@id/tvBackupRestoreHint"
                 app:boxBackgroundColor="@android:color/transparent">
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/etBackupDir"
+                    android:id="@+id/etBackupFile"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/header_backup_directory"
+                    android:hint="@string/header_backup_file"
                     android:clickable="false"
                     android:focusable="false"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 
             <androidx.appcompat.widget.AppCompatImageButton
-                android:id="@+id/ibSetBackupDir"
+                android:id="@+id/ibPickBackupFile"
                 app:layout_constraintRight_toRightOf="@id/glVerticalRight"
-                app:layout_constraintTop_toTopOf="@id/tilBackupDir"
-                app:layout_constraintBottom_toBottomOf="@id/tilBackupDir"
+                app:layout_constraintTop_toTopOf="@id/tilBackupFile"
+                app:layout_constraintBottom_toBottomOf="@id/tilBackupFile"
                 style="@style/ImageButton.SetDir"/>
-
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/tvMaxBackups"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="@id/glVerticalLeft"
-                app:layout_constraintEnd_toEndOf="@id/glVerticalRight"
-                app:layout_constraintTop_toBottomOf="@id/tilBackupDir"
-                android:layout_marginTop="16dp"
-                style="@style/TextAppearance.AppCompat.Body1"
-                android:text="@string/backup_create_max_copies"/>
-
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/tvLastBackupStatus"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="@id/glVerticalLeft"
-                app:layout_constraintEnd_toEndOf="@id/glVerticalRight"
-                app:layout_constraintTop_toBottomOf="@id/tvMaxBackups"
-                android:layout_marginTop="16dp"
-                style="@style/TextAppearance.AppCompat.Body1"
-                android:text="@string/last_backup_status_successful"/>
 
             <View
                 android:id="@+id/vHelper"
                 android:layout_width="0dp"
                 android:layout_height="80dp"
-                app:layout_constraintTop_toBottomOf="@id/tvLastBackupStatus"
+                app:layout_constraintTop_toBottomOf="@id/tilBackupFile"
                 app:layout_constraintStart_toStartOf="@id/glVerticalLeft"
                 app:layout_constraintEnd_toEndOf="@id/glVerticalRight"/>
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnCreateBackupManual"
+                android:id="@+id/btnRestoreFromBackup"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintStart_toStartOf="@id/vHelper"
                 app:layout_constraintEnd_toEndOf="@id/vHelper"
                 app:layout_constraintTop_toTopOf="@id/vHelper"
                 app:layout_constraintBottom_toBottomOf="@id/vHelper"
-                android:text="@string/create_backup_manual"/>
+                android:text="@string/restore_from_backup"/>
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/tvBackupOperationProgress"
@@ -134,16 +112,6 @@
                 app:layout_constraintBottom_toBottomOf="@id/vHelper"
                 android:indeterminate="true"
                 android:visibility="gone"/>
-
-            <com.google.android.material.switchmaterial.SwitchMaterial
-                android:id="@+id/swEnableAutoBackup"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="@id/glVerticalLeft"
-                app:layout_constraintEnd_toEndOf="@id/glVerticalRight"
-                app:layout_constraintTop_toBottomOf="@id/btnCreateBackupManual"
-                android:layout_marginTop="16dp"
-                android:text="@string/create_backup_auto"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>

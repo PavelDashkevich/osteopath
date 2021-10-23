@@ -5,13 +5,12 @@ import android.net.Uri
 import android.util.Log
 import androidx.documentfile.provider.DocumentFile
 import by.dashkevichpavel.osteopath.helpers.formatAsDateTimeStamp
+import by.dashkevichpavel.osteopath.helpers.operationresult.OperationResult
 import by.dashkevichpavel.osteopath.repositories.localdb.DbContract
+import by.dashkevichpavel.osteopath.repositories.localdb.LocalDb
 import by.dashkevichpavel.osteopath.repositories.localdb.OsteoDbRepositorySingleton
 import by.dashkevichpavel.osteopath.repositories.sharedprefs.BackupSettingsSharedPreferences
-import java.io.Closeable
-import java.io.IOException
-import java.io.InputStream
-import java.io.OutputStream
+import java.io.*
 import java.util.*
 
 class BackupHelper(
@@ -19,6 +18,15 @@ class BackupHelper(
 ) {
     private var backupDirFile: DocumentFile? = null
     val backupSettingsSharedPrefs = BackupSettingsSharedPreferences(applicationContext)
+
+    fun rollbackRestoringFromBackupIfNeeded() {
+        val currentDb: File = applicationContext.getDatabasePath(DbContract.DATABASE_NAME)
+        val rollBackDb = File((currentDb.parent ?: "") + ROLLBACK_FILE_NAME)
+
+        if (rollBackDb.exists() && !currentDb.exists()) {
+            rollBackDb.renameTo(currentDb)
+        }
+    }
 
     fun checkBackupDir(): BackupDirCheckResult = initBackupDirFile()
 
@@ -45,9 +53,9 @@ class BackupHelper(
         return result
     }
 
-    suspend fun createBackup(isAutoBackup: Boolean = true): BackupCreateResult {
+    suspend fun createBackup(isAutoBackup: Boolean = true): OperationResult {
         val backupDirCheckResult = initBackupDirFile()
-        var backupCreateResult: BackupCreateResult = BackupCreateResult.Success()
+        var backupCreateResult: OperationResult = OperationResult.Success()
 
         if (backupDirCheckResult == BackupDirCheckResult.EXISTS_ACCESSIBLE) {
             val repository = OsteoDbRepositorySingleton.getInstance(applicationContext)
@@ -59,6 +67,89 @@ class BackupHelper(
         saveLastBackupStatus(isAutoBackup, backupCreateResult)
 
         return backupCreateResult
+    }
+
+    fun restoreFromBackup(backupFileUri: Uri): OperationResult {
+        var result: OperationResult
+
+        // delete rollback file
+        val fileDbDir: File = applicationContext
+            .getDatabasePath(DbContract.DATABASE_NAME)
+            .parentFile
+            ?:
+            return OperationResult.Error("Database path no found.")
+
+        val fileRollback = File(fileDbDir, ROLLBACK_FILE_NAME)
+
+        if (fileRollback.exists()) {
+            val docFileRollback = DocumentFile.fromFile(fileRollback)
+            docFileRollback.delete()
+        }
+
+        // copy backup file to database folder
+        val docFileDbDir: DocumentFile = DocumentFile.fromFile(fileDbDir)
+        val fileBackupFileInDbDir = File(fileDbDir, BACKUP_FILE_NAME)
+        val docFileBackupFileInBackupDir: DocumentFile =
+            DocumentFile.fromSingleUri(applicationContext, backupFileUri)
+                ?:
+                return OperationResult.Error("Can't work with backup file.")
+
+        val docFileBackupFileInDbDir: DocumentFile =
+            if (!fileBackupFileInDbDir.exists()) {
+                docFileDbDir.createFile(MIME_TYPE, BACKUP_FILE_NAME)
+                    ?:
+                    return OperationResult.Error("Can't create backup file in database dir.")
+            } else {
+                DocumentFile.fromFile(fileBackupFileInDbDir)
+            }
+
+        result = copyDocumentFile(docFileBackupFileInBackupDir, docFileBackupFileInDbDir)
+
+        if (result is OperationResult.Error) return result
+
+        // check backup file: can it be used for work or not
+        result = LocalDb.tryToOpen(applicationContext, BACKUP_FILE_NAME)
+
+        if (result is OperationResult.Error) {
+            docFileBackupFileInDbDir.delete()
+            return result
+        }
+
+        // close current DB
+        OsteoDbRepositorySingleton.getInstance(applicationContext).close()
+
+        // rename current db file to rollback file
+        val docFileCurrentDb = DocumentFile.fromFile(
+            applicationContext.getDatabasePath(DbContract.DATABASE_NAME)
+        )
+        if (!docFileCurrentDb.renameTo(ROLLBACK_FILE_NAME)) {
+            return OperationResult.Error("Can't make rollback file.")
+        }
+
+        // rename backup file in database directory to current db file name
+        if (!docFileBackupFileInDbDir.renameTo(DbContract.DATABASE_NAME)) {
+            return OperationResult.Error("Can't rename backup file.")
+        }
+
+        // try to open new current db file
+        result = LocalDb.tryToOpen(applicationContext, DbContract.DATABASE_NAME)
+
+        if (result is OperationResult.Success) {
+            docFileCurrentDb.delete()
+            return result
+        }
+
+        // rollback changes:
+        // 1) delete file of current db
+        docFileBackupFileInDbDir.delete()
+
+        // 2) rename rollback file to current db filename
+        docFileCurrentDb.renameTo(DbContract.DATABASE_NAME)
+
+        // 3) init db
+        OsteoDbRepositorySingleton.getInstance(applicationContext)
+
+        return result
     }
 
     private fun deleteOldestBackupFile() {
@@ -109,8 +200,8 @@ class BackupHelper(
         }
     }
 
-    private fun createBackupFile(): BackupCreateResult {
-        var backupCreateResult: BackupCreateResult = BackupCreateResult.Success()
+    private fun createBackupFile(): OperationResult {
+        var backupCreateResult: OperationResult = OperationResult.Success()
 
         backupDirFile?.let { dirFile ->
             // copy database file to backup folder
@@ -118,85 +209,84 @@ class BackupHelper(
                 applicationContext.getDatabasePath(DbContract.DATABASE_NAME)
             )
 
-            /*val mimeType = applicationContext.contentResolver.getType(currentDbFile.uri)
-
-            if (mimeType == null) {
-                backupCreateResult = BackupCreateResult.Error(
-                    "MIME type is not defined for database file."
-                )
-                return@let
-            }*/
-
             var fileExtension = DbContract.DATABASE_NAME.substringAfterLast(".", "")
             fileExtension = if (fileExtension.isNotEmpty()) ".$fileExtension" else ""
             val currentDateTimeStamp = Date(System.currentTimeMillis()).formatAsDateTimeStamp()
 
             val newBackupFile: DocumentFile? = dirFile.createFile(
-                "application/vnd.sqlite3", // mimeType,
+                MIME_TYPE,
                 "${BACKUP_NAME_PREFIX}_$currentDateTimeStamp$fileExtension"
             )
 
             if (newBackupFile == null) {
-                backupCreateResult = BackupCreateResult.Error(
+                backupCreateResult = OperationResult.Error(
                     "New backup file was not created."
                 )
                 return@let
             }
 
-            val outputStreamResult: Result<OutputStream?> = kotlin.runCatching {
-                applicationContext.contentResolver.openOutputStream(newBackupFile.uri)
-            }
+            backupCreateResult = copyDocumentFile(newBackupFile, currentDbFile)
+        }
 
-            val outputStream: OutputStream? = outputStreamResult.getOrNull()
+        return backupCreateResult
+    }
 
-            val inputStreamResult: Result<InputStream?> = kotlin.runCatching {
-                applicationContext.contentResolver.openInputStream(currentDbFile.uri)
-            }
+    private fun copyDocumentFile(docFileSrc: DocumentFile, docFileDst: DocumentFile): OperationResult {
+        var result: OperationResult = OperationResult.Success()
 
-            val inputStream: InputStream? = inputStreamResult.getOrNull()
+        val outputStreamResult: Result<OutputStream?> = kotlin.runCatching {
+            applicationContext.contentResolver.openOutputStream(docFileDst.uri)
+        }
 
-            if (inputStream != null && outputStream != null) {
-                val buffer = ByteArray(BUFFER_SIZE)
-                var bytesRead: Int = 0
-                var bytesWritten = 0L
+        val outputStream: OutputStream? = outputStreamResult.getOrNull()
 
-                try {
-                    do {
-                        bytesRead = inputStream.read(buffer)
+        val inputStreamResult: Result<InputStream?> = kotlin.runCatching {
+            applicationContext.contentResolver.openInputStream(docFileSrc.uri)
+        }
 
-                        if (bytesRead > 0) {
-                            outputStream.write(buffer, 0, bytesRead)
-                            bytesWritten += bytesRead
-                        }
-                    } while (bytesRead > 0)
-                } catch (e: IOException) {
-                    e.printStackTrace()
+        val inputStream: InputStream? = inputStreamResult.getOrNull()
 
-                    backupCreateResult = BackupCreateResult.Error(
-                        "Exception occurred in copying process."
+        if (inputStream != null && outputStream != null) {
+            val buffer = ByteArray(BUFFER_SIZE)
+            var bytesRead: Int
+            var bytesWritten = 0L
+
+            try {
+                outputStream.flush()
+
+                do {
+                    bytesRead = inputStream.read(buffer)
+
+                    if (bytesRead > 0) {
+                        outputStream.write(buffer, 0, bytesRead)
+                        bytesWritten += bytesRead
+                    }
+                } while (bytesRead > 0)
+            } catch (e: IOException) {
+                e.printStackTrace()
+
+                result = OperationResult.Error(
+                    "Exception occurred in copying process."
+                )
+            } finally {
+                closeStream(inputStream)
+                closeStream(outputStream)
+
+                if (bytesWritten < docFileSrc.length()) {
+                    result = OperationResult.Error(
+                        "Copied $bytesWritten bytes from ${docFileSrc.length()}."
                     )
-                } finally {
-                    closeStream(inputStream)
-                    closeStream(outputStream)
 
-                    if (bytesWritten < currentDbFile.length()) {
-                        backupCreateResult = BackupCreateResult.Error(
-                            "Copied $bytesWritten bytes from ${currentDbFile.length()}."
+                    if (!docFileDst.delete()) {
+                        docFileDst.renameTo(
+                            "${INVALID_FILE_PREFIX}.$INVALID_FILE_EXTENSION"
                         )
-
-                        if (!newBackupFile.delete()) {
-                            newBackupFile.renameTo(
-                                INVALID_FILE_PREFIX + "_" +
-                                        currentDateTimeStamp + "." +
-                                        INVALID_FILE_EXTENSION
-                            )
-                        }
                     }
                 }
             }
         }
 
-        return backupCreateResult
+        return result
     }
 
     private fun closeStream(stream: Closeable) {
@@ -208,16 +298,16 @@ class BackupHelper(
         }
     }
 
-    private fun saveLastBackupStatus(isAutoBackup: Boolean, backupCreateResult: BackupCreateResult) {
+    private fun saveLastBackupStatus(isAutoBackup: Boolean, backupCreateResult: OperationResult) {
         backupSettingsSharedPrefs.lastBackupDateTime = System.currentTimeMillis()
         backupSettingsSharedPrefs.isLastBackupTypeAuto = isAutoBackup
 
         when (backupCreateResult) {
-            is BackupCreateResult.Error -> {
+            is OperationResult.Error -> {
                 backupSettingsSharedPrefs.isLastBackupFailed = true
                 backupSettingsSharedPrefs.lastBackupFailureMessage = backupCreateResult.errorMessage
             }
-            is BackupCreateResult.Success -> {
+            is OperationResult.Success -> {
                 backupSettingsSharedPrefs.isLastBackupFailed = false
                 backupSettingsSharedPrefs.lastBackupFailureMessage = ""
             }
@@ -232,5 +322,8 @@ class BackupHelper(
         const val INVALID_FILE_PREFIX = "corrupted"
         const val INVALID_FILE_EXTENSION = "tmp"
         const val BUFFER_SIZE = 1024
+        const val MIME_TYPE = "application/octet-stream" //"application/vnd.sqlite3"
+        const val ROLLBACK_FILE_NAME = "osteo_rollback.db"
+        const val BACKUP_FILE_NAME = "osteo_backup.db"
     }
 }

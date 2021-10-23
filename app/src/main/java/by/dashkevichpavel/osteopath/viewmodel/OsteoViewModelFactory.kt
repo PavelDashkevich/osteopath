@@ -12,6 +12,7 @@ import by.dashkevichpavel.osteopath.features.selectdisfunctions.SelectDisfunctio
 import by.dashkevichpavel.osteopath.features.session.SessionViewModel
 import by.dashkevichpavel.osteopath.features.sessionlist.SessionListViewModel
 import by.dashkevichpavel.osteopath.features.settings.backup.create.BackupCreateViewModel
+import by.dashkevichpavel.osteopath.features.settings.backup.restore.BackupRestoreViewModel
 
 class OsteoViewModelFactory(
     private val applicationContext: Context
@@ -41,8 +42,9 @@ class OsteoViewModelFactory(
                 SessionListViewModel()
             BackupCreateViewModel::class.java ->
                 BackupCreateViewModel(applicationContext)
+            BackupRestoreViewModel::class.java ->
+                BackupRestoreViewModel(applicationContext)
             else ->
                 throw IllegalArgumentException("$modelClass is not registered ViewModel")
         } as T
-
 }

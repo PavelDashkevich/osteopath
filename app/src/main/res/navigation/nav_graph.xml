@@ -79,12 +79,21 @@
         <action
             android:id="@+id/action_fragmentAllSettings_to_fragmentBackupCreate"
             app:destination="@id/fragmentBackupCreate" />
+        <action
+            android:id="@+id/action_fragmentAllSettings_to_fragmentBackupRestore"
+            app:destination="@id/fragmentBackupRestore" />
     </fragment>
     <fragment
         android:id="@+id/fragmentBackupCreate"
         android:name="by.dashkevichpavel.osteopath.features.settings.backup.create.FragmentBackupCreate"
         android:label="FragmentBackupCreate"
         tools:layout="@layout/fragment_backup_create">
+    </fragment>
+    <fragment
+        android:id="@+id/fragmentBackupRestore"
+        android:name="by.dashkevichpavel.osteopath.features.settings.backup.restore.FragmentBackupRestore"
+        android:label="FragmentBackupRestore"
+        tools:layout="@layout/fragment_backup_restore">
     </fragment>
     <fragment
         android:id="@+id/fragmentSessionList"
