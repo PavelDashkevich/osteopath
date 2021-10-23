@@ -20,4 +20,12 @@ interface AttachmentDao {
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
     suspend fun update(attachmentEntity: AttachmentEntity)
+
+    @Query("""DELETE FROM ${DbContract.Attachments.TABLE_NAME}
+        WHERE ${DbContract.Attachments.COLUMN_NAME_ID} == :attachmentId""")
+    suspend fun deleteById(attachmentId: Long)
+
+    @Query("""DELETE FROM ${DbContract.Attachments.TABLE_NAME}
+        WHERE ${DbContract.Attachments.COLUMN_NAME_ID} IN (:attachmentIds)""")
+    suspend fun deleteByIds(attachmentIds: List<Long>)
 }

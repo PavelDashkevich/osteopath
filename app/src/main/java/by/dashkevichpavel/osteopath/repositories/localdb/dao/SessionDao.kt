@@ -22,6 +22,10 @@ interface SessionDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(sessionEntity: SessionEntity)
 
+    @Query("""DELETE FROM ${DbContract.Sessions.TABLE_NAME}
+        WHERE ${DbContract.Sessions.COLUMN_NAME_ID} == :sessionId""")
+    suspend fun deleteById(sessionId: Long)
+
     @Transaction
     @Query("""SELECT * FROM ${DbContract.Sessions.TABLE_NAME} 
         WHERE ${DbContract.Sessions.COLUMN_NAME_CUSTOMER_ID} == :customerId""")

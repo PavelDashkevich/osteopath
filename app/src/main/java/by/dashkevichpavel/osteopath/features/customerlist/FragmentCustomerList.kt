@@ -10,6 +10,7 @@ import android.widget.LinearLayout
 import androidx.appcompat.widget.PopupMenu
 import androidx.fragment.app.Fragment
 import androidx.appcompat.widget.SearchView
+import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
@@ -18,6 +19,7 @@ import by.dashkevichpavel.osteopath.R
 import by.dashkevichpavel.osteopath.databinding.FragmentCustomerListBinding
 import by.dashkevichpavel.osteopath.model.Customer
 import by.dashkevichpavel.osteopath.features.customerprofile.FragmentCustomerProfile
+import by.dashkevichpavel.osteopath.features.dialogs.CustomerDeleteConfirmationDialog
 import by.dashkevichpavel.osteopath.helpers.safelyNavigateTo
 import by.dashkevichpavel.osteopath.helpers.setupToolbar
 import by.dashkevichpavel.osteopath.viewmodel.OsteoViewModelFactory
@@ -57,6 +59,11 @@ class FragmentCustomerList :
         viewModel.startCustomerListObserving(requireContext().applicationContext)
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.startCustomerListObserving(requireContext().applicationContext)
+    }
+
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.customer_list_menu, menu)
 
@@ -77,6 +84,11 @@ class FragmentCustomerList :
         }
 
         return true
+    }
+
+    override fun onPause() {
+        super.onPause()
+        viewModel.stopCustomerListObserving()
     }
 
     override fun onStop() {
@@ -187,12 +199,14 @@ class FragmentCustomerList :
     }
 
     private fun setupEventListeners() {
+        childFragmentManager.setFragmentResultListener(
+            CustomerDeleteConfirmationDialog.KEY_RESULT,
+            viewLifecycleOwner,
+            this::onCustomerDeleteConfirm
+        )
+
         binding.fabAddCustomer.setOnClickListener {
             openCustomerProfileScreen(0L)
-        }
-
-        binding.fabAddTestData.setOnClickListener {
-            viewModel.loadTestData()
         }
     }
 
@@ -220,21 +234,53 @@ class FragmentCustomerList :
         )
         popupMenu.setForceShowIcon(true)
         popupMenu.setOnMenuItemClickListener { menuItem: MenuItem ->
-            when(menuItem.itemId) {
-                R.id.mi_archive -> viewModel.putCustomerToArchive(customer.id)
-                R.id.mi_unarchive -> viewModel.removeCustomerFromArchive(customer.id)
-                R.id.mi_delete -> {}
-                else -> return@setOnMenuItemClickListener false
-            }
-
-            true
+            onCustomerContextMenuItemClick(customer, menuItem)
         }
         popupMenu.show()
+    }
+
+    private fun onCustomerContextMenuItemClick(
+        customer: Customer,
+        menuItem: MenuItem
+    ): Boolean {
+        when(menuItem.itemId) {
+            R.id.mi_archive -> viewModel.putCustomerToArchive(customer.id)
+            R.id.mi_unarchive -> viewModel.removeCustomerFromArchive(customer.id)
+            R.id.mi_delete -> {
+                CustomerDeleteConfirmationDialog.show(
+                    childFragmentManager,
+                    KEY_CUSTOMER_DELETE_CONFIRMATION,
+                    customer.name,
+                    customer.id
+                )
+            }
+            else -> return false
+        }
+
+        return true
+    }
+
+    private fun onCustomerDeleteConfirm(key: String, bundle: Bundle) {
+        val result = CustomerDeleteConfirmationDialog.extractResult(bundle)
+        val userAction = result.second
+        val customerId = result.first
+
+        when (userAction) {
+            CustomerDeleteConfirmationDialog.UserAction.DELETE ->
+                viewModel.deleteCustomer(customerId)
+            CustomerDeleteConfirmationDialog.UserAction.ARCHIVE ->
+                viewModel.putCustomerToArchive(customerId)
+            else -> { /* do nothing */ }
+        }
     }
 
     override fun onCustomerClick(customerId: Long) = openCustomerProfileScreen(customerId)
     override fun onCustomerContextMenuClick(customer: Customer, anchorView: View) =
         showCustomerContextMenu(customer, anchorView)
+
+    companion object {
+        private const val KEY_CUSTOMER_DELETE_CONFIRMATION = "KEY_CUSTOMER_DELETE_CONFIRMATION"
+    }
 }
 
 interface CustomerClickListener {

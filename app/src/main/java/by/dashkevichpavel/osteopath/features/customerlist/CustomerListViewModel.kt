@@ -44,8 +44,6 @@ class CustomerListViewModel(
     fun setQueryString(newSearchQuery: String) =
         customerListProcessor.setQueryString(newSearchQuery)
 
-    fun loadTestData() = customerListLoader.loadTestData()
-
     fun getCustomerList(): List<Customer> = filteredCustomerList.value ?: listOf()
 
     fun startCustomerListObserving(applicationContext: Context) {
@@ -60,6 +58,8 @@ class CustomerListViewModel(
 
     fun removeCustomerFromArchive(customerId: Long) =
         customerListLoader.removeCustomerFromArchive(customerId)
+
+    fun deleteCustomer(customerId: Long) = customerListLoader.deleteCustomer(customerId)
 
     override fun onCustomersProcessed(customers: List<Customer>, isSearchOrFilterResult: Boolean) {
         filteredCustomerList.value = customers

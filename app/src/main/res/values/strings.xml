@@ -97,4 +97,8 @@
     <string name="backup_operation_progress">Пожалуйста, дождитесь завершения операции</string>
     <string name="backup_restore_success_message">Восстановление из резервной копии завершено успешно.</string>
     <string name="backup_restore_fail_message">Восстановление из резервной копии завершено с ошибкой: %1$s</string>
+    <string name="customer_delete_dialog_message">Вы действительно хотите удалить профиль клиента %1$s? Будут удалены также все дисфункции, сеансы и ссылки на файлы (сами файлы удалены не будут). Действие нельзя будет отменить. Вы можете поместить в архив профиль клиента вместо удаления или подтвердить удаление.</string>
+    <string name="customer_delete_dialog_button_delete">Удалить</string>
+    <string name="customer_delete_dialog_button_cancel">Отменить</string>
+    <string name="customer_delete_dialog_button_archive">В архив</string>
 </resources>

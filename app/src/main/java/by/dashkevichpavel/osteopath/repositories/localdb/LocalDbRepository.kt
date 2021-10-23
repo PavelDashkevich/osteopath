@@ -150,6 +150,29 @@ class LocalDbRepository(applicationContext: Context) {
             localDb.customerDao.updateIsArchived(customerId, isArchived)
         }
 
+    suspend fun deleteCustomerById(customerId: Long) = withContext(Dispatchers.IO) {
+        val customer = getCustomerById(
+            customerId,
+            loadDisfunctions = true,
+            loadSessions = true,
+            loadAttachments = true
+        )
+
+        customer?.let {
+            customer.sessions.forEach { session ->
+                localDb.sessionDisfunctionDao.deleteBySessionId(session.id)
+                localDb.sessionDao.deleteById(session.id)
+            }
+            localDb.disfunctionDao.deleteByIds(
+                customer.disfunctions.map { disfunction -> disfunction.id }
+            )
+            localDb.attachmentDao.deleteByIds(
+                customer.attachments.map { attachment -> attachment.id }
+            )
+            localDb.customerDao.deleteById(customerId)
+        }
+    }
+
     fun close() = LocalDb.close()
 }
 

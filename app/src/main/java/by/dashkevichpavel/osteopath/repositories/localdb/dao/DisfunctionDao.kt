@@ -31,4 +31,12 @@ interface DisfunctionDao {
     @Query("""SELECT * FROM ${DbContract.Disfunctions.TABLE_NAME} 
         WHERE ${DbContract.Disfunctions.COLUMN_NAME_ID} IN (:disfunctionsIds)""")
     suspend fun getByIds(disfunctionsIds: List<Long>): List<DisfunctionEntity>
+
+    @Query("""DELETE FROM ${DbContract.Disfunctions.TABLE_NAME}
+        WHERE ${DbContract.Disfunctions.COLUMN_NAME_ID} == :disfunctionId""")
+    suspend fun deleteById(disfunctionId: Long)
+
+    @Query("""DELETE FROM ${DbContract.Disfunctions.TABLE_NAME}
+        WHERE ${DbContract.Disfunctions.COLUMN_NAME_ID} IN (:disfunctionIds)""")
+    suspend fun deleteByIds(disfunctionIds: List<Long>)
 }

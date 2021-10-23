@@ -40,9 +40,6 @@ class FragmentDatePicker :
 
     companion object {
         const val KEY_RESULT = "DATE_PICKER_RESULT"
-        const val BUNDLE_KEY_YEAR = "YEAR"
-        const val BUNDLE_KEY_MONTH = "MONTH"
-        const val BUNDLE_KEY_DAY_OF_MONTH = "DAY_OF_MONTH"
         private const val BUNDLE_KEY_TIME_IN_MILLIS = "TIME_IN_MILLIS"
 
         private fun packBundle(timeInMillis: Long): Bundle {
