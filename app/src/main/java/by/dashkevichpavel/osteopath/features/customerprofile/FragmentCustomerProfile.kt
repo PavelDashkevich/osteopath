@@ -5,11 +5,14 @@ import android.view.*
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
 import by.dashkevichpavel.osteopath.R
 import by.dashkevichpavel.osteopath.databinding.FragmentCustomerProfileBinding
 import by.dashkevichpavel.osteopath.BackClickHandler
 import by.dashkevichpavel.osteopath.BackClickListener
+import by.dashkevichpavel.osteopath.features.customerlist.FragmentCustomerList
+import by.dashkevichpavel.osteopath.features.dialogs.CustomerDeleteConfirmationDialog
 import by.dashkevichpavel.osteopath.helpers.savechanges.SaveChangesFragmentHelper
 import by.dashkevichpavel.osteopath.helpers.setupToolbar
 import by.dashkevichpavel.osteopath.viewmodel.OsteoViewModelFactory
@@ -28,6 +31,8 @@ class FragmentCustomerProfile :
     private lateinit var saveChangesHelper: SaveChangesFragmentHelper
     private var backClickHandler: BackClickHandler? = null
 
+    private var contextMenu: Menu? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -38,17 +43,27 @@ class FragmentCustomerProfile :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         setupViews(view)
         setupObservers()
+        setupEventListeners()
         setupHelpers()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.standard_edit_screen_menu, menu)
+        contextMenu = menu
+        onChangeCustomerId(viewModel.getCustomerId())
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home -> viewModel.saveChangesHelper.finishEditing()
             R.id.mi_cancel -> viewModel.saveChangesHelper.cancelEditing()
+            R.id.mi_delete ->
+                CustomerDeleteConfirmationDialog.show(
+                    childFragmentManager,
+                    KEY_CUSTOMER_DELETE_CONFIRMATION,
+                    viewModel.getCustomerName(),
+                    viewModel.getCustomerId()
+                )
             else -> return super.onOptionsItemSelected(item)
         }
 
@@ -59,6 +74,7 @@ class FragmentCustomerProfile :
         super.onDestroyView()
         backClickHandler?.removeBackClickListener(this)
         fragmentCustomerProfileBinding = null
+        contextMenu = null
     }
 
     private fun setupViews(view: View) {
@@ -97,6 +113,15 @@ class FragmentCustomerProfile :
 
     private fun setupObservers() {
         viewModel.toolbarTitle.observe(viewLifecycleOwner, this::onChangeToolbarTitle)
+        viewModel.currentCustomerId.observe(viewLifecycleOwner, this::onChangeCustomerId)
+    }
+
+    private fun setupEventListeners() {
+        childFragmentManager.setFragmentResultListener(
+            CustomerDeleteConfirmationDialog.KEY_RESULT,
+            viewLifecycleOwner,
+            this::onCustomerDeleteConfirm
+        )
     }
 
     private fun setupHelpers() {
@@ -107,12 +132,34 @@ class FragmentCustomerProfile :
         binding.tbActions.title = newName ?: getString(R.string.customer_profile_new_customer)
     }
 
+    private fun onChangeCustomerId(customerId: Long) {
+        contextMenu?.findItem(R.id.mi_delete)?.isVisible = (customerId != 0L)
+    }
+
+    private fun onCustomerDeleteConfirm(key: String, bundle: Bundle) {
+        val result = CustomerDeleteConfirmationDialog.extractResult(bundle)
+        val userAction = result.second
+        val customerId = result.first
+
+        when (userAction) {
+            CustomerDeleteConfirmationDialog.UserAction.DELETE -> {
+                viewModel.deleteCustomer(customerId)
+                findNavController().navigateUp()
+            }
+            CustomerDeleteConfirmationDialog.UserAction.ARCHIVE ->
+                viewModel.setCustomerIsArchived(true)
+            else -> { /* do nothing */ }
+        }
+    }
+
     override fun onBackClick(): Boolean {
         viewModel.saveChangesHelper.finishEditing()
         return true
     }
 
     companion object {
+        private const val KEY_CUSTOMER_DELETE_CONFIRMATION = "KEY_CUSTOMER_DELETE_CONFIRMATION"
+
         private const val ARG_KEY_CUSTOMER_ID = "ARG_KEY_CUSTOMER_ID"
 
         fun packBundle(customerId: Long): Bundle {

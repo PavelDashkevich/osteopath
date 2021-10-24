@@ -6,4 +6,9 @@
         android:icon="@drawable/ic_baseline_close_24"
         android:title="@string/standard_edit_screen_menu_item_cancel"
         app:showAsAction="always"/>
+    <item
+        android:id="@+id/mi_delete"
+        android:icon="@drawable/ic_baseline_delete_24"
+        android:title="@string/standard_edit_screen_menu_item_delete"
+        app:showAsAction="ifRoom"/>
 </menu>

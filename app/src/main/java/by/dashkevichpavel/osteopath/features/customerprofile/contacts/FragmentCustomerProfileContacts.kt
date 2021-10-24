@@ -133,13 +133,19 @@ class FragmentCustomerProfileContacts :
             actionOpenInstagram(binding.etSocialInstagram.text.toString())
         }
 
-        binding.cbArchived.setOnCheckedChangeListener { _, isChecked ->
-            viewModel.setCustomerIsArchived(isChecked)
+        binding.cbArchived.setOnClickListener {
+            viewModel.setCustomerIsArchived(binding.cbArchived.isChecked)
         }
     }
 
     private fun setupObservers() {
         viewModel.customer.observe(viewLifecycleOwner, this::updateFields)
+        viewModel.currentCustomerIsArchived.observe(viewLifecycleOwner,
+            this::onChangeCustomerIsArchived)
+    }
+
+    private fun onChangeCustomerIsArchived(isArchived: Boolean) {
+        binding.cbArchived.isChecked = isArchived
     }
 
     private fun onDatePickerDateSet(key: String, bundle: Bundle) {

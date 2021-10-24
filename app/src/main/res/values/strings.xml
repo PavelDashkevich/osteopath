@@ -41,6 +41,7 @@
     <string name="header_filter_is_archived">Клиенты, помещенные в архив</string>
     <string name="filter_show_archived">отображать</string>
     <string name="standard_edit_screen_menu_item_cancel">Отмена</string>
+    <string name="standard_edit_screen_menu_item_delete">Удалить</string>
     <string name="customer_filter_menu_item_select_all">Установить все</string>
     <string name="customer_filter_menu_item_deselect_all">Сбросить все</string>
     <string name="hint_customer_filter_or_search_result">По заданным условиям\nни одного клиента не найдено.</string>

@@ -3,7 +3,6 @@ package by.dashkevichpavel.osteopath.features.customerprofile
 import android.content.ContentResolver
 import android.content.Context
 import android.content.Intent
-import android.content.UriPermission
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.util.Log
@@ -35,6 +34,8 @@ class CustomerProfileViewModel(
     val attachments = MutableLiveData<MutableList<Attachment>>(mutableListOf())
     val toolbarTitle = MutableLiveData<String?>(null)
     val saveChangesHelper = SaveChangesViewModelHelper(this)
+    val currentCustomerId = MutableLiveData(0L)
+    val currentCustomerIsArchived = MutableLiveData(false)
     private var jobSave: Job? = null
 
     var jobDisfunctionsLoadingListener: Job? = null
@@ -91,6 +92,8 @@ class CustomerProfileViewModel(
     private fun setCustomer(newCustomer: Customer) {
         customer.value = newCustomer
         initialCustomer = newCustomer.copy()
+        updateCustomerId()
+        updateCustomerIsArchived()
     }
 
     override fun isDataModified(): Boolean = initialCustomer.isModified(customer.value)
@@ -109,12 +112,25 @@ class CustomerProfileViewModel(
                     startListeningForSessionsChanges()
                     startListeningForAttachmentsChanges()
                     saveChangesHelper.finishSaving()
+                    updateCustomerId()
                     if (navigateUp) saveChangesHelper.navigateUp()
                 }
             }
         }
 
         if (customer.value == null && navigateUp) saveChangesHelper.navigateUp()
+    }
+
+    fun getCustomerName(): String = customer.value?.name ?: ""
+
+    fun getCustomerId(): Long = currentCustomerId.value ?: 0L
+
+    fun deleteCustomer(customerId: Long) {
+        if (customerId == 0L) return
+
+        viewModelScope.launch {
+            repository.deleteCustomerById(customerId)
+        }
     }
     // endregion general code
 
@@ -139,6 +155,7 @@ class CustomerProfileViewModel(
 
     fun setCustomerIsArchived(isArchived: Boolean) {
         customer.value?.isArchived = isArchived
+        updateCustomerIsArchived()
     }
 
     fun extractContactData(contentResolver: ContentResolver, contactUri: Uri?) {
@@ -167,6 +184,14 @@ class CustomerProfileViewModel(
         customer.value?.let {
             toolbarTitle.value = it.name
         }
+    }
+
+    private fun updateCustomerId() {
+        currentCustomerId.value = customer.value?.id ?: 0L
+    }
+
+    private fun updateCustomerIsArchived() {
+        currentCustomerIsArchived.value = customer.value?.isArchived ?: false
     }
     // endregion Contacts tab
 
