@@ -3,14 +3,12 @@ package by.dashkevichpavel.osteopath.features.customerlist
 import android.animation.LayoutTransition
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import android.view.inputmethod.InputMethodManager
 import android.widget.LinearLayout
 import androidx.appcompat.widget.PopupMenu
 import androidx.fragment.app.Fragment
 import androidx.appcompat.widget.SearchView
-import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
@@ -23,7 +21,6 @@ import by.dashkevichpavel.osteopath.features.dialogs.CustomerDeleteConfirmationD
 import by.dashkevichpavel.osteopath.helpers.safelyNavigateTo
 import by.dashkevichpavel.osteopath.helpers.setupToolbar
 import by.dashkevichpavel.osteopath.viewmodel.OsteoViewModelFactory
-import java.lang.IllegalArgumentException
 
 class FragmentCustomerList :
     Fragment(R.layout.fragment_customer_list),
@@ -113,6 +110,10 @@ class FragmentCustomerList :
         fragmentCustomerListBinding = FragmentCustomerListBinding.bind(view)
         setupToolbar(binding.tbActions)
         binding.lNavMenu.nvMain.setupWithNavController(findNavController())
+        binding.tvEmptyListHint.text = getString(
+            R.string.hint_customer_list_empty,
+            getString(R.string.empty_screen_hint_part_customers)
+        )
         registerForContextMenu(binding.rvCustomerList)
     }
 
@@ -175,27 +176,46 @@ class FragmentCustomerList :
         binding.pbLoading.visibility = if (isLoading) View.VISIBLE else View.GONE
 
         if (isLoading) {
-            hideEmptyListHints()
+            setEmptyListHintsVisibility(
+                showEmptyListHint = false,
+                showEmptyFilterOrSearchResultHint = false
+            )
         }
     }
 
     private fun updateCustomersList(newCustomers: List<Customer>) {
-        hideEmptyListHints()
+        setEmptyListHintsVisibility(
+            showEmptyListHint = false,
+            showEmptyFilterOrSearchResultHint = false
+        )
 
         if (newCustomers.isEmpty()) {
             if (viewModel.isSearchOrFilterResult) {
-                binding.tvEmptyFilterOrSearchResult.visibility = View.VISIBLE
+                setEmptyListHintsVisibility(
+                    showEmptyListHint = false,
+                    showEmptyFilterOrSearchResultHint = true
+                )
             } else {
-                binding.tvEmptyListHint.visibility = View.VISIBLE
+                setEmptyListHintsVisibility(
+                    showEmptyListHint = true,
+                    showEmptyFilterOrSearchResultHint = false
+                )
             }
         }
 
         setupRecyclerView()
     }
 
-    private fun hideEmptyListHints() {
-        binding.tvEmptyFilterOrSearchResult.visibility = View.GONE
-        binding.tvEmptyListHint.visibility = View.GONE
+    private fun setEmptyListHintsVisibility(
+        showEmptyListHint: Boolean = true,
+        showEmptyFilterOrSearchResultHint: Boolean = true
+    ) {
+        binding.tvEmptyFilterOrSearchResult.visibility =
+            if (showEmptyFilterOrSearchResultHint) View.VISIBLE else View.GONE
+        binding.tvEmptyListHint.visibility =
+            if (showEmptyListHint) View.VISIBLE else View.GONE
+        binding.cvEmptyListHint.visibility =
+            if (showEmptyListHint) View.VISIBLE else View.GONE
     }
 
     private fun setupEventListeners() {

@@ -7,7 +7,12 @@
     <dimen name="card_view_default_radius">8dp</dimen>
     <dimen name="card_view_default_stroke_width">0.3dp</dimen>
     <dimen name="card_view_default_space">8dp</dimen>
+    <dimen name="card_view_default_elevation_top">16dp</dimen>
 
     <dimen name="image_button_width">48dp</dimen>
     <dimen name="image_button_height">48dp</dimen>
+
+    <dimen name="text_view_empty_screen_default_padding">12dp</dimen>
+    <dimen name="text_view_empty_screen_default_margin_bottom">16dp</dimen>
+    <dimen name="text_view_empty_screen_default_margin_end">28dp</dimen>
 </resources>

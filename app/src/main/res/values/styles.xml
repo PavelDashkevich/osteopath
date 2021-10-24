@@ -30,6 +30,19 @@
         <item name="strokeWidth">@dimen/card_view_default_stroke_width</item>
         <item name="strokeColor">@color/divider</item>
     </style>
+    <style name="CardView.EmptyScreenHint" parent="">
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.EmptyScreenHint</item>
+        <item name="elevation">@dimen/card_view_default_elevation_top</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">0dp</item>
+    </style>
+    <style name="ShapeAppearanceOverlay.EmptyScreenHint">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeBottomLeft">@dimen/card_view_default_radius</item>
+        <item name="cornerSizeBottomRight">0dp</item>
+        <item name="cornerSizeTopLeft">@dimen/card_view_default_radius</item>
+        <item name="cornerSizeTopRight">@dimen/card_view_default_radius</item>
+    </style>
 
     <!--  Image buttons  -->
     <style name="ImageButton">
@@ -59,5 +72,17 @@
     <!--  Tab layout  -->
     <style name="TabLayout" parent="Widget.MaterialComponents.TabLayout">
         <item name="android:background">?attr/colorSurface</item>
+    </style>
+
+    <!--  TextView  -->
+    <style name="TextView"></style>
+    <style name="TextView.EmptyScreenHint" parent="TextView">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:padding">@dimen/text_view_empty_screen_default_padding</item>
+        <item name="android:layout_marginBottom">@dimen/text_view_empty_screen_default_margin_bottom</item>
+        <item name="android:layout_marginEnd">@dimen/text_view_empty_screen_default_margin_end</item>
+        <item name="android:textAlignment">viewEnd</item>
+        <item name="android:elevation">@dimen/card_view_default_elevation_top</item>
     </style>
 </resources>
