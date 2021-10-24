@@ -2,14 +2,14 @@
     <!-- Base application theme. -->
     <style name="Theme.Osteopath" parent="Theme.MaterialComponents.Light">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/primaryColor</item>
-        <item name="colorPrimaryVariant">@color/primaryLightColor</item>
-        <item name="colorOnPrimary">@color/primaryTextColor</item>
+        <item name="colorPrimary">@color/themeLightPrimaryColor</item>
+        <item name="colorPrimaryVariant">@color/themeLightPrimaryLightColor</item>
+        <item name="colorOnPrimary">@color/themeLightPrimaryTextColor</item>
 
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/secondaryColor</item>
-        <item name="colorSecondaryVariant">@color/secondaryLightColor</item>
-        <item name="colorOnSecondary">@color/secondaryTextColor</item>
+        <item name="colorSecondary">@color/themeLightSecondaryColor</item>
+        <item name="colorSecondaryVariant">@color/themeLightSecondaryLightColor</item>
+        <item name="colorOnSecondary">@color/themeLightSecondaryTextColor</item>
 
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>

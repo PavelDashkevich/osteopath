@@ -33,6 +33,24 @@
     <color name="purple_800">#ff6a1b9a</color>
     <color name="purple_900">#ff4a148c</color>
 
+    <color name="themeLightPrimaryColor">#7e57c2</color>
+    <color name="themeLightPrimaryLightColor">#b085f5</color>
+    <color name="themeLightPrimaryDarkColor">#4d2c91</color>
+    <color name="themeLightSecondaryColor">#ab47bc</color>
+    <color name="themeLightSecondaryLightColor">#df78ef</color>
+    <color name="themeLightSecondaryDarkColor">#790e8b</color>
+    <color name="themeLightPrimaryTextColor">#ffffff</color>
+    <color name="themeLightSecondaryTextColor">#ffffff</color>
+
+    <color name="themeDarkPrimaryColor">#455a64</color>
+    <color name="themeDarkPrimaryLightColor">#718792</color>
+    <color name="themeDarkPrimaryDarkColor">#1c313a</color>
+    <color name="themeDarkSecondaryColor">#795548</color>
+    <color name="themeDarkSecondaryLightColor">#a98274</color>
+    <color name="themeDarkSecondaryDarkColor">#4b2c20</color>
+    <color name="themeDarkPrimaryTextColor">#ffffff</color>
+    <color name="themeDarkSecondaryTextColor">#ffffff</color>
+
     <color name="primaryColor">#7e57c2</color>
     <color name="primaryLightColor">#b085f5</color>
     <color name="primaryDarkColor">#4d2c91</color>

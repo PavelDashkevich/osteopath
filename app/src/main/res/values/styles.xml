@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!--  Toolbars  -->
-    <style name="Toolbar">
+    <style name="Toolbar" parent="Widget.MaterialComponents.Toolbar.Primary">
         <item name="android:elevation">@dimen/toolbar_default_elevation</item>
         <item name="android:background">?attr/colorPrimary</item>
         <item name="titleTextColor">?attr/colorOnPrimary</item>
-        <item name="colorControlNormal">?android:attr/textColorPrimary</item>
         <item name="searchViewStyle">@style/Widget.AppCompat.SearchView.ActionBar</item>
     </style>
     <style name="Toolbar.WithUpButton" parent="Toolbar">
@@ -49,6 +48,7 @@
         <item name="android:layout_width">@dimen/image_button_width</item>
         <item name="android:layout_height">@dimen/image_button_height</item>
         <item name="android:background">@drawable/button_shape_circle</item>
+        <item name="android:tint">?attr/colorOnSecondary</item>
     </style>
     <style name="ImageButton.PickContact" parent="ImageButton">
         <item name="android:src">@drawable/ic_baseline_person_search_24</item>
@@ -70,15 +70,20 @@
     </style>
 
     <!--  Tab layout  -->
-    <style name="TabLayout" parent="Widget.MaterialComponents.TabLayout">
-        <item name="android:background">?attr/colorSurface</item>
+    <style name="TabLayout">
+        <item name="android:background">?attr/colorPrimary</item>
+        <item name="tabIconTint">?attr/colorOnPrimary</item>
+        <item name="tabIndicatorColor">@color/white</item>
+        <item name="tabTextColor">@color/mtrl_tabs_icon_color_selector_colored</item>
+        <item name="tabRippleColor">@color/mtrl_tabs_colored_ripple_color</item>
     </style>
 
     <!--  TextView  -->
-    <style name="TextView"></style>
-    <style name="TextView.EmptyScreenHint" parent="TextView">
+    <style name="TextView">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
+    </style>
+    <style name="TextView.EmptyScreenHint" parent="TextView">
         <item name="android:padding">@dimen/text_view_empty_screen_default_padding</item>
         <item name="android:layout_marginBottom">@dimen/text_view_empty_screen_default_margin_bottom</item>
         <item name="android:layout_marginEnd">@dimen/text_view_empty_screen_default_margin_end</item>

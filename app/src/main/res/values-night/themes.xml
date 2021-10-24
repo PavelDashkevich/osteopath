@@ -2,15 +2,18 @@
     <!-- Base application theme. -->
     <style name="Theme.Osteopath" parent="Theme.MaterialComponents.DayNight">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/primaryColor</item>
-        <item name="colorPrimaryVariant">@color/primaryDarkColor</item>
-        <item name="colorOnPrimary">@color/primaryTextColor</item>
+        <item name="colorPrimary">@color/themeDarkPrimaryColor</item>
+        <item name="colorPrimaryVariant">@color/themeDarkPrimaryLightColor</item>
+        <item name="colorOnPrimary">@color/themeDarkPrimaryTextColor</item>
+
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/secondaryColor</item>
-        <item name="colorSecondaryVariant">@color/secondaryDarkColor</item>
-        <item name="colorOnSecondary">@color/secondaryTextColor</item>
+        <item name="colorSecondary">@color/themeDarkSecondaryColor</item>
+        <item name="colorSecondaryVariant">@color/themeDarkSecondaryLightColor</item>
+        <item name="colorOnSecondary">@color/themeDarkSecondaryTextColor</item>
+
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+
         <!-- Customize your theme here. -->
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
