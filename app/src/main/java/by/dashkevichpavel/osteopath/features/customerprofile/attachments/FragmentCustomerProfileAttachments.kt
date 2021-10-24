@@ -1,27 +1,19 @@
 package by.dashkevichpavel.osteopath.features.customerprofile.attachments
 
-import android.app.Instrumentation
-import android.database.Cursor
 import android.net.Uri
 import android.os.Bundle
-import android.provider.DocumentsContract
-import android.provider.MediaStore
-import android.provider.OpenableColumns
-import android.util.Log
 import android.view.MenuItem
 import android.view.View
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.PopupMenu
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import by.dashkevichpavel.osteopath.R
 import by.dashkevichpavel.osteopath.databinding.FragmentCustomerProfileAttachmentsBinding
 import by.dashkevichpavel.osteopath.features.customerprofile.CustomerProfileViewModel
-import by.dashkevichpavel.osteopath.helpers.getStringByColumnName
 import by.dashkevichpavel.osteopath.model.Attachment
 import by.dashkevichpavel.osteopath.viewmodel.OsteoViewModelFactory
-import java.io.File
 
 class FragmentCustomerProfileAttachments :
     Fragment(R.layout.fragment_customer_profile_attachments) {
@@ -88,6 +80,10 @@ class FragmentCustomerProfileAttachments :
         fragmentBinding = FragmentCustomerProfileAttachmentsBinding.bind(view)
         binding.rvAttachmentsList.layoutManager = GridLayoutManager(requireContext(), 3)
         binding.rvAttachmentsList.adapter = adapter
+        binding.tvEmptyListHint.text = getString(
+            R.string.empty_screen_hint,
+            getString(R.string.empty_screen_hint_part_attachments)
+        )
     }
 
     private fun setupEventListeners() {
@@ -124,5 +120,11 @@ class FragmentCustomerProfileAttachments :
 
     private fun updateAttachmentsList(newAttachmentsList: MutableList<Attachment>) {
         adapter.setItems(newAttachmentsList)
+        setEmptyScreenHintVisibility(newAttachmentsList.isEmpty())
+    }
+
+    private fun setEmptyScreenHintVisibility(show: Boolean) {
+        binding.tvEmptyListHint.isVisible = show
+        binding.cvEmptyListHint.isVisible = show
     }
 }

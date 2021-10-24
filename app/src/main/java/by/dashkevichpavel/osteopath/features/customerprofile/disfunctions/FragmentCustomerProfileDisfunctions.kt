@@ -1,22 +1,20 @@
 package by.dashkevichpavel.osteopath.features.customerprofile.disfunctions
 
 import android.os.Bundle
-import android.util.Log
-import android.view.*
+import android.view.View
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import by.dashkevichpavel.osteopath.R
 import by.dashkevichpavel.osteopath.databinding.FragmentCustomerProfileDisfunctionsBinding
+import by.dashkevichpavel.osteopath.features.customerprofile.CustomerProfileViewModel
+import by.dashkevichpavel.osteopath.features.disfunction.FragmentDisfunction
 import by.dashkevichpavel.osteopath.helpers.recyclerviewutils.SpaceItemDecoration
+import by.dashkevichpavel.osteopath.helpers.safelyNavigateTo
 import by.dashkevichpavel.osteopath.model.Disfunction
 import by.dashkevichpavel.osteopath.model.DisfunctionStatus
-import by.dashkevichpavel.osteopath.features.disfunction.FragmentDisfunction
-import by.dashkevichpavel.osteopath.features.customerprofile.CustomerProfileViewModel
-import by.dashkevichpavel.osteopath.helpers.safelyNavigateTo
 import by.dashkevichpavel.osteopath.viewmodel.OsteoViewModelFactory
-import java.lang.IllegalArgumentException
 
 class FragmentCustomerProfileDisfunctions :
     Fragment(R.layout.fragment_customer_profile_disfunctions),
@@ -54,6 +52,10 @@ class FragmentCustomerProfileDisfunctions :
         binding.rvDisfunctionsList.layoutManager = LinearLayoutManager(requireContext())
         binding.rvDisfunctionsList.addItemDecoration(SpaceItemDecoration())
         binding.rvDisfunctionsList.adapter = adapter
+        binding.tvEmptyListHint.text = getString(
+            R.string.empty_screen_hint,
+            getString(R.string.empty_screen_hint_part_disfunctions)
+        )
     }
 
     private fun setupEventListeners() {
@@ -69,6 +71,12 @@ class FragmentCustomerProfileDisfunctions :
 
     private fun updateDisfunctionsList(newDisfunctionsList: MutableList<Disfunction>) {
         adapter.setItems(newDisfunctionsList)
+        setEmptyScreenHintVisibility(newDisfunctionsList.isEmpty())
+    }
+
+    private fun setEmptyScreenHintVisibility(show: Boolean) {
+        binding.tvEmptyListHint.isVisible = show
+        binding.cvEmptyListHint.isVisible = show
     }
 
     private fun openDisfunctionScreen(customerId: Long, disfunctionId: Long) {

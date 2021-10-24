@@ -57,7 +57,7 @@
             android:id="@+id/tvEmptyListHint"
             app:layout_constraintRight_toRightOf="@id/fabAddCustomer"
             app:layout_constraintBottom_toTopOf="@id/fabAddCustomer"
-            android:text="@string/hint_customer_list_empty"
+            android:text="@string/empty_screen_hint"
             style="@style/TextView.EmptyScreenHint"
             android:visibility="gone"/>
 

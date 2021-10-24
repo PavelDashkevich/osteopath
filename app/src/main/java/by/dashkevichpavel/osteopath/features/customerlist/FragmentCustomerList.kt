@@ -3,23 +3,27 @@ package by.dashkevichpavel.osteopath.features.customerlist
 import android.animation.LayoutTransition
 import android.content.Context
 import android.os.Bundle
-import android.view.*
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.LinearLayout
 import androidx.appcompat.widget.PopupMenu
-import androidx.fragment.app.Fragment
 import androidx.appcompat.widget.SearchView
+import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import by.dashkevichpavel.osteopath.R
 import by.dashkevichpavel.osteopath.databinding.FragmentCustomerListBinding
-import by.dashkevichpavel.osteopath.model.Customer
 import by.dashkevichpavel.osteopath.features.customerprofile.FragmentCustomerProfile
 import by.dashkevichpavel.osteopath.features.dialogs.CustomerDeleteConfirmationDialog
 import by.dashkevichpavel.osteopath.helpers.safelyNavigateTo
 import by.dashkevichpavel.osteopath.helpers.setupToolbar
+import by.dashkevichpavel.osteopath.model.Customer
 import by.dashkevichpavel.osteopath.viewmodel.OsteoViewModelFactory
 
 class FragmentCustomerList :
@@ -111,7 +115,7 @@ class FragmentCustomerList :
         setupToolbar(binding.tbActions)
         binding.lNavMenu.nvMain.setupWithNavController(findNavController())
         binding.tvEmptyListHint.text = getString(
-            R.string.hint_customer_list_empty,
+            R.string.empty_screen_hint,
             getString(R.string.empty_screen_hint_part_customers)
         )
         registerForContextMenu(binding.rvCustomerList)
@@ -173,7 +177,7 @@ class FragmentCustomerList :
     }
 
     private fun updateLoadingProgress(isLoading: Boolean) {
-        binding.pbLoading.visibility = if (isLoading) View.VISIBLE else View.GONE
+        binding.pbLoading.isVisible = isLoading
 
         if (isLoading) {
             setEmptyListHintsVisibility(
@@ -210,12 +214,9 @@ class FragmentCustomerList :
         showEmptyListHint: Boolean = true,
         showEmptyFilterOrSearchResultHint: Boolean = true
     ) {
-        binding.tvEmptyFilterOrSearchResult.visibility =
-            if (showEmptyFilterOrSearchResultHint) View.VISIBLE else View.GONE
-        binding.tvEmptyListHint.visibility =
-            if (showEmptyListHint) View.VISIBLE else View.GONE
-        binding.cvEmptyListHint.visibility =
-            if (showEmptyListHint) View.VISIBLE else View.GONE
+        binding.tvEmptyFilterOrSearchResult.isVisible = showEmptyFilterOrSearchResultHint
+        binding.tvEmptyListHint.isVisible = showEmptyListHint
+        binding.cvEmptyListHint.isVisible = showEmptyListHint
     }
 
     private fun setupEventListeners() {

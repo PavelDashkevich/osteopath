@@ -3,6 +3,7 @@ package by.dashkevichpavel.osteopath.features.customerprofile.sessions
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -49,6 +50,11 @@ class FragmentCustomerProfileSessions :
         binding.rvSessionsList.layoutManager = LinearLayoutManager(requireContext())
         binding.rvSessionsList.addItemDecoration(SpaceItemDecoration())
         binding.rvSessionsList.adapter = adapter
+
+        binding.tvEmptyListHint.text = getString(
+            R.string.empty_screen_hint,
+            getString(R.string.empty_screen_hint_part_sessions)
+        )
     }
 
     private fun setupEventListeners() {
@@ -64,6 +70,12 @@ class FragmentCustomerProfileSessions :
 
     private fun updateSessionsList(newSessionsList: MutableList<Session>) {
         adapter.setItems(newSessionsList)
+        setEmptyScreenHintVisibility(newSessionsList.isEmpty())
+    }
+
+    private fun setEmptyScreenHintVisibility(show: Boolean) {
+        binding.tvEmptyListHint.isVisible = show
+        binding.cvEmptyListHint.isVisible = show
     }
 
     private fun openSessionScreen(customerId: Long, sessionId: Long) {

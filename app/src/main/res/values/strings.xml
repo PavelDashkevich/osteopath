@@ -28,7 +28,7 @@
     <string name="content_description_customers_add">Добавить клиента</string>
     <string name="content_description_disfunctions_add">Добавить дисфункцию</string>
     <string name="content_description_sessions_add">Добавить сеанс</string>
-    <string name="hint_customer_list_empty">Список %1$s пуст.\nДля добавления нажмите эту кнопку</string>
+    <string name="empty_screen_hint">Список %1$s пуст.\nДля добавления нажмите эту кнопку</string>
     <string name="customer_menu_item_search">Поиск</string>
     <string name="customer_menu_item_filter">Фильтр</string>
     <string name="customer_context_menu_item_archive">В архив</string>
@@ -103,4 +103,7 @@
     <string name="customer_delete_dialog_button_cancel">Отменить</string>
     <string name="customer_delete_dialog_button_archive">В архив</string>
     <string name="empty_screen_hint_part_customers">клиентов</string>
+    <string name="empty_screen_hint_part_disfunctions">дисфункций</string>
+    <string name="empty_screen_hint_part_sessions">сеансов</string>
+    <string name="empty_screen_hint_part_attachments">файловых вложений</string>
 </resources>

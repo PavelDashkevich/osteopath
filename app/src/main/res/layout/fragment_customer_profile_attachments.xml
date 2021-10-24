@@ -47,4 +47,21 @@
         app:layout_constraintRight_toRightOf="parent"
         android:contentDescription="@string/content_description_sessions_add"/>
 
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cvEmptyListHint"
+        app:layout_constraintTop_toTopOf="@id/tvEmptyListHint"
+        app:layout_constraintBottom_toBottomOf="@id/tvEmptyListHint"
+        app:layout_constraintStart_toStartOf="@id/tvEmptyListHint"
+        app:layout_constraintEnd_toEndOf="@id/tvEmptyListHint"
+        style="@style/CardView.EmptyScreenHint"
+        android:visibility="gone"/>
+
+    <TextView
+        android:id="@+id/tvEmptyListHint"
+        app:layout_constraintRight_toRightOf="@id/fabAddAttachment"
+        app:layout_constraintBottom_toTopOf="@id/fabAddAttachment"
+        android:text="@string/empty_screen_hint"
+        style="@style/TextView.EmptyScreenHint"
+        android:visibility="gone"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
