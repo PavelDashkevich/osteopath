@@ -6,10 +6,14 @@ import android.view.*
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import by.dashkevichpavel.osteopath.R
 import by.dashkevichpavel.osteopath.databinding.FragmentDisfunctionBinding
 import by.dashkevichpavel.osteopath.BackClickHandler
 import by.dashkevichpavel.osteopath.BackClickListener
+import by.dashkevichpavel.osteopath.features.customerprofile.FragmentCustomerProfile
+import by.dashkevichpavel.osteopath.features.dialogs.DialogUserAction
+import by.dashkevichpavel.osteopath.features.dialogs.ItemDeleteConfirmationDialog
 import by.dashkevichpavel.osteopath.helpers.savechanges.SaveChangesFragmentHelper
 import by.dashkevichpavel.osteopath.helpers.setupToolbar
 import by.dashkevichpavel.osteopath.helpers.toEditable
@@ -22,10 +26,8 @@ class FragmentDisfunction :
     private val viewModel: DisfunctionViewModel by viewModels(
         factoryProducer = { OsteoViewModelFactory(requireContext().applicationContext) }
     )
-
     private var fragmentDisfunctionBinding: FragmentDisfunctionBinding? = null
     private val binding get() = fragmentDisfunctionBinding!!
-
     private var backClickHandler: BackClickHandler? = null
     private val mapStatusIdToResId: Map<Int, Int> =
         mapOf(
@@ -35,8 +37,8 @@ class FragmentDisfunction :
             DisfunctionStatus.WRONG_DIAGNOSED.id to R.id.rbWrongDiagnosed
         )
     private val mapResIdToStatusId = mapStatusIdToResId.entries.associateBy({ it.value }) { it.key }
-
     private lateinit var saveChangesHelper: SaveChangesFragmentHelper
+    private var contextMenu: Menu? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,6 +60,8 @@ class FragmentDisfunction :
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.standard_edit_screen_menu, menu)
+        contextMenu = menu
+        onChangeDisfunctionId(viewModel.getDisfunctionId())
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -65,6 +69,12 @@ class FragmentDisfunction :
         when (item.itemId) {
             android.R.id.home -> viewModel.saveChangesHelper.finishEditing()
             R.id.mi_cancel -> viewModel.saveChangesHelper.cancelEditing()
+            R.id.mi_delete ->
+                ItemDeleteConfirmationDialog.show(
+                    fragmentManager = childFragmentManager,
+                    itemId = viewModel.getDisfunctionId(),
+                    message = getString(R.string.disfunction_delete_dialog_message)
+                )
             else -> return super.onOptionsItemSelected(item)
         }
 
@@ -84,6 +94,7 @@ class FragmentDisfunction :
 
     private fun setupObservers() {
         viewModel.disfunction.observe(viewLifecycleOwner, this::onChangeDisfunction)
+        viewModel.currentDisfunctionId.observe(viewLifecycleOwner, this::onChangeDisfunctionId)
     }
 
     private fun setupHelpers() {
@@ -91,6 +102,12 @@ class FragmentDisfunction :
     }
 
     private fun setupEventListeners() {
+        childFragmentManager.setFragmentResultListener(
+            ItemDeleteConfirmationDialog.KEY_RESULT,
+            viewLifecycleOwner,
+            this::onDisfunctionDeleteConfirm
+        )
+
         backClickHandler = (requireActivity() as BackClickHandler)
         backClickHandler?.addBackClickListener(this)
 
@@ -103,6 +120,10 @@ class FragmentDisfunction :
         }
     }
 
+    private fun onChangeDisfunctionId(disfunctionId: Long) {
+        contextMenu?.findItem(R.id.mi_delete)?.isVisible = (disfunctionId != 0L)
+    }
+
     private fun onChangeDisfunction(newDisfunction: Disfunction?) {
         newDisfunction?.let { disfunction ->
             binding.etDescription.text = disfunction.description.toEditable()
@@ -113,6 +134,19 @@ class FragmentDisfunction :
                 } else {
                     getString(R.string.header_new_disfunction)
                 }
+        }
+    }
+
+    private fun onDisfunctionDeleteConfirm(key: String, bundle: Bundle) {
+        if (key != ItemDeleteConfirmationDialog.KEY_RESULT) return
+
+        val result = ItemDeleteConfirmationDialog.extractResult(bundle)
+        val userAction = result.second
+        val disfunctionId = result.first
+
+        if (userAction == DialogUserAction.POSITIVE) {
+            viewModel.deleteDisfunction(disfunctionId)
+            findNavController().navigateUp()
         }
     }
 

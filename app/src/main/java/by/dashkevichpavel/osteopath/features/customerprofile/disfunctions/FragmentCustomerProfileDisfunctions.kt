@@ -137,10 +137,9 @@ class FragmentCustomerProfileDisfunctions :
                 }
             R.id.mi_delete -> {
                 ItemDeleteConfirmationDialog.show(
-                    childFragmentManager,
-                    KEY_DISFUNCTION_DELETE_CONFIRMATION,
-                    disfunction.id,
-                    getString(R.string.disfunction_delete_dialog_message)
+                    fragmentManager = childFragmentManager,
+                    itemId = disfunction.id,
+                    message = getString(R.string.disfunction_delete_dialog_message)
                 )
             }
             else -> return false
@@ -150,7 +149,7 @@ class FragmentCustomerProfileDisfunctions :
     }
 
     private fun onDisfunctionDeleteConfirm(key: String, bundle: Bundle) {
-        if (key != KEY_DISFUNCTION_DELETE_CONFIRMATION) return
+        if (key != ItemDeleteConfirmationDialog.KEY_RESULT) return
 
         val result = ItemDeleteConfirmationDialog.extractResult(bundle)
         val userAction = result.second
@@ -171,10 +170,6 @@ class FragmentCustomerProfileDisfunctions :
 
     override fun onDisfunctionContextMenuClick(disfunction: Disfunction, anchorView: View) {
         showCustomerContextMenu(disfunction, anchorView)
-    }
-
-    companion object {
-        private const val KEY_DISFUNCTION_DELETE_CONFIRMATION = "KEY_DISFUNCTION_DELETE_CONFIRMATION"
     }
 }
 

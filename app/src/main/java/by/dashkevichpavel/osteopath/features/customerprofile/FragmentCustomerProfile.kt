@@ -60,7 +60,6 @@ class FragmentCustomerProfile :
             R.id.mi_delete ->
                 ItemDeleteConfirmationDialog.show(
                     fragmentManager = childFragmentManager,
-                    tag = KEY_CUSTOMER_DELETE_CONFIRMATION,
                     itemId = viewModel.getCustomerId(),
                     message = getString(
                         R.string.customer_delete_dialog_message,
@@ -141,7 +140,7 @@ class FragmentCustomerProfile :
     }
 
     private fun onCustomerDeleteConfirm(key: String, bundle: Bundle) {
-        if (key != KEY_CUSTOMER_DELETE_CONFIRMATION) return
+        if (key != ItemDeleteConfirmationDialog.KEY_RESULT) return
 
         val result = ItemDeleteConfirmationDialog.extractResult(bundle)
         val userAction = result.second
@@ -164,8 +163,6 @@ class FragmentCustomerProfile :
     }
 
     companion object {
-        private const val KEY_CUSTOMER_DELETE_CONFIRMATION = "KEY_CUSTOMER_DELETE_CONFIRMATION"
-
         private const val ARG_KEY_CUSTOMER_ID = "ARG_KEY_CUSTOMER_ID"
 
         fun packBundle(customerId: Long): Bundle {

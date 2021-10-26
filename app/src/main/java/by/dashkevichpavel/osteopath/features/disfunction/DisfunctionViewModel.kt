@@ -18,6 +18,7 @@ class DisfunctionViewModel(
     private var initialDisfunction: Disfunction = Disfunction()
     private var jobSave: Job? = null
     val saveChangesHelper = SaveChangesViewModelHelper(this)
+    val currentDisfunctionId = MutableLiveData(0L)
 
     fun selectDisfunction(customerId: Long, disfunctionId: Long) {
         if (disfunctionId == 0L) {
@@ -38,6 +39,14 @@ class DisfunctionViewModel(
         disfunction.value?.disfunctionStatusId = disfunctionStatusIId
     }
 
+    fun getDisfunctionId(): Long = currentDisfunctionId.value ?: 0L
+
+    fun deleteDisfunction(disfunctionId: Long) {
+        viewModelScope.launch {
+            repository.deleteDisfunctionById(disfunctionId)
+        }
+    }
+
     private fun loadDisfunctionData(disfunctionId: Long) {
         viewModelScope.launch {
             repository.getDisfunctionById(disfunctionId)?.let { newDisfunction ->
@@ -49,6 +58,11 @@ class DisfunctionViewModel(
     private fun setDisfunction(newDisfunction: Disfunction) {
         disfunction.value = newDisfunction
         initialDisfunction = newDisfunction.copy()
+        updateDisfunctionId()
+    }
+
+    private fun updateDisfunctionId() {
+        currentDisfunctionId.value = disfunction.value?.id ?: 0L
     }
 
     override fun isDataModified(): Boolean = initialDisfunction.isModified(disfunction.value)
@@ -59,8 +73,9 @@ class DisfunctionViewModel(
             if (jobSave == null || jobSave?.isCompleted != false) {
                 jobSave = viewModelScope.launch {
                     saveChangesHelper.startSaving()
-                    repository.insertDisfunction(disf)
+                    disf.id = repository.insertDisfunction(disf)
                     saveChangesHelper.finishSaving()
+                    updateDisfunctionId()
                     saveChangesHelper.navigateUp()
                 }
             }

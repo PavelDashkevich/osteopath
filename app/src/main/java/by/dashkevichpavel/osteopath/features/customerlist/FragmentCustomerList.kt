@@ -271,7 +271,6 @@ class FragmentCustomerList :
             R.id.mi_delete -> {
                 ItemDeleteConfirmationDialog.show(
                     fragmentManager = childFragmentManager,
-                    tag = KEY_CUSTOMER_DELETE_CONFIRMATION,
                     itemId = customer.id,
                     message = getString(R.string.customer_delete_dialog_message, customer.name),
                     neutralButtonTextResId = R.string.customer_delete_dialog_button_neutral
@@ -284,7 +283,7 @@ class FragmentCustomerList :
     }
 
     private fun onCustomerDeleteConfirm(key: String, bundle: Bundle) {
-        if (key != KEY_CUSTOMER_DELETE_CONFIRMATION) return
+        if (key != ItemDeleteConfirmationDialog.KEY_RESULT) return
 
         val result = ItemDeleteConfirmationDialog.extractResult(bundle)
         val userAction = result.second
@@ -300,10 +299,6 @@ class FragmentCustomerList :
     override fun onCustomerClick(customerId: Long) = openCustomerProfileScreen(customerId)
     override fun onCustomerContextMenuClick(customer: Customer, anchorView: View) =
         showCustomerContextMenu(customer, anchorView)
-
-    companion object {
-        private const val KEY_CUSTOMER_DELETE_CONFIRMATION = "KEY_CUSTOMER_DELETE_CONFIRMATION"
-    }
 }
 
 interface CustomerClickListener {

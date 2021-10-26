@@ -4,7 +4,7 @@ import by.dashkevichpavel.osteopath.helpers.recyclerviewutils.DiffUtilComparable
 import by.dashkevichpavel.osteopath.repositories.localdb.entity.DisfunctionEntity
 
 data class Disfunction(
-    val id: Long = 0,
+    var id: Long = 0,
     var description: String = "",
     var disfunctionStatusId: Int = DisfunctionStatus.WORK.id,
     var customerId: Long = 0

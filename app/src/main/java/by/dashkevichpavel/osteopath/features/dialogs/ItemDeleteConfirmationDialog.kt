@@ -17,12 +17,10 @@ class ItemDeleteConfirmationDialog :
     private var neutralButtonTextResId: Int = 0
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        if (savedInstanceState == null) {
-            arguments?.let { args ->
-                itemId = args.getLong(BUNDLE_KEY_ITEM_ID, 0L)
-                dialogMessage = args.getString(BUNDLE_KEY_MESSAGE, "")
-                neutralButtonTextResId = args.getInt(BUNDLE_KEY_NEUTRAL_BUTTON_TEXT_RES_ID, 0)
-            }
+        arguments?.let { args ->
+            itemId = args.getLong(BUNDLE_KEY_ITEM_ID, 0L)
+            dialogMessage = args.getString(BUNDLE_KEY_MESSAGE, "")
+            neutralButtonTextResId = args.getInt(BUNDLE_KEY_NEUTRAL_BUTTON_TEXT_RES_ID, 0)
         }
 
         val dialogBuilder = AlertDialog.Builder(requireContext())
@@ -62,7 +60,6 @@ class ItemDeleteConfirmationDialog :
 
         fun show(
             fragmentManager: FragmentManager,
-            tag: String,
             itemId: Long,
             message: String,
             neutralButtonTextResId: Int = 0
@@ -73,13 +70,16 @@ class ItemDeleteConfirmationDialog :
                 putString(BUNDLE_KEY_MESSAGE, message)
                 putInt(BUNDLE_KEY_NEUTRAL_BUTTON_TEXT_RES_ID, neutralButtonTextResId)
             }
-            fragment.show(fragmentManager, tag)
+            fragment.show(fragmentManager, KEY_RESULT)
         }
 
         fun extractResult(bundle: Bundle): Pair<Long, DialogUserAction> {
             return bundle.getLong(BUNDLE_KEY_ITEM_ID, 0L) to
                     DialogUserAction.values()[
-                            bundle.getInt(BUNDLE_KEY_USER_ACTION_ID, DialogUserAction.NEGATIVE.ordinal)
+                            bundle.getInt(
+                                BUNDLE_KEY_USER_ACTION_ID,
+                                DialogUserAction.NEGATIVE.ordinal
+                            )
                     ]
         }
     }
