@@ -3,7 +3,6 @@ package by.dashkevichpavel.osteopath.features.customerprofile.disfunctions
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.PopupMenu
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -13,7 +12,7 @@ import by.dashkevichpavel.osteopath.R
 import by.dashkevichpavel.osteopath.databinding.FragmentCustomerProfileDisfunctionsBinding
 import by.dashkevichpavel.osteopath.features.customerprofile.CustomerProfileViewModel
 import by.dashkevichpavel.osteopath.features.dialogs.DialogUserAction
-import by.dashkevichpavel.osteopath.features.dialogs.DisfunctionDeleteConfirmationDialog
+import by.dashkevichpavel.osteopath.features.dialogs.ItemDeleteConfirmationDialog
 import by.dashkevichpavel.osteopath.features.disfunction.FragmentDisfunction
 import by.dashkevichpavel.osteopath.helpers.recyclerviewutils.SpaceItemDecoration
 import by.dashkevichpavel.osteopath.helpers.safelyNavigateTo
@@ -78,7 +77,7 @@ class FragmentCustomerProfileDisfunctions :
 
     private fun setupEventListeners() {
         childFragmentManager.setFragmentResultListener(
-            DisfunctionDeleteConfirmationDialog.KEY_RESULT,
+            ItemDeleteConfirmationDialog.KEY_RESULT,
             viewLifecycleOwner,
             this::onDisfunctionDeleteConfirm
         )
@@ -137,10 +136,11 @@ class FragmentCustomerProfileDisfunctions :
                     viewModel.changeDisfunctionStatus(disfunction.id, statusId)
                 }
             R.id.mi_delete -> {
-                DisfunctionDeleteConfirmationDialog.show(
+                ItemDeleteConfirmationDialog.show(
                     childFragmentManager,
                     KEY_DISFUNCTION_DELETE_CONFIRMATION,
-                    disfunction.id
+                    disfunction.id,
+                    getString(R.string.disfunction_delete_dialog_message)
                 )
             }
             else -> return false
@@ -150,7 +150,9 @@ class FragmentCustomerProfileDisfunctions :
     }
 
     private fun onDisfunctionDeleteConfirm(key: String, bundle: Bundle) {
-        val result = DisfunctionDeleteConfirmationDialog.extractResult(bundle)
+        if (key != KEY_DISFUNCTION_DELETE_CONFIRMATION) return
+
+        val result = ItemDeleteConfirmationDialog.extractResult(bundle)
         val userAction = result.second
         val disfunctionId = result.first
 

@@ -11,9 +11,8 @@ import by.dashkevichpavel.osteopath.R
 import by.dashkevichpavel.osteopath.databinding.FragmentCustomerProfileBinding
 import by.dashkevichpavel.osteopath.BackClickHandler
 import by.dashkevichpavel.osteopath.BackClickListener
-import by.dashkevichpavel.osteopath.features.customerlist.FragmentCustomerList
-import by.dashkevichpavel.osteopath.features.dialogs.CustomerDeleteConfirmationDialog
 import by.dashkevichpavel.osteopath.features.dialogs.DialogUserAction
+import by.dashkevichpavel.osteopath.features.dialogs.ItemDeleteConfirmationDialog
 import by.dashkevichpavel.osteopath.helpers.savechanges.SaveChangesFragmentHelper
 import by.dashkevichpavel.osteopath.helpers.setupToolbar
 import by.dashkevichpavel.osteopath.viewmodel.OsteoViewModelFactory
@@ -59,11 +58,15 @@ class FragmentCustomerProfile :
             android.R.id.home -> viewModel.saveChangesHelper.finishEditing()
             R.id.mi_cancel -> viewModel.saveChangesHelper.cancelEditing()
             R.id.mi_delete ->
-                CustomerDeleteConfirmationDialog.show(
-                    childFragmentManager,
-                    KEY_CUSTOMER_DELETE_CONFIRMATION,
-                    viewModel.getCustomerName(),
-                    viewModel.getCustomerId()
+                ItemDeleteConfirmationDialog.show(
+                    fragmentManager = childFragmentManager,
+                    tag = KEY_CUSTOMER_DELETE_CONFIRMATION,
+                    itemId = viewModel.getCustomerId(),
+                    message = getString(
+                        R.string.customer_delete_dialog_message,
+                        viewModel.getCustomerName()
+                    ),
+                    neutralButtonTextResId = R.string.customer_delete_dialog_button_neutral
                 )
             else -> return super.onOptionsItemSelected(item)
         }
@@ -119,7 +122,7 @@ class FragmentCustomerProfile :
 
     private fun setupEventListeners() {
         childFragmentManager.setFragmentResultListener(
-            CustomerDeleteConfirmationDialog.KEY_RESULT,
+            ItemDeleteConfirmationDialog.KEY_RESULT,
             viewLifecycleOwner,
             this::onCustomerDeleteConfirm
         )
@@ -138,7 +141,9 @@ class FragmentCustomerProfile :
     }
 
     private fun onCustomerDeleteConfirm(key: String, bundle: Bundle) {
-        val result = CustomerDeleteConfirmationDialog.extractResult(bundle)
+        if (key != KEY_CUSTOMER_DELETE_CONFIRMATION) return
+
+        val result = ItemDeleteConfirmationDialog.extractResult(bundle)
         val userAction = result.second
         val customerId = result.first
 
