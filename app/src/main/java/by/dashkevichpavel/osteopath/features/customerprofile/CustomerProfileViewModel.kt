@@ -13,10 +13,7 @@ import by.dashkevichpavel.osteopath.helpers.contacts.ContactInfoLoader
 import by.dashkevichpavel.osteopath.helpers.savechanges.SavableInterface
 import by.dashkevichpavel.osteopath.helpers.savechanges.SaveChangesViewModelHelper
 import by.dashkevichpavel.osteopath.helpers.thumbnails.ThumbnailHelper
-import by.dashkevichpavel.osteopath.model.Attachment
-import by.dashkevichpavel.osteopath.model.Customer
-import by.dashkevichpavel.osteopath.model.Disfunction
-import by.dashkevichpavel.osteopath.model.Session
+import by.dashkevichpavel.osteopath.model.*
 import by.dashkevichpavel.osteopath.repositories.localdb.LocalDbRepository
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.Channel
@@ -214,6 +211,18 @@ class CustomerProfileViewModel(
         val listOfDisfunctions = newDisfunctions.toMutableList()
         disfunctions.value = listOfDisfunctions
         customer.value?.disfunctions = listOfDisfunctions
+    }
+
+    fun changeDisfunctionStatus(disfunctionId: Long, newStatusId: Int) {
+        viewModelScope.launch {
+            repository.updateDisfunctionStatusById(disfunctionId, newStatusId)
+        }
+    }
+
+    fun deleteDisfunction(disfunctionId: Long) {
+        viewModelScope.launch {
+            repository.deleteDisfunctionById(disfunctionId)
+        }
     }
     // endregion Disfunctions tab
 

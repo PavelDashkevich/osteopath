@@ -39,4 +39,9 @@ interface DisfunctionDao {
     @Query("""DELETE FROM ${DbContract.Disfunctions.TABLE_NAME}
         WHERE ${DbContract.Disfunctions.COLUMN_NAME_ID} IN (:disfunctionIds)""")
     suspend fun deleteByIds(disfunctionIds: List<Long>)
+
+    @Query("""UPDATE ${DbContract.Disfunctions.TABLE_NAME} 
+        SET ${DbContract.Disfunctions.COLUMN_NAME_DISFUNCTION_STATUS_ID} = :statusId 
+        WHERE ${DbContract.Disfunctions.COLUMN_NAME_ID} == :disfunctionId""")
+    suspend fun updateStatusById(disfunctionId: Long, statusId: Int)
 }

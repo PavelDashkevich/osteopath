@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/mi_change_status"
+        android:title="@string/disfunction_context_menu_change_status">
+        <menu>
+            <group android:id="@+id/g_change_category">
+                <item
+                    android:id="@+id/mi_work"
+                    android:title="@string/disfunction_status_work"/>
+                <item
+                    android:id="@+id/mi_work_done"
+                    android:title="@string/disfunction_status_work_done_group"/>
+                <item
+                    android:id="@+id/mi_work_fail"
+                    android:title="@string/disfunction_status_no_help"/>
+                <item
+                    android:id="@+id/mi_wrong_diagnosed"
+                    android:title="@string/disfunction_status_wrong_diagnosed_group"/>
+            </group>
+        </menu>
+    </item>
+    <item
+        android:id="@+id/mi_delete"
+        android:icon="@drawable/ic_baseline_delete_24"
+        android:title="@string/customer_context_menu_item_delete"/>
+</menu>

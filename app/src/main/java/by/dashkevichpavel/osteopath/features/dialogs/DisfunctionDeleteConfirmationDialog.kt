@@ -9,26 +9,22 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.setFragmentResult
 import by.dashkevichpavel.osteopath.R
 
-class CustomerDeleteConfirmationDialog :
+class DisfunctionDeleteConfirmationDialog :
     DialogFragment(),
     DialogInterface.OnClickListener {
-    private var customerId: Long = 0L
+    private var disfunctionId: Long = 0L
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        var customerName = ""
-
         if (savedInstanceState == null) {
             arguments?.let { args ->
-                customerId = args.getLong(BUNDLE_KEY_CUSTOMER_ID, 0L)
-                customerName = args.getString(BUNDLE_KEY_CUSTOMER_NAME, "")
+                disfunctionId = args.getLong(BUNDLE_KEY_DISFUNCTION_ID, 0L)
             }
         }
 
         return AlertDialog.Builder(requireContext())
-            .setMessage(getString(R.string.customer_delete_dialog_message, customerName))
-            .setPositiveButton(R.string.customer_delete_dialog_button_positive, this)
-            .setNegativeButton(R.string.customer_delete_dialog_button_negative, this)
-            .setNeutralButton(R.string.customer_delete_dialog_button_neutral, this)
+            .setMessage(getString(R.string.disfunction_delete_dialog_message))
+            .setPositiveButton(R.string.disfunction_delete_dialog_button_positive, this)
+            .setNegativeButton(R.string.disfunction_delete_dialog_button_negative, this)
             .create()
     }
 
@@ -39,46 +35,41 @@ class CustomerDeleteConfirmationDialog :
                 this,
                 when (button) {
                     DialogInterface.BUTTON_POSITIVE -> DialogUserAction.POSITIVE
-                    DialogInterface.BUTTON_NEGATIVE -> DialogUserAction.NEGATIVE
-                    else -> DialogUserAction.NEUTRAL
+                    else -> DialogUserAction.NEGATIVE
                 }
             )
         )
     }
 
     companion object {
-        const val KEY_RESULT = "CUSTOMER_DELETE_CONFIRMATION"
-        private const val BUNDLE_KEY_CUSTOMER_NAME = "CUSTOMER_NAME"
-        private const val BUNDLE_KEY_CUSTOMER_ID = "CUSTOMER_ID"
+        const val KEY_RESULT = "DISFUNCTION_DELETE_CONFIRMATION"
+        private const val BUNDLE_KEY_DISFUNCTION_ID = "DISFUNCTION_ID"
         private const val BUNDLE_KEY_USER_ACTION_ID = "USER_ACTION_ID"
 
-        private fun packArgsBundle(customerName: String, customerId: Long): Bundle {
+        private fun packArgsBundle(disfunctionId: Long): Bundle {
             return Bundle().apply {
-                putLong(BUNDLE_KEY_CUSTOMER_ID, customerId)
-                putString(BUNDLE_KEY_CUSTOMER_NAME, customerName)
+                putLong(BUNDLE_KEY_DISFUNCTION_ID, disfunctionId)
             }
         }
 
         private fun packResultBundle(
-            dialog: CustomerDeleteConfirmationDialog,
+            dialog: DisfunctionDeleteConfirmationDialog,
             userAction: DialogUserAction
         ): Bundle {
             return Bundle().apply {
-                putLong(BUNDLE_KEY_CUSTOMER_ID, dialog.customerId)
+                putLong(BUNDLE_KEY_DISFUNCTION_ID, dialog.disfunctionId)
                 putInt(BUNDLE_KEY_USER_ACTION_ID, userAction.ordinal)
             }
         }
 
-        fun show(
-            fragmentManager: FragmentManager, tag: String, customerName: String, customerId: Long
-        ) {
-            val fragment = CustomerDeleteConfirmationDialog()
-            fragment.arguments = packArgsBundle(customerName, customerId)
+        fun show(fragmentManager: FragmentManager, tag: String, disfunctionId: Long) {
+            val fragment = DisfunctionDeleteConfirmationDialog()
+            fragment.arguments = packArgsBundle(disfunctionId)
             fragment.show(fragmentManager, tag)
         }
 
         fun extractResult(bundle: Bundle): Pair<Long, DialogUserAction> {
-            return bundle.getLong(BUNDLE_KEY_CUSTOMER_ID, 0L) to
+            return bundle.getLong(BUNDLE_KEY_DISFUNCTION_ID, 0L) to
                     DialogUserAction.values()[
                             bundle.getInt(BUNDLE_KEY_USER_ACTION_ID, DialogUserAction.NEGATIVE.ordinal)
                     ]

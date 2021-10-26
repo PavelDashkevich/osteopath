@@ -21,6 +21,7 @@ import by.dashkevichpavel.osteopath.R
 import by.dashkevichpavel.osteopath.databinding.FragmentCustomerListBinding
 import by.dashkevichpavel.osteopath.features.customerprofile.FragmentCustomerProfile
 import by.dashkevichpavel.osteopath.features.dialogs.CustomerDeleteConfirmationDialog
+import by.dashkevichpavel.osteopath.features.dialogs.DialogUserAction
 import by.dashkevichpavel.osteopath.helpers.safelyNavigateTo
 import by.dashkevichpavel.osteopath.helpers.setupToolbar
 import by.dashkevichpavel.osteopath.model.Customer
@@ -264,7 +265,7 @@ class FragmentCustomerList :
         customer: Customer,
         menuItem: MenuItem
     ): Boolean {
-        when(menuItem.itemId) {
+        when (menuItem.itemId) {
             R.id.mi_archive -> viewModel.putCustomerToArchive(customer.id)
             R.id.mi_unarchive -> viewModel.removeCustomerFromArchive(customer.id)
             R.id.mi_delete -> {
@@ -287,10 +288,8 @@ class FragmentCustomerList :
         val customerId = result.first
 
         when (userAction) {
-            CustomerDeleteConfirmationDialog.UserAction.DELETE ->
-                viewModel.deleteCustomer(customerId)
-            CustomerDeleteConfirmationDialog.UserAction.ARCHIVE ->
-                viewModel.putCustomerToArchive(customerId)
+            DialogUserAction.POSITIVE -> viewModel.deleteCustomer(customerId)
+            DialogUserAction.NEUTRAL -> viewModel.putCustomerToArchive(customerId)
             else -> { /* do nothing */ }
         }
     }

@@ -68,8 +68,9 @@ class DisfunctionItemCategoryViewHolder(
 
 class DisfunctionItemDataViewHolder(
     itemView: View,
-    private val disfunctionClickListener: DisfunctionClickListener):
-    DisfunctionItemViewHolder(itemView) {
+    private val disfunctionClickListener: DisfunctionClickListener,
+    private val disfunctionContextMenuClickListener: DisfunctionContextMenuClickListener
+    ) : DisfunctionItemViewHolder(itemView) {
     private val binding = ListitemDisfunctionDataBinding.bind(itemView)
 
     override fun bind(disfunctionListItem: DisfunctionListItem) {
@@ -85,6 +86,13 @@ class DisfunctionItemDataViewHolder(
             disfunctionClickListener.onDisfunctionClick(
                 disfunctionListItemData.disfunction.customerId,
                 disfunctionListItemData.disfunction.id
+            )
+        }
+
+        binding.ibContextActions.setOnClickListener {
+            disfunctionContextMenuClickListener.onDisfunctionContextMenuClick(
+                disfunctionListItem.disfunction,
+                itemView
             )
         }
     }

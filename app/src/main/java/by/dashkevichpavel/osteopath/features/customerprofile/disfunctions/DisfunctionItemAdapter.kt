@@ -13,7 +13,8 @@ import by.dashkevichpavel.osteopath.model.DisfunctionStatus
 class DisfunctionItemAdapter(
     private val disfunctionItems: MutableList<DisfunctionListItem>,
     private val disfunctionCategoryCollapseExpandClickListener: DisfunctionCategoryCollapseExpandClickListener,
-    private val disfunctionClickListener: DisfunctionClickListener
+    private val disfunctionClickListener: DisfunctionClickListener,
+    private val disfunctionContextMenuClickListener: DisfunctionContextMenuClickListener
 ) : RecyclerView.Adapter<DisfunctionItemViewHolder>() {
     private val disfunctionCategories: MutableList<DisfunctionListItemCategory> =
         DisfunctionStatus.values().map {
@@ -38,7 +39,8 @@ class DisfunctionItemAdapter(
             LayoutInflater
                 .from(parent.context)
                 .inflate(R.layout.listitem_disfunction_data, parent, false),
-            disfunctionClickListener
+            disfunctionClickListener,
+            disfunctionContextMenuClickListener
         )
     }
 

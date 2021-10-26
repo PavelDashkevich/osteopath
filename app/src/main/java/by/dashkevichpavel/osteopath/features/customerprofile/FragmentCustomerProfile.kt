@@ -13,6 +13,7 @@ import by.dashkevichpavel.osteopath.BackClickHandler
 import by.dashkevichpavel.osteopath.BackClickListener
 import by.dashkevichpavel.osteopath.features.customerlist.FragmentCustomerList
 import by.dashkevichpavel.osteopath.features.dialogs.CustomerDeleteConfirmationDialog
+import by.dashkevichpavel.osteopath.features.dialogs.DialogUserAction
 import by.dashkevichpavel.osteopath.helpers.savechanges.SaveChangesFragmentHelper
 import by.dashkevichpavel.osteopath.helpers.setupToolbar
 import by.dashkevichpavel.osteopath.viewmodel.OsteoViewModelFactory
@@ -142,11 +143,11 @@ class FragmentCustomerProfile :
         val customerId = result.first
 
         when (userAction) {
-            CustomerDeleteConfirmationDialog.UserAction.DELETE -> {
+            DialogUserAction.POSITIVE -> {
                 viewModel.deleteCustomer(customerId)
                 findNavController().navigateUp()
             }
-            CustomerDeleteConfirmationDialog.UserAction.ARCHIVE ->
+            DialogUserAction.NEUTRAL ->
                 viewModel.setCustomerIsArchived(true)
             else -> { /* do nothing */ }
         }

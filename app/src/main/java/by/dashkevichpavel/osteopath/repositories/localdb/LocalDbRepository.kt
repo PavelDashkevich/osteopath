@@ -3,10 +3,7 @@ package by.dashkevichpavel.osteopath.repositories.localdb
 import android.content.Context
 import android.util.Log
 import androidx.sqlite.db.SimpleSQLiteQuery
-import by.dashkevichpavel.osteopath.model.Attachment
-import by.dashkevichpavel.osteopath.model.Customer
-import by.dashkevichpavel.osteopath.model.Disfunction
-import by.dashkevichpavel.osteopath.model.Session
+import by.dashkevichpavel.osteopath.model.*
 import by.dashkevichpavel.osteopath.repositories.localdb.entity.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -172,6 +169,16 @@ class LocalDbRepository(applicationContext: Context) {
             localDb.customerDao.deleteById(customerId)
         }
     }
+
+    suspend fun deleteDisfunctionById(disfunctionId: Long) = withContext(Dispatchers.IO) {
+        localDb.sessionDisfunctionDao.deleteByDisfunctionId(disfunctionId)
+        localDb.disfunctionDao.deleteById(disfunctionId)
+    }
+
+    suspend fun updateDisfunctionStatusById(disfunctionId: Long, disfunctionStatusId: Int) =
+        withContext(Dispatchers.IO) {
+            localDb.disfunctionDao.updateStatusById(disfunctionId, disfunctionStatusId)
+        }
 
     fun close() = LocalDb.close()
 }
