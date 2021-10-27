@@ -33,7 +33,7 @@
     <color name="purple_800">#ff6a1b9a</color>
     <color name="purple_900">#ff4a148c</color>
 
-    <color name="themeLightPrimaryColor">#7e57c2</color>
+    <!--<color name="themeLightPrimaryColor">#7e57c2</color>
     <color name="themeLightPrimaryLightColor">#b085f5</color>
     <color name="themeLightPrimaryDarkColor">#4d2c91</color>
     <color name="themeLightSecondaryColor">#ab47bc</color>
@@ -48,6 +48,24 @@
     <color name="themeDarkSecondaryColor">#795548</color>
     <color name="themeDarkSecondaryLightColor">#a98274</color>
     <color name="themeDarkSecondaryDarkColor">#4b2c20</color>
+    <color name="themeDarkPrimaryTextColor">#ffffff</color>
+    <color name="themeDarkSecondaryTextColor">#ffffff</color>-->
+
+    <color name="themeLightPrimaryColor">#7fdce8</color>
+    <color name="themeLightPrimaryLightColor">#b3ffff</color>
+    <color name="themeLightPrimaryDarkColor">#4aaab6</color>
+    <color name="themeLightSecondaryColor">#e87fdc</color>
+    <color name="themeLightSecondaryLightColor">#ffb1ff</color>
+    <color name="themeLightSecondaryDarkColor">#b44faa</color>
+    <color name="themeLightPrimaryTextColor">#000000</color>
+    <color name="themeLightSecondaryTextColor">#000000</color>
+
+    <color name="themeDarkPrimaryColor">#427379</color>
+    <color name="themeDarkPrimaryLightColor">#70a2a8</color>
+    <color name="themeDarkPrimaryDarkColor">#12474d</color>
+    <color name="themeDarkSecondaryColor">#7c4476</color>
+    <color name="themeDarkSecondaryLightColor">#ac71a5</color>
+    <color name="themeDarkSecondaryDarkColor">#4e194a</color>
     <color name="themeDarkPrimaryTextColor">#ffffff</color>
     <color name="themeDarkSecondaryTextColor">#ffffff</color>
 

@@ -23,10 +23,8 @@
         app:tabMode="fixed"
         app:tabGravity="fill"
         android:elevation="4dp"
-        app:tabIndicatorColor="?attr/colorPrimary"
-        app:tabSelectedTextColor="?attr/colorOnPrimary"
-        android:background="?attr/colorOnPrimary"
-        />
+        app:tabIndicatorColor="?attr/colorSecondary"
+        android:background="?attr/colorPrimaryVariant"/>
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/vpViewPager"

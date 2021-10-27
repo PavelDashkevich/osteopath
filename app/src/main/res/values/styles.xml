@@ -71,10 +71,10 @@
 
     <!--  Tab layout  -->
     <style name="TabLayout">
-        <item name="android:background">?attr/colorPrimary</item>
+        <!--<item name="android:background">?attr/colorPrimary</item>
         <item name="tabIconTint">?attr/colorOnPrimary</item>
-        <item name="tabIndicatorColor">@color/white</item>
-        <item name="tabTextColor">@color/mtrl_tabs_icon_color_selector_colored</item>
+        <item name="tabIndicatorColor">@color/white</item>-->
+        <!--<item name="tabTextColor">@color/mtrl_tabs_icon_color_selector_colored</item>-->
         <item name="tabRippleColor">@color/mtrl_tabs_colored_ripple_color</item>
     </style>
 
