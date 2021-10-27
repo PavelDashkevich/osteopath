@@ -5,7 +5,10 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import by.dashkevichpavel.osteopath.features.dialogs.DialogUserAction
 import by.dashkevichpavel.osteopath.helpers.backups.BackupHelper
+import by.dashkevichpavel.osteopath.helpers.itemdeletion.DeletableInterface
+import by.dashkevichpavel.osteopath.helpers.itemdeletion.ItemDeletionEventsHandler
 import by.dashkevichpavel.osteopath.model.*
 import by.dashkevichpavel.osteopath.repositories.localdb.LocalDbRepository
 import by.dashkevichpavel.osteopath.repositories.localdb.OsteoDbRepositorySingleton
@@ -15,7 +18,9 @@ import kotlinx.coroutines.launch
 class CustomerListViewModel(
     applicationContext: Context,
     private val repository: LocalDbRepository
-) : ViewModel(), CustomerListProcessorSubscriber, CustomerListLoaderSubscriber {
+) : ViewModel(),
+    CustomerListProcessorSubscriber,
+    CustomerListLoaderSubscriber {
     // searchViewState* vars save state of SearchView on configuration change
     var searchViewStateIconified: Boolean = true
     var searchViewStateKeyboardShown: Boolean = true
@@ -35,6 +40,8 @@ class CustomerListViewModel(
         repository,
         viewModelScope
     )
+
+    val customerDeletionHandler = ItemDeletionEventsHandler(this::onCustomerDeleteConfirmation)
 
     fun setFilter() {
         val filterValues = filterSharedPreferences.loadValues()
@@ -59,7 +66,13 @@ class CustomerListViewModel(
     fun removeCustomerFromArchive(customerId: Long) =
         customerListLoader.removeCustomerFromArchive(customerId)
 
-    fun deleteCustomer(customerId: Long) = customerListLoader.deleteCustomer(customerId)
+    private fun onCustomerDeleteConfirmation(itemId: Long, userAction: DialogUserAction) {
+        when (userAction) {
+            DialogUserAction.POSITIVE -> customerListLoader.deleteCustomer(itemId)
+            DialogUserAction.NEUTRAL -> customerListLoader.putCustomerInArchive(itemId)
+            else -> {}
+        }
+    }
 
     override fun onCustomersProcessed(customers: List<Customer>, isSearchOrFilterResult: Boolean) {
         filteredCustomerList.value = customers

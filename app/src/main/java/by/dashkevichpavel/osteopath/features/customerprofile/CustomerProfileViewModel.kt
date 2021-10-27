@@ -9,7 +9,9 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import by.dashkevichpavel.osteopath.features.dialogs.DialogUserAction
 import by.dashkevichpavel.osteopath.helpers.contacts.ContactInfoLoader
+import by.dashkevichpavel.osteopath.helpers.itemdeletion.ItemDeletionEventsHandler
 import by.dashkevichpavel.osteopath.helpers.savechanges.SavableInterface
 import by.dashkevichpavel.osteopath.helpers.savechanges.SaveChangesViewModelHelper
 import by.dashkevichpavel.osteopath.helpers.thumbnails.ThumbnailHelper
@@ -23,7 +25,8 @@ import java.io.File
 class CustomerProfileViewModel(
     applicationContext: Context,
     private val repository: LocalDbRepository
-) : ViewModel(), SavableInterface {
+) : ViewModel(),
+    SavableInterface {
     val customer = MutableLiveData<Customer?>(null)
     private var initialCustomer: Customer = Customer()
     val disfunctions = MutableLiveData<MutableList<Disfunction>>(mutableListOf())
@@ -34,6 +37,9 @@ class CustomerProfileViewModel(
     val currentCustomerId = MutableLiveData(0L)
     val currentCustomerIsArchived = MutableLiveData(false)
     private var jobSave: Job? = null
+
+    val customerDeletionHandler = ItemDeletionEventsHandler(this::onCustomerDeleteConfirmation)
+    val disfunctionDeletionHandler = ItemDeletionEventsHandler(this::onDisfunctionDeleteConfirmation)
 
     var jobDisfunctionsLoadingListener: Job? = null
     var jobSessionsLoadingListener: Job? = null
@@ -122,11 +128,17 @@ class CustomerProfileViewModel(
 
     fun getCustomerId(): Long = currentCustomerId.value ?: 0L
 
-    fun deleteCustomer(customerId: Long) {
-        if (customerId == 0L) return
+    private fun onCustomerDeleteConfirmation(itemId: Long, userAction: DialogUserAction) {
+        when (userAction) {
+            DialogUserAction.POSITIVE -> {
+                if (itemId == 0L) return
 
-        viewModelScope.launch {
-            repository.deleteCustomerById(customerId)
+                viewModelScope.launch {
+                    repository.deleteCustomerById(itemId)
+                }
+            }
+            DialogUserAction.NEUTRAL -> setCustomerIsArchived(true)
+            else -> {}
         }
     }
     // endregion general code
@@ -219,9 +231,11 @@ class CustomerProfileViewModel(
         }
     }
 
-    fun deleteDisfunction(disfunctionId: Long) {
-        viewModelScope.launch {
-            repository.deleteDisfunctionById(disfunctionId)
+    private fun onDisfunctionDeleteConfirmation(itemId: Long, userAction: DialogUserAction) {
+        if (userAction == DialogUserAction.POSITIVE) {
+            viewModelScope.launch {
+                repository.deleteDisfunctionById(itemId)
+            }
         }
     }
     // endregion Disfunctions tab

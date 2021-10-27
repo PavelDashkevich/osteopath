@@ -14,6 +14,7 @@ import by.dashkevichpavel.osteopath.features.customerprofile.CustomerProfileView
 import by.dashkevichpavel.osteopath.features.dialogs.DialogUserAction
 import by.dashkevichpavel.osteopath.features.dialogs.ItemDeleteConfirmationDialog
 import by.dashkevichpavel.osteopath.features.disfunction.FragmentDisfunction
+import by.dashkevichpavel.osteopath.helpers.itemdeletion.ItemDeletionFragmentHelper
 import by.dashkevichpavel.osteopath.helpers.recyclerviewutils.SpaceItemDecoration
 import by.dashkevichpavel.osteopath.helpers.safelyNavigateTo
 import by.dashkevichpavel.osteopath.model.Disfunction
@@ -51,12 +52,13 @@ class FragmentCustomerProfileDisfunctions :
     private val disfunctionStatusIdsToMenuItemIds: Map<Int, Int> =
         menuItemIdsToDisfunctionStatusIds.entries.associateBy( { it.value } ) { it.key }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        //Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
+    private var itemDeletionFragmentHelper: ItemDeletionFragmentHelper? = null
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         setupViews(view)
         setupEventListeners()
         setupObservers()
+        setupHelpers()
     }
 
     override fun onDestroyView() {
@@ -76,12 +78,6 @@ class FragmentCustomerProfileDisfunctions :
     }
 
     private fun setupEventListeners() {
-        childFragmentManager.setFragmentResultListener(
-            ItemDeleteConfirmationDialog.KEY_RESULT,
-            viewLifecycleOwner,
-            this::onDisfunctionDeleteConfirm
-        )
-
         binding.fabAddDisfunction.setOnClickListener {
             openDisfunctionScreen(viewModel.customer.value?.id ?: 0L, 0L)
         }
@@ -90,6 +86,11 @@ class FragmentCustomerProfileDisfunctions :
     private fun setupObservers() {
         viewModel.disfunctions.observe(viewLifecycleOwner, this::updateDisfunctionsList)
         viewModel.startListeningForDisfunctionsChanges()
+    }
+
+    private fun setupHelpers() {
+        itemDeletionFragmentHelper = ItemDeletionFragmentHelper(this,
+            viewModel.disfunctionDeletionHandler, true)
     }
 
     private fun updateDisfunctionsList(newDisfunctionsList: MutableList<Disfunction>) {
@@ -136,8 +137,7 @@ class FragmentCustomerProfileDisfunctions :
                     viewModel.changeDisfunctionStatus(disfunction.id, statusId)
                 }
             R.id.mi_delete -> {
-                ItemDeleteConfirmationDialog.show(
-                    fragmentManager = childFragmentManager,
+                itemDeletionFragmentHelper?.showDialog(
                     itemId = disfunction.id,
                     message = getString(R.string.disfunction_delete_dialog_message)
                 )
@@ -146,18 +146,6 @@ class FragmentCustomerProfileDisfunctions :
         }
 
         return true
-    }
-
-    private fun onDisfunctionDeleteConfirm(key: String, bundle: Bundle) {
-        if (key != ItemDeleteConfirmationDialog.KEY_RESULT) return
-
-        val result = ItemDeleteConfirmationDialog.extractResult(bundle)
-        val userAction = result.second
-        val disfunctionId = result.first
-
-        if (userAction == DialogUserAction.POSITIVE) {
-            viewModel.deleteDisfunction(disfunctionId)
-        }
     }
 
     override fun onCategoryClick(disfunctionStatus: DisfunctionStatus) {

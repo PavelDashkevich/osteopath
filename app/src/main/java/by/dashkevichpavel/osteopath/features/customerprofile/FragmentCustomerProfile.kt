@@ -13,6 +13,7 @@ import by.dashkevichpavel.osteopath.BackClickHandler
 import by.dashkevichpavel.osteopath.BackClickListener
 import by.dashkevichpavel.osteopath.features.dialogs.DialogUserAction
 import by.dashkevichpavel.osteopath.features.dialogs.ItemDeleteConfirmationDialog
+import by.dashkevichpavel.osteopath.helpers.itemdeletion.ItemDeletionFragmentHelper
 import by.dashkevichpavel.osteopath.helpers.savechanges.SaveChangesFragmentHelper
 import by.dashkevichpavel.osteopath.helpers.setupToolbar
 import by.dashkevichpavel.osteopath.viewmodel.OsteoViewModelFactory
@@ -32,6 +33,8 @@ class FragmentCustomerProfile :
     private var backClickHandler: BackClickHandler? = null
 
     private var contextMenu: Menu? = null
+
+    private var itemDeletionFragmentHelper: ItemDeletionFragmentHelper? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,8 +61,7 @@ class FragmentCustomerProfile :
             android.R.id.home -> viewModel.saveChangesHelper.finishEditing()
             R.id.mi_cancel -> viewModel.saveChangesHelper.cancelEditing()
             R.id.mi_delete ->
-                ItemDeleteConfirmationDialog.show(
-                    fragmentManager = childFragmentManager,
+                itemDeletionFragmentHelper?.showDialog(
                     itemId = viewModel.getCustomerId(),
                     message = getString(
                         R.string.customer_delete_dialog_message,
@@ -119,16 +121,12 @@ class FragmentCustomerProfile :
         viewModel.currentCustomerId.observe(viewLifecycleOwner, this::onChangeCustomerId)
     }
 
-    private fun setupEventListeners() {
-        childFragmentManager.setFragmentResultListener(
-            ItemDeleteConfirmationDialog.KEY_RESULT,
-            viewLifecycleOwner,
-            this::onCustomerDeleteConfirm
-        )
-    }
+    private fun setupEventListeners() { }
 
     private fun setupHelpers() {
         saveChangesHelper = SaveChangesFragmentHelper(this, viewModel.saveChangesHelper)
+        itemDeletionFragmentHelper = ItemDeletionFragmentHelper(this,
+            viewModel.customerDeletionHandler, false)
     }
 
     private fun onChangeToolbarTitle(newName: String?) {
@@ -137,24 +135,6 @@ class FragmentCustomerProfile :
 
     private fun onChangeCustomerId(customerId: Long) {
         contextMenu?.findItem(R.id.mi_delete)?.isVisible = (customerId != 0L)
-    }
-
-    private fun onCustomerDeleteConfirm(key: String, bundle: Bundle) {
-        if (key != ItemDeleteConfirmationDialog.KEY_RESULT) return
-
-        val result = ItemDeleteConfirmationDialog.extractResult(bundle)
-        val userAction = result.second
-        val customerId = result.first
-
-        when (userAction) {
-            DialogUserAction.POSITIVE -> {
-                viewModel.deleteCustomer(customerId)
-                findNavController().navigateUp()
-            }
-            DialogUserAction.NEUTRAL ->
-                viewModel.setCustomerIsArchived(true)
-            else -> { /* do nothing */ }
-        }
     }
 
     override fun onBackClick(): Boolean {

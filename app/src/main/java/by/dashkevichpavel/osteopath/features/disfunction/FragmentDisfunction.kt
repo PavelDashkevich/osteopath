@@ -14,6 +14,7 @@ import by.dashkevichpavel.osteopath.BackClickListener
 import by.dashkevichpavel.osteopath.features.customerprofile.FragmentCustomerProfile
 import by.dashkevichpavel.osteopath.features.dialogs.DialogUserAction
 import by.dashkevichpavel.osteopath.features.dialogs.ItemDeleteConfirmationDialog
+import by.dashkevichpavel.osteopath.helpers.itemdeletion.ItemDeletionFragmentHelper
 import by.dashkevichpavel.osteopath.helpers.savechanges.SaveChangesFragmentHelper
 import by.dashkevichpavel.osteopath.helpers.setupToolbar
 import by.dashkevichpavel.osteopath.helpers.toEditable
@@ -39,6 +40,7 @@ class FragmentDisfunction :
     private val mapResIdToStatusId = mapStatusIdToResId.entries.associateBy({ it.value }) { it.key }
     private lateinit var saveChangesHelper: SaveChangesFragmentHelper
     private var contextMenu: Menu? = null
+    private var itemDeletionFragmentHelper: ItemDeletionFragmentHelper? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,8 +72,7 @@ class FragmentDisfunction :
             android.R.id.home -> viewModel.saveChangesHelper.finishEditing()
             R.id.mi_cancel -> viewModel.saveChangesHelper.cancelEditing()
             R.id.mi_delete ->
-                ItemDeleteConfirmationDialog.show(
-                    fragmentManager = childFragmentManager,
+                itemDeletionFragmentHelper?.showDialog(
                     itemId = viewModel.getDisfunctionId(),
                     message = getString(R.string.disfunction_delete_dialog_message)
                 )
@@ -99,15 +100,11 @@ class FragmentDisfunction :
 
     private fun setupHelpers() {
         saveChangesHelper = SaveChangesFragmentHelper(this, viewModel.saveChangesHelper)
+        itemDeletionFragmentHelper = ItemDeletionFragmentHelper(this,
+            viewModel.disfunctionDeletionHandler, false)
     }
 
     private fun setupEventListeners() {
-        childFragmentManager.setFragmentResultListener(
-            ItemDeleteConfirmationDialog.KEY_RESULT,
-            viewLifecycleOwner,
-            this::onDisfunctionDeleteConfirm
-        )
-
         backClickHandler = (requireActivity() as BackClickHandler)
         backClickHandler?.addBackClickListener(this)
 
@@ -134,19 +131,6 @@ class FragmentDisfunction :
                 } else {
                     getString(R.string.header_new_disfunction)
                 }
-        }
-    }
-
-    private fun onDisfunctionDeleteConfirm(key: String, bundle: Bundle) {
-        if (key != ItemDeleteConfirmationDialog.KEY_RESULT) return
-
-        val result = ItemDeleteConfirmationDialog.extractResult(bundle)
-        val userAction = result.second
-        val disfunctionId = result.first
-
-        if (userAction == DialogUserAction.POSITIVE) {
-            viewModel.deleteDisfunction(disfunctionId)
-            findNavController().navigateUp()
         }
     }
 

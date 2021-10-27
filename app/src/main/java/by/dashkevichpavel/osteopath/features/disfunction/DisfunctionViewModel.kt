@@ -4,6 +4,9 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import by.dashkevichpavel.osteopath.features.dialogs.DialogUserAction
+import by.dashkevichpavel.osteopath.helpers.itemdeletion.DeletableInterface
+import by.dashkevichpavel.osteopath.helpers.itemdeletion.ItemDeletionEventsHandler
 import by.dashkevichpavel.osteopath.helpers.savechanges.SavableInterface
 import by.dashkevichpavel.osteopath.helpers.savechanges.SaveChangesViewModelHelper
 import by.dashkevichpavel.osteopath.model.Disfunction
@@ -19,6 +22,7 @@ class DisfunctionViewModel(
     private var jobSave: Job? = null
     val saveChangesHelper = SaveChangesViewModelHelper(this)
     val currentDisfunctionId = MutableLiveData(0L)
+    val disfunctionDeletionHandler = ItemDeletionEventsHandler(this::onDisfunctionDeleteConfirmation)
 
     fun selectDisfunction(customerId: Long, disfunctionId: Long) {
         if (disfunctionId == 0L) {
@@ -41,9 +45,11 @@ class DisfunctionViewModel(
 
     fun getDisfunctionId(): Long = currentDisfunctionId.value ?: 0L
 
-    fun deleteDisfunction(disfunctionId: Long) {
-        viewModelScope.launch {
-            repository.deleteDisfunctionById(disfunctionId)
+    private fun onDisfunctionDeleteConfirmation(itemId: Long, userAction: DialogUserAction) {
+        if (userAction == DialogUserAction.POSITIVE) {
+            viewModelScope.launch {
+                repository.deleteDisfunctionById(itemId)
+            }
         }
     }
 

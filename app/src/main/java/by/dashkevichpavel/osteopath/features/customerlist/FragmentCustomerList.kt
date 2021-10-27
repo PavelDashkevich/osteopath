@@ -22,6 +22,7 @@ import by.dashkevichpavel.osteopath.databinding.FragmentCustomerListBinding
 import by.dashkevichpavel.osteopath.features.customerprofile.FragmentCustomerProfile
 import by.dashkevichpavel.osteopath.features.dialogs.DialogUserAction
 import by.dashkevichpavel.osteopath.features.dialogs.ItemDeleteConfirmationDialog
+import by.dashkevichpavel.osteopath.helpers.itemdeletion.ItemDeletionFragmentHelper
 import by.dashkevichpavel.osteopath.helpers.safelyNavigateTo
 import by.dashkevichpavel.osteopath.helpers.setupToolbar
 import by.dashkevichpavel.osteopath.model.Customer
@@ -41,8 +42,8 @@ class FragmentCustomerList :
     private lateinit var svSearch: SearchView
     private lateinit var optionsMenu: Menu
     private lateinit var adapter: CustomerItemAdapter
-
     private var isMenuCreated: Boolean = false
+    private var itemDeletionFragmentHelper: ItemDeletionFragmentHelper? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,6 +52,7 @@ class FragmentCustomerList :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         setupViews(view)
+        setupHelpers()
         setupEventListeners()
         setupObservers()
         viewModel.setFilter()
@@ -221,12 +223,6 @@ class FragmentCustomerList :
     }
 
     private fun setupEventListeners() {
-        childFragmentManager.setFragmentResultListener(
-            ItemDeleteConfirmationDialog.KEY_RESULT,
-            viewLifecycleOwner,
-            this::onCustomerDeleteConfirm
-        )
-
         binding.fabAddCustomer.setOnClickListener {
             openCustomerProfileScreen(0L)
         }
@@ -236,6 +232,11 @@ class FragmentCustomerList :
         viewModel.isCustomersLoading.observe(viewLifecycleOwner, ::updateLoadingProgress)
         viewModel.filteredCustomerList.observe(viewLifecycleOwner, ::updateCustomersList)
         viewModel.startCustomerListObserving(requireContext().applicationContext)
+    }
+
+    private fun setupHelpers() {
+        itemDeletionFragmentHelper = ItemDeletionFragmentHelper(this,
+            viewModel.customerDeletionHandler, true)
     }
 
     private fun openCustomerProfileScreen(customerId: Long) {
@@ -269,8 +270,7 @@ class FragmentCustomerList :
             R.id.mi_archive -> viewModel.putCustomerToArchive(customer.id)
             R.id.mi_unarchive -> viewModel.removeCustomerFromArchive(customer.id)
             R.id.mi_delete -> {
-                ItemDeleteConfirmationDialog.show(
-                    fragmentManager = childFragmentManager,
+                itemDeletionFragmentHelper?.showDialog(
                     itemId = customer.id,
                     message = getString(R.string.customer_delete_dialog_message, customer.name),
                     neutralButtonTextResId = R.string.customer_delete_dialog_button_neutral
@@ -280,20 +280,6 @@ class FragmentCustomerList :
         }
 
         return true
-    }
-
-    private fun onCustomerDeleteConfirm(key: String, bundle: Bundle) {
-        if (key != ItemDeleteConfirmationDialog.KEY_RESULT) return
-
-        val result = ItemDeleteConfirmationDialog.extractResult(bundle)
-        val userAction = result.second
-        val customerId = result.first
-
-        when (userAction) {
-            DialogUserAction.POSITIVE -> viewModel.deleteCustomer(customerId)
-            DialogUserAction.NEUTRAL -> viewModel.putCustomerToArchive(customerId)
-            else -> { /* do nothing */ }
-        }
     }
 
     override fun onCustomerClick(customerId: Long) = openCustomerProfileScreen(customerId)
