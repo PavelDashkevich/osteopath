@@ -18,6 +18,7 @@ import by.dashkevichpavel.osteopath.features.pickers.FragmentDatePicker
 import by.dashkevichpavel.osteopath.features.pickers.FragmentTimePicker
 import by.dashkevichpavel.osteopath.features.selectdisfunctions.FragmentSelectDisfunctions
 import by.dashkevichpavel.osteopath.helpers.*
+import by.dashkevichpavel.osteopath.helpers.itemdeletion.ItemDeletionFragmentHelper
 import by.dashkevichpavel.osteopath.helpers.savechanges.SaveChangesFragmentHelper
 import by.dashkevichpavel.osteopath.model.*
 import by.dashkevichpavel.osteopath.viewmodel.OsteoViewModelFactory
@@ -38,6 +39,8 @@ class FragmentSession :
     private var backClickHandler: BackClickHandler? = null
     private lateinit var adapter: DisfunctionInSessionAdapter
     private lateinit var saveChangesHelper: SaveChangesFragmentHelper
+    private var contextMenu: Menu? = null
+    private var itemDeletionFragmentHelper: ItemDeletionFragmentHelper? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,12 +63,19 @@ class FragmentSession :
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.standard_edit_screen_menu, menu)
+        contextMenu = menu
+        onChangeSessionId(viewModel.getSessionId())
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home -> viewModel.saveChangesHelper.finishEditing()
             R.id.mi_cancel -> viewModel.saveChangesHelper.cancelEditing()
+            R.id.mi_delete ->
+                itemDeletionFragmentHelper?.showDialog(
+                    viewModel.getSessionId(),
+                    getString(R.string.session_delete_dialog_message)
+                )
             else -> return super.onOptionsItemSelected(item)
         }
 
@@ -97,10 +107,13 @@ class FragmentSession :
         viewModel.sessionDateTime.observe(viewLifecycleOwner, ::onChangeDateTime)
         viewModel.addDisfunctionActionEnabled.observe(viewLifecycleOwner,
             ::onChangeAddDisfunctionActionAccessibility)
+        viewModel.currentSessionId.observe(viewLifecycleOwner, ::onChangeSessionId)
     }
 
     private fun setupHelpers() {
         saveChangesHelper = SaveChangesFragmentHelper(this, viewModel.saveChangesHelper)
+        itemDeletionFragmentHelper = ItemDeletionFragmentHelper(this,
+            viewModel.sessionDeletionHandler, false)
     }
 
     private fun setupEventListeners() {
@@ -186,6 +199,10 @@ class FragmentSession :
 
     private fun onChangeAddDisfunctionActionAccessibility(isEnabled: Boolean) {
         binding.ibAddDisfunction.isEnabled = !isEnabled
+    }
+
+    private fun onChangeSessionId(sessionId: Long) {
+        binding.lToolbar.tbActions.menu.findItem(R.id.mi_delete)?.isVisible = (sessionId != 0L)
     }
 
     override fun onDisfunctionDeleteClick(disfunctionId: Long) {

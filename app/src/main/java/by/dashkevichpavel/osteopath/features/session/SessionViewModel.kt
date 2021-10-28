@@ -3,6 +3,8 @@ package by.dashkevichpavel.osteopath.features.session
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import by.dashkevichpavel.osteopath.features.dialogs.DialogUserAction
+import by.dashkevichpavel.osteopath.helpers.itemdeletion.ItemDeletionEventsHandler
 import by.dashkevichpavel.osteopath.helpers.savechanges.SavableInterface
 import by.dashkevichpavel.osteopath.helpers.savechanges.SaveChangesViewModelHelper
 import by.dashkevichpavel.osteopath.helpers.setDatePartFromTimeInMillis
@@ -24,7 +26,9 @@ class SessionViewModel(
     val addDisfunctionActionEnabled: MutableLiveData<Boolean> = MutableLiveData(true)
     private var allCustomerDisfunctions: MutableList<Disfunction> = mutableListOf()
     private var jobSave: Job? = null
+    val currentSessionId = MutableLiveData(0L)
     val saveChangesHelper = SaveChangesViewModelHelper(this)
+    val sessionDeletionHandler = ItemDeletionEventsHandler(this::onSessionDeleteConfirmation)
 
     fun selectSession(sessionId: Long, customerId: Long) {
         if (sessionId == 0L) {
@@ -131,6 +135,21 @@ class SessionViewModel(
             dateTime = Date(newSession.dateTime.time)
         )
         initialSession.disfunctions.addAll(newSession.disfunctions)
+        updateSessionId()
+    }
+
+    fun getSessionId(): Long = currentSessionId.value ?: 0L
+
+    private fun updateSessionId() {
+        currentSessionId.value = session.value?.id ?: 0L
+    }
+
+    private fun onSessionDeleteConfirmation(sessionId: Long, userAction: DialogUserAction) {
+        if (userAction == DialogUserAction.POSITIVE) {
+            viewModelScope.launch {
+                repository.deleteSessionById(sessionId)
+            }
+        }
     }
 
     override fun isDataModified(): Boolean = initialSession.isModified(session.value)
@@ -140,8 +159,9 @@ class SessionViewModel(
             if (jobSave == null || jobSave?.isCompleted != false) {
                 jobSave = viewModelScope.launch {
                     saveChangesHelper.startSaving()
-                    repository.insertSession(session)
+                    session.id = repository.insertSession(session)
                     saveChangesHelper.finishSaving()
+                    updateSessionId()
                     saveChangesHelper.navigateUp()
                 }
             }

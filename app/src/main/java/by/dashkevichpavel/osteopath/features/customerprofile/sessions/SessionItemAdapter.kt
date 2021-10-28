@@ -9,7 +9,8 @@ import by.dashkevichpavel.osteopath.helpers.recyclerviewutils.DefaultDiffUtil
 import by.dashkevichpavel.osteopath.model.Session
 
 class SessionItemAdapter(
-    private val sessionItemClickListener: SessionItemClickListener
+    private val sessionItemClickListener: SessionItemClickListener,
+    private val sessionContextMenuClickListener: SessionContextMenuClickListener
 ) : RecyclerView.Adapter<SessionItemViewHolder>() {
     private val sessions: MutableList<Session> = mutableListOf()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SessionItemViewHolder =
@@ -20,7 +21,7 @@ class SessionItemAdapter(
         )
 
     override fun onBindViewHolder(holder: SessionItemViewHolder, position: Int) {
-        holder.bind(sessions[position], sessionItemClickListener)
+        holder.bind(sessions[position], sessionItemClickListener, sessionContextMenuClickListener)
     }
 
     override fun getItemCount(): Int = sessions.size

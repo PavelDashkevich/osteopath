@@ -12,7 +12,11 @@ import com.google.android.material.card.MaterialCardView
 class SessionItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val binding = ListitemSessionBinding.bind(itemView)
 
-    fun bind(session: Session, sessionItemClickListener: SessionItemClickListener) {
+    fun bind(
+        session: Session,
+        sessionItemClickListener: SessionItemClickListener,
+        sessionContextMenuClickListener: SessionContextMenuClickListener
+    ) {
         binding.tvDateTime.text = session.dateTime.formatDateTimeAsString()
         binding.tvDone.text = itemView.context.getString(
             if (session.isDone) {
@@ -39,6 +43,10 @@ class SessionItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) 
 
         binding.cvCard.setOnClickListener {
             sessionItemClickListener.onSessionItemClick(session.customerId, session.id)
+        }
+
+        binding.ibContextActions.setOnClickListener {
+            sessionContextMenuClickListener.onSessionContextMenuClick(session, binding.ibContextActions)
         }
     }
 

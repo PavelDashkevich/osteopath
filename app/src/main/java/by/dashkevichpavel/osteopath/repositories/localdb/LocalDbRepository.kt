@@ -115,14 +115,15 @@ class LocalDbRepository(applicationContext: Context) {
                 .map { disfunctionEntity -> Disfunction(disfunctionEntity) }
     }
 
-    suspend fun insertSession(session: Session) = withContext(Dispatchers.IO) {
-        localDb.sessionDao.insert(SessionEntity(session))
+    suspend fun insertSession(session: Session): Long = withContext(Dispatchers.IO) {
+        val id = localDb.sessionDao.insert(SessionEntity(session))
         localDb.sessionDisfunctionDao.deleteBySessionId(session.id)
         localDb.sessionDisfunctionDao.insert(
             session.disfunctions.map { disfunction ->
                 SessionDisfunctionsEntity(session.id, disfunction.id)
             }
         )
+        return@withContext id
     }
 
     fun getAttachmentsByCustomerIdAsFlow(customerId: Long): Flow<List<Attachment>> =
@@ -179,6 +180,15 @@ class LocalDbRepository(applicationContext: Context) {
         withContext(Dispatchers.IO) {
             localDb.disfunctionDao.updateStatusById(disfunctionId, disfunctionStatusId)
         }
+
+    suspend fun deleteSessionById(sessionId: Long) = withContext(Dispatchers.IO) {
+        localDb.sessionDao.deleteById(sessionId)
+    }
+
+    suspend fun updateSessionIsDone(sessionId: Long, isDone: Boolean) =
+        withContext(Dispatchers.IO) {
+            localDb.sessionDao.updateIsDoneById(sessionId, isDone)
+    }
 
     fun close() = LocalDb.close()
 }

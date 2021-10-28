@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/mi_mark_as_done"
+        android:icon="@drawable/ic_baseline_check_box_24"
+        android:title="@string/session_context_menu_mark_as_done"
+        app:showAsAction="always"/>
+    <item
+        android:id="@+id/mi_delete"
+        android:icon="@drawable/ic_baseline_delete_24"
+        android:title="@string/session_context_menu_delete"
+        app:showAsAction="always"/>
+</menu>

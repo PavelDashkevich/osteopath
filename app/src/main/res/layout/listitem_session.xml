@@ -41,10 +41,20 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="@id/glVerticalRight"
+            app:layout_constraintStart_toEndOf="@id/tvDateTime"
             tools:text="Проведен"
+            android:paddingHorizontal="8dp"
             android:paddingVertical="12dp"
             android:textSize="12sp"/>
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/ibContextActions"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:src="@drawable/ic_baseline_more_vert_24"
+            android:background="?android:selectableItemBackground"/>
 
         <TextView
             android:id="@+id/tvHeaderDisfunctions"
@@ -52,7 +62,7 @@
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@id/tvDateTime"
             app:layout_constraintStart_toStartOf="@id/glVerticalLeft"
-            app:layout_constraintEnd_toEndOf="@id/glVerticalRight"
+            app:layout_constraintEnd_toStartOf="@id/ibContextActions"
             android:gravity="center_vertical"
             android:text="@string/header_disfunctions"
             android:textStyle="bold"

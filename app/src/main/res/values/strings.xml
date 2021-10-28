@@ -31,9 +31,6 @@
     <string name="empty_screen_hint">Список %1$s пуст.\nДля добавления нажмите эту кнопку</string>
     <string name="customer_menu_item_search">Поиск</string>
     <string name="customer_menu_item_filter">Фильтр</string>
-    <string name="customer_context_menu_item_archive">В архив</string>
-    <string name="customer_context_menu_item_unarchive">Извлечь из архива</string>
-    <string name="customer_context_menu_item_delete">Удалить</string>
     <string name="header_filter_by_age">По возрасту</string>
     <string name="filter_by_age_children">дети (до 18 лет)</string>
     <string name="filter_by_age_adults">взрослые (от 18 лет)</string>
@@ -102,7 +99,27 @@
     <string name="empty_screen_hint_part_disfunctions">дисфункций</string>
     <string name="empty_screen_hint_part_sessions">сеансов</string>
     <string name="empty_screen_hint_part_attachments">файловых вложений</string>
-    <string name="disfunction_context_menu_change_status">Изменить статус</string>
+
+    <!--  Common strings used as sources for other string resources (sorted alphabetically)  -->
+    <string name="common_add_to_archive">В архив</string>
+    <string name="common_change_status">Изменить статус</string>
+    <string name="common_delete">Удалить</string>
+    <string name="common_get_from_archive">Извлечь из архива</string>
+    <string name="common_mark_as_done">Отметить проведенным</string>
+
+    <!--  Context menus  -->
+        <!--  Customer  -->
+        <string name="customer_context_menu_item_archive">@string/common_add_to_archive</string>
+        <string name="customer_context_menu_item_unarchive">@string/common_get_from_archive</string>
+        <string name="customer_context_menu_item_delete">@string/common_delete</string>
+
+        <!--  Disfunction -->
+        <string name="disfunction_context_menu_change_status">@string/common_change_status</string>
+        <string name="disfunction_context_menu_delete">@string/common_delete</string>
+
+        <!--  Session  -->
+        <string name="session_context_menu_mark_as_done">@string/common_mark_as_done</string>
+        <string name="session_context_menu_delete">@string/common_delete</string>
 
     <!--  Dialogs  -->
     <string name="dialog_button_delete">Удалить</string>
@@ -110,11 +127,7 @@
     <string name="dialog_button_archive">В архив</string>
 
     <string name="customer_delete_dialog_message">Вы действительно хотите удалить профиль клиента %1$s? Будут удалены также все дисфункции, сеансы и ссылки на файлы (сами файлы удалены не будут). Действие нельзя будет отменить. Вы можете поместить в архив профиль клиента вместо удаления или подтвердить удаление.</string>
-    <string name="customer_delete_dialog_button_positive">@string/dialog_button_delete</string>
-    <string name="customer_delete_dialog_button_negative">@string/dialog_button_cancel</string>
     <string name="customer_delete_dialog_button_neutral">@string/dialog_button_archive</string>
-
     <string name="disfunction_delete_dialog_message">Вы действительно хотите удалить эту дисфункцию? Она будет также удалена из сеансов. Удалить?</string>
-    <string name="disfunction_delete_dialog_button_positive">@string/dialog_button_delete</string>
-    <string name="disfunction_delete_dialog_button_negative">@string/dialog_button_cancel</string>
+    <string name="session_delete_dialog_message">Вы действительно хотите удалить этот сеанс?</string>
 </resources>

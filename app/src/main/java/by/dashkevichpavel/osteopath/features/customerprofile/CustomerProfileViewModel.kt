@@ -40,6 +40,7 @@ class CustomerProfileViewModel(
 
     val customerDeletionHandler = ItemDeletionEventsHandler(this::onCustomerDeleteConfirmation)
     val disfunctionDeletionHandler = ItemDeletionEventsHandler(this::onDisfunctionDeleteConfirmation)
+    val sessionDeletionHandler = ItemDeletionEventsHandler(this::onSessionDeleteConfirmation)
 
     var jobDisfunctionsLoadingListener: Job? = null
     var jobSessionsLoadingListener: Job? = null
@@ -260,6 +261,20 @@ class CustomerProfileViewModel(
         val listOfSessions = newSessions.toMutableList()
         sessions.value = listOfSessions
         customer.value?.sessions = listOfSessions
+    }
+
+    private fun onSessionDeleteConfirmation(itemId: Long, userAction: DialogUserAction) {
+        if (userAction == DialogUserAction.POSITIVE) {
+            viewModelScope.launch {
+                repository.deleteSessionById(itemId)
+            }
+        }
+    }
+
+    fun setSessionIsDone(sessionId: Long, isDone: Boolean) {
+        viewModelScope.launch {
+            repository.updateSessionIsDone(sessionId, true)
+        }
     }
     // endregion Sessions tab
 

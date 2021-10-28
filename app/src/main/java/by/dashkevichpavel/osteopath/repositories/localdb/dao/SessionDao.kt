@@ -20,7 +20,7 @@ interface SessionDao {
     suspend fun insert(sessionEntities: List<SessionEntity>)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(sessionEntity: SessionEntity)
+    suspend fun insert(sessionEntity: SessionEntity): Long
 
     @Query("""DELETE FROM ${DbContract.Sessions.TABLE_NAME}
         WHERE ${DbContract.Sessions.COLUMN_NAME_ID} == :sessionId""")
@@ -35,4 +35,9 @@ interface SessionDao {
     @Query("""SELECT * FROM ${DbContract.Sessions.TABLE_NAME} 
         WHERE ${DbContract.Sessions.COLUMN_NAME_ID} == :sessionId""")
     suspend fun getSessionsWithDisfunctionsById(sessionId: Long): List<SessionAndDisfunctions>
+
+    @Query("""UPDATE ${DbContract.Sessions.TABLE_NAME} 
+        SET ${DbContract.Sessions.COLUMN_NAME_IS_DONE} = :isDone 
+        WHERE ${DbContract.Sessions.COLUMN_NAME_ID} == :sessionId""")
+    suspend fun updateIsDoneById(sessionId: Long, isDone: Boolean)
 }

@@ -20,8 +20,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import by.dashkevichpavel.osteopath.R
 import by.dashkevichpavel.osteopath.databinding.FragmentCustomerListBinding
 import by.dashkevichpavel.osteopath.features.customerprofile.FragmentCustomerProfile
-import by.dashkevichpavel.osteopath.features.dialogs.DialogUserAction
-import by.dashkevichpavel.osteopath.features.dialogs.ItemDeleteConfirmationDialog
 import by.dashkevichpavel.osteopath.helpers.itemdeletion.ItemDeletionFragmentHelper
 import by.dashkevichpavel.osteopath.helpers.safelyNavigateTo
 import by.dashkevichpavel.osteopath.helpers.setupToolbar
@@ -248,7 +246,7 @@ class FragmentCustomerList :
 
     private fun showCustomerContextMenu(customer: Customer, anchorView: View) {
         val popupMenu = PopupMenu(requireContext(), anchorView)
-        popupMenu.inflate(R.menu.customer_listitem_context_menu)
+        popupMenu.inflate(R.menu.context_menu_customer_listitem)
         popupMenu.menu.removeItem(
             if (customer.isArchived)
                 R.id.mi_archive

@@ -11,8 +11,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import by.dashkevichpavel.osteopath.R
 import by.dashkevichpavel.osteopath.databinding.FragmentCustomerProfileDisfunctionsBinding
 import by.dashkevichpavel.osteopath.features.customerprofile.CustomerProfileViewModel
-import by.dashkevichpavel.osteopath.features.dialogs.DialogUserAction
-import by.dashkevichpavel.osteopath.features.dialogs.ItemDeleteConfirmationDialog
 import by.dashkevichpavel.osteopath.features.disfunction.FragmentDisfunction
 import by.dashkevichpavel.osteopath.helpers.itemdeletion.ItemDeletionFragmentHelper
 import by.dashkevichpavel.osteopath.helpers.recyclerviewutils.SpaceItemDecoration
@@ -112,7 +110,7 @@ class FragmentCustomerProfileDisfunctions :
 
     private fun showCustomerContextMenu(disfunction: Disfunction, anchorView: View) {
         val popupMenu = PopupMenu(requireContext(), anchorView)
-        popupMenu.inflate(R.menu.disfunction_listitem_context_menu)
+        popupMenu.inflate(R.menu.context_menu_disfunction_listitem)
 
         val changeStatusItem = popupMenu.menu.findItem(R.id.mi_change_status)
         if (changeStatusItem.hasSubMenu()) {
@@ -136,12 +134,11 @@ class FragmentCustomerProfileDisfunctions :
                 menuItemIdsToDisfunctionStatusIds[menuItem.itemId]?.let { statusId ->
                     viewModel.changeDisfunctionStatus(disfunction.id, statusId)
                 }
-            R.id.mi_delete -> {
+            R.id.mi_delete ->
                 itemDeletionFragmentHelper?.showDialog(
                     itemId = disfunction.id,
                     message = getString(R.string.disfunction_delete_dialog_message)
                 )
-            }
             else -> return false
         }
 

@@ -36,6 +36,8 @@
         <entry key="..\:/AndroidDev/Projects/Osteopath/app/src/main/res/layout/test_layout.xml" value="0.5" />
         <entry key="..\:/AndroidDev/Projects/Osteopath/app/src/main/res/layout/toolbar.xml" value="0.26038500506585616" />
         <entry key="..\:/AndroidDev/Projects/Osteopath/app/src/main/res/menu/add_attachments_menu.xml" value="0.29739583333333336" />
+        <entry key="..\:/AndroidDev/Projects/Osteopath/app/src/main/res/menu/context_menu_customer_listitem.xml" value="0.334375" />
+        <entry key="..\:/AndroidDev/Projects/Osteopath/app/src/main/res/menu/context_menu_session_listitem.xml" value="0.334375" />
         <entry key="..\:/AndroidDev/Projects/Osteopath/app/src/main/res/menu/customer_archived_context_menu.xml" value="0.2890625" />
         <entry key="..\:/AndroidDev/Projects/Osteopath/app/src/main/res/menu/customer_list_context_menu.xml" value="0.2890625" />
         <entry key="..\:/AndroidDev/Projects/Osteopath/app/src/main/res/menu/customer_list_menu.xml" value="0.2890625" />
@@ -43,6 +45,7 @@
         <entry key="..\:/AndroidDev/Projects/Osteopath/app/src/main/res/menu/customer_unarchived_context_menu.xml" value="0.2890625" />
         <entry key="..\:/AndroidDev/Projects/Osteopath/app/src/main/res/menu/disfunction_listitem_context_menu.xml" value="0.5541666666666667" />
         <entry key="..\:/AndroidDev/Projects/Osteopath/app/src/main/res/menu/drawer_menu.xml" value="0.5348958333333333" />
+        <entry key="..\:/AndroidDev/Projects/Osteopath/app/src/main/res/menu/session_listitem_context_menu.xml" value="0.334375" />
         <entry key="..\:/AndroidDev/Projects/Osteopath/app/src/main/res/menu/standard_edit_screen_menu.xml" value="0.36205128205128206" />
         <entry key="..\:/AndroidDev/Projects/Osteopath/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.3802083333333333" />
       </map>
