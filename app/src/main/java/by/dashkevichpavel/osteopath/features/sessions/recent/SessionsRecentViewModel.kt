@@ -1,4 +1,4 @@
-package by.dashkevichpavel.osteopath.features.sessions.upcoming
+package by.dashkevichpavel.osteopath.features.sessions.recent
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -9,14 +9,14 @@ import by.dashkevichpavel.osteopath.repositories.localdb.LocalDbRepository
 import kotlinx.coroutines.flow.collect
 import java.util.*
 
-class SessionsUpcomingViewModel(
+class SessionsRecentViewModel(
     private val repository: LocalDbRepository
 ) : ViewModel() {
     val sessions = MutableLiveData<List<SessionAndCustomer>>(listOf())
     private val flowJobController = FlowJobController(
         viewModelScope,
         suspend {
-            repository.getUpcomingSessions(Date().time).collect { listOfSessions ->
+            repository.getRecentSessions(Date().time).collect { listOfSessions ->
                 sessions.value = listOfSessions
             }
         }

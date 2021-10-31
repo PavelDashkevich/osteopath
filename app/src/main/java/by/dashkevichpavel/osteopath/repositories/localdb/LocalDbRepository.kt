@@ -215,8 +215,14 @@ class LocalDbRepository(applicationContext: Context) {
     }
 
     fun getUpcomingSessions(fromDateTime: Long): Flow<List<SessionAndCustomer>> =
-        localDb.sessionDao.getSessionsWithDisfunctionsFromDateTime(fromDateTime).map {
+        localDb.sessionDao.getUpcomingSessionsWithDisfunctionsFromDateTime(fromDateTime).map {
             sessionsAndDisfunctions: List<SessionAndDisfunctions> ->
+            sessionsWithDisfunctionsToSessionsAndCustomers(sessionsAndDisfunctions)
+        }
+
+    fun getRecentSessions(fromDateTime: Long): Flow<List<SessionAndCustomer>> =
+        localDb.sessionDao.getRecentSessionsWithDisfunctionsFromDateTime(fromDateTime).map {
+                sessionsAndDisfunctions: List<SessionAndDisfunctions> ->
             sessionsWithDisfunctionsToSessionsAndCustomers(sessionsAndDisfunctions)
         }
 

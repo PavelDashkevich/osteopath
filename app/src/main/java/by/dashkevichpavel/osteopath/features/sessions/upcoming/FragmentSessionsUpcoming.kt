@@ -11,6 +11,7 @@ import by.dashkevichpavel.osteopath.R
 import by.dashkevichpavel.osteopath.databinding.FragmentSessionsUpcomingBinding
 import by.dashkevichpavel.osteopath.features.customerprofile.sessions.SessionItemClickListener
 import by.dashkevichpavel.osteopath.features.session.FragmentSession
+import by.dashkevichpavel.osteopath.features.sessions.SessionFullItemAdapter
 import by.dashkevichpavel.osteopath.helpers.actionCallPhoneNumber
 import by.dashkevichpavel.osteopath.helpers.actionOpenInstagram
 import by.dashkevichpavel.osteopath.helpers.contacttocustomer.ContactToCustomerAction
@@ -23,8 +24,7 @@ import by.dashkevichpavel.osteopath.viewmodel.OsteoViewModelFactory
 class FragmentSessionsUpcoming :
     Fragment(R.layout.fragment_sessions_upcoming),
     ContactToCustomerActionHandler,
-    SessionItemClickListener
-{
+    SessionItemClickListener {
     private val viewModel: SessionsUpcomingViewModel by viewModels(
         factoryProducer = { OsteoViewModelFactory(requireContext().applicationContext) }
     )
@@ -38,32 +38,27 @@ class FragmentSessionsUpcoming :
     )
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
         setupViews(view)
         setupObservers()
         setupEventListeners()
     }
 
     override fun onResume() {
-        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
         super.onResume()
         viewModel.startSessionsTableObserving()
     }
 
     override fun onPause() {
-        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
         super.onPause()
         viewModel.stopSessionsTableObserving()
     }
 
     override fun onDestroyView() {
-        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
         super.onDestroyView()
         fragmentSessionsUpcomingBinding = null
     }
 
     private fun setupViews(view: View) {
-        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
         fragmentSessionsUpcomingBinding = FragmentSessionsUpcomingBinding.bind(view)
 
         binding.rvSessionsList.layoutManager = LinearLayoutManager(requireContext())
@@ -77,7 +72,6 @@ class FragmentSessionsUpcoming :
     }
 
     private fun setupObservers() {
-        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
         viewModel.sessions.observe(viewLifecycleOwner, this::updateSessionsList)
     }
 
@@ -86,7 +80,6 @@ class FragmentSessionsUpcoming :
     }
 
     private fun updateSessionsList(newSessions: List<SessionAndCustomer>) {
-        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
         adapter.setItems(newSessions)
         setEmptyScreenHintVisibility(newSessions.isEmpty())
     }
@@ -104,7 +97,6 @@ class FragmentSessionsUpcoming :
     }
 
     override fun contactToCustomer(action: ContactToCustomerAction) {
-        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
         when (action) {
             is ContactToCustomerAction.Call.Phone -> actionCallPhoneNumber(action.phoneNumber)
             is ContactToCustomerAction.Message.Instagram -> actionOpenInstagram(action.userId)
@@ -112,7 +104,6 @@ class FragmentSessionsUpcoming :
     }
 
     override fun onSessionItemClick(customerId: Long, sessionId: Long) {
-        Log.d("OsteoApp", "${this.javaClass.simpleName}: ${object{}.javaClass.enclosingMethod.name}")
         openSessionScreen(customerId, sessionId)
     }
 }

@@ -1,4 +1,4 @@
-package by.dashkevichpavel.osteopath.features.sessions.upcoming
+package by.dashkevichpavel.osteopath.features.sessions
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
