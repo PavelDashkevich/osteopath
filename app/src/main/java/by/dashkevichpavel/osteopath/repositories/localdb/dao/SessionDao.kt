@@ -33,6 +33,13 @@ interface SessionDao {
 
     @Transaction
     @Query("""SELECT * FROM ${DbContract.Sessions.TABLE_NAME} 
+        WHERE ${DbContract.Sessions.COLUMN_NAME_DATE_TIME} >= :fromDateTime
+        AND ${DbContract.Sessions.COLUMN_NAME_IS_DONE} == 0
+        ORDER BY ${DbContract.Sessions.COLUMN_NAME_DATE_TIME} ASC""")
+    fun getSessionsWithDisfunctionsFromDateTime(fromDateTime: Long): Flow<List<SessionAndDisfunctions>>
+
+    @Transaction
+    @Query("""SELECT * FROM ${DbContract.Sessions.TABLE_NAME} 
         WHERE ${DbContract.Sessions.COLUMN_NAME_ID} == :sessionId""")
     suspend fun getSessionsWithDisfunctionsById(sessionId: Long): List<SessionAndDisfunctions>
 

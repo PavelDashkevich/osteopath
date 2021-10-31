@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/fragmentCustomerList">
+    app:startDestination="@id/fragmentSessions">
 
     <fragment
         android:id="@+id/fragmentCustomerList"
@@ -60,6 +60,9 @@
         <action
             android:id="@+id/action_fragmentSession_to_fragmentSelectDisfunctions"
             app:destination="@id/fragmentSelectDisfunctions" />
+        <action
+            android:id="@+id/action_fragmentSession_to_fragmentCustomerList"
+            app:destination="@id/fragmentCustomerList" />
     </fragment>
     <fragment
         android:id="@+id/fragmentSelectDisfunctions"
@@ -96,9 +99,12 @@
         tools:layout="@layout/fragment_backup_restore">
     </fragment>
     <fragment
-        android:id="@+id/fragmentSessionList"
-        android:name="by.dashkevichpavel.osteopath.features.sessionlist.FragmentSessionList"
-        android:label="FragmentSessionList"
-        tools:layout="@layout/fragment_session_list">
+        android:id="@+id/fragmentSessions"
+        android:name="by.dashkevichpavel.osteopath.features.sessions.FragmentSessions"
+        android:label="FragmentSessions"
+        tools:layout="@layout/fragment_sessions">
+        <action
+            android:id="@+id/action_fragmentSessions_to_fragmentSession"
+            app:destination="@id/fragmentSession" />
     </fragment>
 </navigation>

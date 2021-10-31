@@ -1,9 +1,9 @@
-package by.dashkevichpavel.osteopath.features.sessionlist
+package by.dashkevichpavel.osteopath.features.sessions
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
 
-class SessionListViewModel : ViewModel() {
+class SessionsViewModel : ViewModel() {
     var test: Int = 0
 
     override fun onCleared() {

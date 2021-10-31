@@ -23,6 +23,9 @@ data class SessionEntity(
     @ColumnInfo(name = DbContract.Sessions.COLUMN_NAME_DATE_TIME)
     var dateTime: Date = Date(0),
 
+    @ColumnInfo(name = DbContract.Sessions.COLUMN_NAME_DATE_TIME_END)
+    var dateTimeEnd: Date = Date(0),
+
     @ColumnInfo(name = DbContract.Sessions.COLUMN_NAME_PLAN)
     var plan: String = "",
 
@@ -36,6 +39,7 @@ data class SessionEntity(
         id = session.id,
         customerId = session.customerId,
         dateTime = session.dateTime,
+        dateTimeEnd = session.dateTimeEnd,
         plan = session.plan,
         bodyCondition = session.bodyCondition,
         isDone = session.isDone

@@ -37,6 +37,14 @@ fun Date.formatTimeAsString(): String =
 fun Date.formatDateTimeAsString(): String =
     android.text.format.DateFormat.format("dd.MM.yyyy HH:mm", this).toString()
 
+fun Date.formatDateAsDayOfMonthString(): String =
+    android.text.format.DateFormat.format("dd", this).toString()
+
+fun Date.formatDateAsMonthShortString(): String =
+    android.text.format.DateFormat.format("MMMM", this).toString()
+        .substring(0..2)
+        .uppercase()
+
 fun Date.formatAsDateTimeStamp(): String =
     android.text.format.DateFormat.format("yyyy_MM_dd_HH_mm", this).toString()
 
@@ -162,4 +170,14 @@ fun Uri.takePersistableReadWritePermissions(context: Context) {
                 or
                 Intent.FLAG_GRANT_WRITE_URI_PERMISSION
     )
+}
+
+fun List<String>.toStringDelimitedByNewLines(): String {
+    var result = ""
+    this.forEach { item: String ->
+        if (item.isNotBlank()) {
+            result = result + if (result.isNotBlank()) { "\n\n" } else { "" } + item
+        }
+    }
+    return result
 }

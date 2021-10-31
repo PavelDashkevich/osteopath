@@ -2,11 +2,14 @@ package by.dashkevichpavel.osteopath.features.customerprofile.sessions
 
 import android.view.View
 import android.widget.TextView
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import by.dashkevichpavel.osteopath.R
 import by.dashkevichpavel.osteopath.databinding.ListitemSessionBinding
 import by.dashkevichpavel.osteopath.model.Session
 import by.dashkevichpavel.osteopath.helpers.formatDateTimeAsString
+import by.dashkevichpavel.osteopath.helpers.recyclerviewutils.SessionViewHolderUtil
+import by.dashkevichpavel.osteopath.helpers.toStringDelimitedByNewLines
 import com.google.android.material.card.MaterialCardView
 
 class SessionItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -26,20 +29,15 @@ class SessionItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) 
             }
         )
 
-        var disfunctionsDescriptions = ""
-        session.disfunctions.forEach { disfunction ->
-            if (disfunction.description.isNotBlank()) {
-                disfunctionsDescriptions = disfunctionsDescriptions +
-                        if (disfunctionsDescriptions.isNotBlank()) { "\n\n" } else { "" } +
-                        disfunction.description
-            }
-        }
-
-        setContentAndVisibilityOfBlock(binding.tvHeaderDisfunctions, binding.tvDisfunctions,
-            disfunctionsDescriptions)
-        setContentAndVisibilityOfBlock(binding.tvHeaderPlan, binding.tvPlan, session.plan)
-        setContentAndVisibilityOfBlock(binding.tvHeaderBodyCondition, binding.tvBodyCondition,
-            session.bodyCondition)
+        SessionViewHolderUtil.setContentAndVisibilityOfBlock(
+            binding.tvHeaderDisfunctions,
+            binding.tvDisfunctions,
+            session.disfunctions.map { disf -> disf.description }.toStringDelimitedByNewLines()
+        )
+        SessionViewHolderUtil.setContentAndVisibilityOfBlock(binding.tvHeaderPlan,
+            binding.tvPlan, session.plan)
+        SessionViewHolderUtil.setContentAndVisibilityOfBlock(binding.tvHeaderBodyCondition,
+            binding.tvBodyCondition, session.bodyCondition)
 
         binding.cvCard.setOnClickListener {
             sessionItemClickListener.onSessionItemClick(session.customerId, session.id)
@@ -48,14 +46,5 @@ class SessionItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) 
         binding.ibContextActions.setOnClickListener {
             sessionContextMenuClickListener.onSessionContextMenuClick(session, binding.ibContextActions)
         }
-    }
-
-    private fun setContentAndVisibilityOfBlock(headerView: TextView, textView: TextView, text: String) {
-        val visibilityOfBlock = if (text.isBlank()) { View.GONE } else { View.VISIBLE }
-
-        textView.text = text
-
-        headerView.visibility = visibilityOfBlock
-        textView.visibility = visibilityOfBlock
     }
 }

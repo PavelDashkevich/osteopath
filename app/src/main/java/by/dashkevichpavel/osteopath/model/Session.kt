@@ -10,6 +10,7 @@ data class Session(
     var id: Long = 0,
     var customerId: Long = 0,
     var dateTime: Date = Date(System.currentTimeMillis()),
+    var dateTimeEnd: Date = Date(System.currentTimeMillis()),
     var plan: String = "",
     var bodyCondition: String = "",
     var isDone: Boolean = false,
@@ -22,6 +23,7 @@ data class Session(
         id = sessionEntity.id,
         customerId = sessionEntity.customerId,
         dateTime = sessionEntity.dateTime,
+        dateTimeEnd = sessionEntity.dateTimeEnd,
         plan = sessionEntity.plan,
         bodyCondition = sessionEntity.bodyCondition,
         isDone = sessionEntity.isDone,
@@ -49,6 +51,7 @@ data class Session(
         if (item !is Session) return false
 
         if ((dateTime != item.dateTime)
+            || (dateTimeEnd != item.dateTimeEnd)
             || (plan != item.plan)
             || (bodyCondition != item.bodyCondition)
             || (isDone != item.isDone)) {

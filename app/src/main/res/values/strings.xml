@@ -60,6 +60,9 @@
     <string name="session_status_planned">Запланирован</string>
     <string name="header_date">Дата</string>
     <string name="header_time">Время</string>
+    <string name="header_session_start_time">С</string>
+    <string name="header_session_end_time">По</string>
+    <string name="header_session_customer_name">Клиент</string>
     <string name="header_session_done">Сеанс проведен</string>
     <string name="header_new_session">Новый сеанс</string>
     <string name="header_new_disfunction">Новая дисфункция</string>
@@ -108,18 +111,16 @@
     <string name="common_mark_as_done">Отметить проведенным</string>
 
     <!--  Context menus  -->
-        <!--  Customer  -->
-        <string name="customer_context_menu_item_archive">@string/common_add_to_archive</string>
-        <string name="customer_context_menu_item_unarchive">@string/common_get_from_archive</string>
-        <string name="customer_context_menu_item_delete">@string/common_delete</string>
-
-        <!--  Disfunction -->
-        <string name="disfunction_context_menu_change_status">@string/common_change_status</string>
-        <string name="disfunction_context_menu_delete">@string/common_delete</string>
-
-        <!--  Session  -->
-        <string name="session_context_menu_mark_as_done">@string/common_mark_as_done</string>
-        <string name="session_context_menu_delete">@string/common_delete</string>
+    <!--  Customer  -->
+    <string name="customer_context_menu_item_archive">@string/common_add_to_archive</string>
+    <string name="customer_context_menu_item_unarchive">@string/common_get_from_archive</string>
+    <string name="customer_context_menu_item_delete">@string/common_delete</string>
+    <!--  Disfunction -->
+    <string name="disfunction_context_menu_change_status">@string/common_change_status</string>
+    <string name="disfunction_context_menu_delete">@string/common_delete</string>
+    <!--  Session  -->
+    <string name="session_context_menu_mark_as_done">@string/common_mark_as_done</string>
+    <string name="session_context_menu_delete">@string/common_delete</string>
 
     <!--  Dialogs  -->
     <string name="dialog_button_delete">Удалить</string>
@@ -130,4 +131,11 @@
     <string name="customer_delete_dialog_button_neutral">@string/dialog_button_archive</string>
     <string name="disfunction_delete_dialog_message">Вы действительно хотите удалить эту дисфункцию? Она будет также удалена из сеансов. Удалить?</string>
     <string name="session_delete_dialog_message">Вы действительно хотите удалить этот сеанс?</string>
+
+    <!--  Screens  -->
+    <!--  Sessions  -->
+    <string name="screen_sessions_tab_upcoming_text">Предстоящие</string>
+    <string name="screen_sessions_tab_recent_schedule">Расписание</string>
+    <string name="screen_sessions_tab_recent_text">Недавние</string>
+    <string name="screen_sessions_tab_error_text">Ошибка</string>
 </resources>

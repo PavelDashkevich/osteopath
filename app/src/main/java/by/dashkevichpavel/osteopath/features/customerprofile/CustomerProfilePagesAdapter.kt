@@ -7,7 +7,7 @@ import by.dashkevichpavel.osteopath.features.customerprofile.contacts.FragmentCu
 import by.dashkevichpavel.osteopath.features.customerprofile.disfunctions.FragmentCustomerProfileDisfunctions
 import by.dashkevichpavel.osteopath.features.customerprofile.sessions.FragmentCustomerProfileSessions
 
-class CustomerProfileAdapter(hostFragment: Fragment) : FragmentStateAdapter(hostFragment) {
+class CustomerProfilePagesAdapter(hostFragment: Fragment) : FragmentStateAdapter(hostFragment) {
     override fun getItemCount(): Int = NUMBER_OF_PAGES
 
     override fun createFragment(position: Int): Fragment {

@@ -89,7 +89,7 @@ class FragmentCustomerProfileSessions :
     private fun openSessionScreen(customerId: Long, sessionId: Long) {
         safelyNavigateTo(
             R.id.action_fragmentCustomerProfile_to_fragmentSession,
-            FragmentSession.packBundle(customerId, sessionId)
+            FragmentSession.packBundle(customerId, sessionId, false)
         )
     }
 

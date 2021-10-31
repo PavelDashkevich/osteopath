@@ -53,6 +53,9 @@
     <style name="ImageButton.PickContact" parent="ImageButton">
         <item name="android:src">@drawable/ic_baseline_person_search_24</item>
     </style>
+    <style name="ImageButton.PickCustomer" parent="ImageButton">
+        <item name="android:src">@drawable/ic_baseline_person_24</item>
+    </style>
     <style name="ImageButton.SetDate" parent="ImageButton">
         <item name="android:src">@drawable/ic_baseline_today_24</item>
     </style>

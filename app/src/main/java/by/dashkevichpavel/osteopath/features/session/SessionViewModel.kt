@@ -23,27 +23,32 @@ class SessionViewModel(
     val disfunctions: MutableLiveData<MutableList<Disfunction>> =
         MutableLiveData(getDisfunctionsFromSession())
     val sessionDateTime: MutableLiveData<Date> = MutableLiveData(session.value?.dateTime)
+    val sessionDateTimeEnd: MutableLiveData<Date> = MutableLiveData(session.value?.dateTimeEnd)
     val addDisfunctionActionEnabled: MutableLiveData<Boolean> = MutableLiveData(true)
     private var allCustomerDisfunctions: MutableList<Disfunction> = mutableListOf()
     private var jobSave: Job? = null
     val currentSessionId = MutableLiveData(0L)
     val saveChangesHelper = SaveChangesViewModelHelper(this)
     val sessionDeletionHandler = ItemDeletionEventsHandler(this::onSessionDeleteConfirmation)
+    val customerName = MutableLiveData("")
 
     fun selectSession(sessionId: Long, customerId: Long) {
         if (sessionId == 0L) {
             setSession(Session(customerId = customerId))
-        } else {
-            viewModelScope.launch {
+        }
+
+        viewModelScope.launch {
+            if (sessionId != 0L) {
                 onSessionLoaded(
                     repository.getSessionById(sessionId) ?: Session(customerId = customerId)
                 )
             }
-        }
-        viewModelScope.launch {
+
             allCustomerDisfunctions =
                 repository.getDisfunctionsByCustomerId(customerId) as MutableList<Disfunction>
             setAddDisfunctionActionAccessibility()
+
+            loadCustomerName(customerId)
         }
     }
 
@@ -60,7 +65,9 @@ class SessionViewModel(
     fun setSessionDate(timeInMillis: Long) {
         session.value?.let { sessionObject ->
             sessionObject.dateTime.setDatePartFromTimeInMillis(timeInMillis)
+            sessionObject.dateTimeEnd.setDatePartFromTimeInMillis(timeInMillis)
             sessionDateTime.value = sessionObject.dateTime
+            sessionDateTimeEnd.value = sessionObject.dateTimeEnd
         }
     }
 
@@ -68,6 +75,14 @@ class SessionViewModel(
         session.value?.let { sessionObject ->
             sessionObject.dateTime.setTimePartFromTimeInMillis(timeInMillis)
             sessionDateTime.value = sessionObject.dateTime
+        }
+    }
+
+    fun setSessionTimeEnd(timeInMillis: Long) {
+        session.value?.let { sessionObject ->
+            sessionObject.dateTimeEnd.time = sessionObject.dateTime.time
+            sessionObject.dateTimeEnd.setTimePartFromTimeInMillis(timeInMillis)
+            sessionDateTimeEnd.value = sessionObject.dateTimeEnd
         }
     }
 
@@ -83,15 +98,11 @@ class SessionViewModel(
         session.value?.isDone = isDone
     }
 
-    fun getSessionDefaultDateTimeInMillis(): Long {
-        var dateTimeInMillis = session.value?.dateTime?.time ?: 0L
+    fun getSessionDefaultDateTimeInMillis(): Long =
+        session.value?.dateTime?.time ?: System.currentTimeMillis()
 
-        if (dateTimeInMillis == 0L) {
-            dateTimeInMillis = System.currentTimeMillis()
-        }
-
-        return dateTimeInMillis
-    }
+    fun getSessionDefaultDateTimeEndInMillis(): Long =
+        session.value?.dateTimeEnd?.time ?: System.currentTimeMillis()
 
     fun getCustomerId(): Long = session.value?.customerId ?: 0L
 
@@ -112,6 +123,24 @@ class SessionViewModel(
         setAddDisfunctionActionAccessibility()
     }
 
+    fun setCustomer(customerId: Long) {
+        if (session.value?.id == 0L && session.value?.customerId != customerId) {
+            session.value?.customerId = customerId
+            disfunctions.value = mutableListOf()
+            setAddDisfunctionActionAccessibility()
+            initialSession.customerId = customerId
+
+            viewModelScope.launch { loadCustomerName(customerId) }
+        }
+    }
+
+    private suspend fun loadCustomerName(customerId: Long) {
+        val customer = repository.getCustomerById(customerId)
+        customer?.let {
+            customerName.value = customer.name
+        }
+    }
+
     private fun getDisfunctionsFromSession(): MutableList<Disfunction> {
         return session.value?.disfunctions ?: mutableListOf()
     }
@@ -120,6 +149,7 @@ class SessionViewModel(
         setSession(newSession)
         disfunctions.value = getDisfunctionsFromSession()
         sessionDateTime.value = newSession.dateTime
+        sessionDateTimeEnd.value = newSession.dateTimeEnd
         setAddDisfunctionActionAccessibility()
     }
 
@@ -132,7 +162,8 @@ class SessionViewModel(
         session.value = newSession
         initialSession = newSession.copy(
             disfunctions = mutableListOf(),
-            dateTime = Date(newSession.dateTime.time)
+            dateTime = Date(newSession.dateTime.time),
+            dateTimeEnd = Date(newSession.dateTimeEnd.time),
         )
         initialSession.disfunctions.addAll(newSession.disfunctions)
         updateSessionId()

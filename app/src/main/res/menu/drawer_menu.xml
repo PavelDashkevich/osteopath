@@ -3,7 +3,7 @@
     <group
         android:id="@+id/gMain">
         <item
-            android:id="@+id/fragmentSessionList"
+            android:id="@+id/fragmentSessions"
             android:title="@string/header_sessions"
             android:icon="@drawable/ic_baseline_date_range_24"/>
         <item

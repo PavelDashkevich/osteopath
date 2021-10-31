@@ -35,7 +35,7 @@ class FragmentTimePicker :
     override fun onTimeSet(view: TimePicker?, hourOfDay: Int, minute: Int) {
         val c = Calendar.getInstance()
         c.setTimeComponents(hourOfDay, minute)
-        setFragmentResult(KEY_RESULT, packBundle(c.timeInMillis))
+        setFragmentResult(tag ?: KEY_RESULT, packBundle(c.timeInMillis))
     }
 
     companion object {

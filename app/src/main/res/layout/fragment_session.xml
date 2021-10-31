@@ -18,14 +18,15 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:paddingTop="16dp">
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/glVerticalLeft"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                app:layout_constraintGuide_begin="16dp"/>
+                app:layout_constraintGuide_begin="8dp"/>
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/glVerticalRight"
@@ -35,15 +36,40 @@
                 app:layout_constraintGuide_end="16dp"/>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/tilDate"
+                android:id="@+id/tilCustomer"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="@id/glVerticalLeft"
-                app:layout_constraintEnd_toStartOf="@id/tilTime"
-                app:boxBackgroundColor="@android:color/transparent"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="8dp">
+                app:layout_constraintEnd_toStartOf="@id/ibAddDisfunction"
+                app:boxBackgroundColor="@android:color/transparent">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etCustomer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/header_session_customer_name"
+                    android:focusable="false"
+                    android:clickable="false"
+                    android:longClickable="false"
+                    android:layout_marginTop="8dp"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/ibPickCustomer"
+                app:layout_constraintTop_toTopOf="@id/tilCustomer"
+                app:layout_constraintStart_toEndOf="@id/tilCustomer"
+                app:layout_constraintBottom_toBottomOf="@id/tilCustomer"
+                app:layout_constraintEnd_toStartOf="@id/glVerticalRight"
+                style="@style/ImageButton.PickCustomer"/>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilDate"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/tilCustomer"
+                app:layout_constraintStart_toStartOf="@id/glVerticalLeft"
+                app:layout_constraintEnd_toStartOf="@id/glVerticalRight"
+                app:boxBackgroundColor="@android:color/transparent">
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etDate"
                     android:layout_width="match_parent"
@@ -51,27 +77,48 @@
                     android:hint="@string/header_date"
                     android:focusable="false"
                     android:clickable="true"
-                    android:longClickable="false"/>
+                    android:longClickable="false"
+                    android:layout_marginTop="8dp"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tilTime"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toEndOf="@id/tilDate"
-                app:layout_constraintEnd_toStartOf="@id/glVerticalRight"
+                app:layout_constraintTop_toBottomOf="@id/tilDate"
+                app:layout_constraintStart_toStartOf="@id/glVerticalLeft"
+                app:layout_constraintEnd_toStartOf="@id/tilTimeEnd"
                 app:boxBackgroundColor="@android:color/transparent"
-                android:layout_marginTop="16dp"
-                android:layout_marginStart="8dp">
+                android:layout_marginEnd="4dp">
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etTime"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/header_time"
+                    android:hint="@string/header_session_start_time"
                     android:focusable="false"
                     android:clickable="true"
-                    android:longClickable="false"/>
+                    android:longClickable="false"
+                    android:layout_marginTop="8dp"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilTimeEnd"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/tilDate"
+                app:layout_constraintStart_toEndOf="@id/tilTime"
+                app:layout_constraintEnd_toEndOf="@id/glVerticalRight"
+                app:boxBackgroundColor="@android:color/transparent"
+                android:layout_marginStart="4dp">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etTimeEnd"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/header_session_end_time"
+                    android:focusable="false"
+                    android:clickable="true"
+                    android:longClickable="false"
+                    android:layout_marginTop="8dp"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -80,14 +127,14 @@
                 android:layout_height="wrap_content"
                 app:layout_constraintStart_toStartOf="@id/glVerticalLeft"
                 app:layout_constraintEnd_toEndOf="@id/glVerticalRight"
-                app:layout_constraintTop_toBottomOf="@id/tilDate"
-                app:boxBackgroundColor="@android:color/transparent"
-                android:layout_marginTop="8dp">
+                app:layout_constraintTop_toBottomOf="@id/tilTime"
+                app:boxBackgroundColor="@android:color/transparent">
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etPlan"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/header_plan"/>
+                    android:hint="@string/header_plan"
+                    android:layout_marginTop="8dp"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -97,13 +144,13 @@
                 app:layout_constraintStart_toStartOf="@id/glVerticalLeft"
                 app:layout_constraintEnd_toEndOf="@id/glVerticalRight"
                 app:layout_constraintTop_toBottomOf="@id/tilPlan"
-                app:boxBackgroundColor="@android:color/transparent"
-                android:layout_marginTop="8dp">
+                app:boxBackgroundColor="@android:color/transparent">
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etBodyConditions"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/header_body_condition"/>
+                    android:hint="@string/header_body_condition"
+                    android:layout_marginTop="8dp"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.switchmaterial.SwitchMaterial

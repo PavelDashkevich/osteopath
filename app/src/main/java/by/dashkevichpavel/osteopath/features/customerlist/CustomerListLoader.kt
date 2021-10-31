@@ -1,5 +1,6 @@
 package by.dashkevichpavel.osteopath.features.customerlist
 
+import by.dashkevichpavel.osteopath.helpers.jobs.FlowJobController
 import by.dashkevichpavel.osteopath.model.*
 import by.dashkevichpavel.osteopath.repositories.localdb.LocalDbRepository
 import kotlinx.coroutines.*
@@ -13,44 +14,21 @@ class CustomerListLoader(
     private val repository: LocalDbRepository,
     private val scope: CoroutineScope
 ) {
-    private val operationsChannel = Channel<Operation>(BUFFER_SIZE)
-    private var jobFlow: Job? = null
-
-    init {
-        scope.launch {
-            while (isActive) {
-                when (operationsChannel.receive()) {
-                    Operation.StartJob -> {
-                        if (jobFlow == null || jobFlow?.isCompleted == true) {
-                            jobFlow = scope.launch {
-                                repository.getAllCustomersAsFlow().collect { listOfCustomers ->
-                                    customerListLoaderSubscriber.onCustomersLoaded(listOfCustomers)
-                                }
-                            }
-                        }
-                    }
-                    Operation.StopJob -> {
-                        if (jobFlow?.isCompleted == false) {
-                            jobFlow?.cancelAndJoin()
-                        }
-                    }
-                }
+    private val flowJobController = FlowJobController(
+        scope,
+        suspend {
+            repository.getAllCustomersAsFlow().collect { listOfCustomers ->
+                customerListLoaderSubscriber.onCustomersLoaded(listOfCustomers)
             }
         }
+    )
+
+    init {
         startCustomersTableObserving()
     }
 
-    fun startCustomersTableObserving() {
-        scope.launch {
-            operationsChannel.send(Operation.StartJob)
-        }
-    }
-
-    fun stopCustomersTableObserving() {
-        scope.launch {
-            operationsChannel.send(Operation.StopJob)
-        }
-    }
+    fun startCustomersTableObserving() = flowJobController.start()
+    fun stopCustomersTableObserving() = flowJobController.stop()
 
     fun putCustomerInArchive(customerId: Long) = updateCustomerIsArchived(customerId, true)
 
@@ -66,15 +44,6 @@ class CustomerListLoader(
         scope.launch {
             repository.updateCustomerIsArchived(customerId, isArchived)
         }
-    }
-
-    companion object {
-        private const val BUFFER_SIZE = 3
-    }
-
-    private sealed class Operation {
-        object StartJob : Operation()
-        object StopJob : Operation()
     }
 }
 

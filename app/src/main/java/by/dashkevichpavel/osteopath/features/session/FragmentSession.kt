@@ -3,16 +3,17 @@ package by.dashkevichpavel.osteopath.features.session
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import by.dashkevichpavel.osteopath.R
 import by.dashkevichpavel.osteopath.databinding.FragmentSessionBinding
 import by.dashkevichpavel.osteopath.BackClickHandler
 import by.dashkevichpavel.osteopath.BackClickListener
+import by.dashkevichpavel.osteopath.features.customerlist.FragmentCustomerList
 import by.dashkevichpavel.osteopath.helpers.recyclerviewutils.SpaceItemDecoration
 import by.dashkevichpavel.osteopath.features.pickers.FragmentDatePicker
 import by.dashkevichpavel.osteopath.features.pickers.FragmentTimePicker
@@ -22,7 +23,6 @@ import by.dashkevichpavel.osteopath.helpers.itemdeletion.ItemDeletionFragmentHel
 import by.dashkevichpavel.osteopath.helpers.savechanges.SaveChangesFragmentHelper
 import by.dashkevichpavel.osteopath.model.*
 import by.dashkevichpavel.osteopath.viewmodel.OsteoViewModelFactory
-import java.lang.IllegalArgumentException
 import java.util.*
 
 class FragmentSession :
@@ -42,11 +42,17 @@ class FragmentSession :
     private var contextMenu: Menu? = null
     private var itemDeletionFragmentHelper: ItemDeletionFragmentHelper? = null
 
+    // fragment args
+    var argSessionId: Long? = null
+    var argCustomerId: Long? = null
+    var argShowCustomer: Boolean = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val argSessionId = arguments?.getLong(ARG_KEY_SESSION_ID)
-        val argCustomerId = arguments?.getLong(ARG_KEY_CUSTOMER_ID)
+        argSessionId = arguments?.getLong(ARG_KEY_SESSION_ID)
+        argCustomerId = arguments?.getLong(ARG_KEY_CUSTOMER_ID)
+        argShowCustomer = arguments?.getBoolean(ARG_KEY_SHOW_CUSTOMER) ?: false
 
         viewModel.selectSession(argSessionId ?: 0L, argCustomerId ?: 0L)
 
@@ -92,6 +98,9 @@ class FragmentSession :
         fragmentSessionBinding = FragmentSessionBinding.bind(view)
         setupToolbar(binding.lToolbar.tbActions)
         setupRecyclerView()
+
+        binding.etCustomer.isVisible = argShowCustomer
+        binding.ibPickCustomer.isVisible = argShowCustomer
     }
 
     private fun setupRecyclerView() {
@@ -105,9 +114,11 @@ class FragmentSession :
         viewModel.session.observe(viewLifecycleOwner, ::onChangeSession)
         viewModel.disfunctions.observe(viewLifecycleOwner, ::onChangeDisfunctions)
         viewModel.sessionDateTime.observe(viewLifecycleOwner, ::onChangeDateTime)
+        viewModel.sessionDateTimeEnd.observe(viewLifecycleOwner, ::onChangeDateTimeEnd)
         viewModel.addDisfunctionActionEnabled.observe(viewLifecycleOwner,
             ::onChangeAddDisfunctionActionAccessibility)
         viewModel.currentSessionId.observe(viewLifecycleOwner, ::onChangeSessionId)
+        viewModel.customerName.observe(viewLifecycleOwner, ::onChangeCustomerName)
     }
 
     private fun setupHelpers() {
@@ -120,6 +131,14 @@ class FragmentSession :
         backClickHandler = (requireActivity() as BackClickHandler)
         backClickHandler?.addBackClickListener(this)
 
+        binding.ibPickCustomer.setOnClickListener {
+            safelyNavigateTo(
+                R.id.action_fragmentSession_to_fragmentCustomerList,
+                FragmentCustomerList.createArgsBundle(true)
+            )
+            FragmentCustomerList
+        }
+
         binding.etDate.setOnClickListener {
             FragmentDatePicker.show(
                 childFragmentManager,
@@ -131,8 +150,16 @@ class FragmentSession :
         binding.etTime.setOnClickListener {
             FragmentTimePicker.show(
                 childFragmentManager,
-                KEY_TIME_PICKER_SESSION_TIME,
+                KEY_TIME_PICKER_SESSION_TIME_START,
                 viewModel.getSessionDefaultDateTimeInMillis()
+            )
+        }
+
+        binding.etTimeEnd.setOnClickListener {
+            FragmentTimePicker.show(
+                childFragmentManager,
+                KEY_TIME_PICKER_SESSION_TIME_END,
+                viewModel.getSessionDefaultDateTimeEndInMillis()
             )
         }
 
@@ -168,16 +195,27 @@ class FragmentSession :
         }
 
         childFragmentManager.setFragmentResultListener(
-            FragmentTimePicker.KEY_RESULT,
+            KEY_TIME_PICKER_SESSION_TIME_START,
             viewLifecycleOwner
         ) { _, bundle ->
             viewModel.setSessionTime(FragmentTimePicker.extractTimeInMillis(bundle))
+        }
+
+        childFragmentManager.setFragmentResultListener(
+            KEY_TIME_PICKER_SESSION_TIME_END,
+            viewLifecycleOwner
+        ) { _, bundle ->
+            viewModel.setSessionTimeEnd(FragmentTimePicker.extractTimeInMillis(bundle))
         }
 
         setFragmentResultListener(FragmentSelectDisfunctions.KEY_RESULT) { _, bundle ->
             viewModel.setSelectedDisfunctionsIds(
                 FragmentSelectDisfunctions.extractBundle(bundle)
             )
+        }
+
+        setFragmentResultListener(FragmentCustomerList.KEY_RESULT) { _, bundle ->
+            viewModel.setCustomer(FragmentCustomerList.extractResultBundle(bundle))
         }
     }
 
@@ -197,12 +235,21 @@ class FragmentSession :
         binding.etTime.text = date.formatTimeAsEditable()
     }
 
+    private fun onChangeDateTimeEnd(date: Date) {
+        binding.etTimeEnd.text = date.formatTimeAsEditable()
+    }
+
     private fun onChangeAddDisfunctionActionAccessibility(isEnabled: Boolean) {
         binding.ibAddDisfunction.isEnabled = !isEnabled
     }
 
     private fun onChangeSessionId(sessionId: Long) {
         binding.lToolbar.tbActions.menu.findItem(R.id.mi_delete)?.isVisible = (sessionId != 0L)
+        binding.ibPickCustomer.isEnabled = (sessionId == 0L)
+    }
+
+    private fun onChangeCustomerName(customerName: String) {
+        binding.etCustomer.text= customerName.toEditable()
     }
 
     override fun onDisfunctionDeleteClick(disfunctionId: Long) {
@@ -217,14 +264,17 @@ class FragmentSession :
     companion object {
         private const val ARG_KEY_SESSION_ID = "ARG_KEY_SESSION_ID"
         private const val ARG_KEY_CUSTOMER_ID = "ARG_KEY_CUSTOMER_ID"
+        private const val ARG_KEY_SHOW_CUSTOMER = "ARG_KEY_SHOW_CUSTOMER"
 
         private const val KEY_DATE_PICKER_SESSION_DATE = "KEY_DATE_PICKER_SESSION_DATE"
-        private const val KEY_TIME_PICKER_SESSION_TIME = "KEY_TIME_PICKER_SESSION_TIME"
+        private const val KEY_TIME_PICKER_SESSION_TIME_START = "KEY_TIME_PICKER_SESSION_TIME_START"
+        private const val KEY_TIME_PICKER_SESSION_TIME_END = "KEY_TIME_PICKER_SESSION_TIME_END"
 
-        fun packBundle(customerId: Long, sessionId: Long): Bundle {
+        fun packBundle(customerId: Long, sessionId: Long, showCustomer: Boolean): Bundle {
             val bundle = Bundle()
             bundle.putLong(ARG_KEY_CUSTOMER_ID, customerId)
             bundle.putLong(ARG_KEY_SESSION_ID, sessionId)
+            bundle.putBoolean(ARG_KEY_SHOW_CUSTOMER, showCustomer)
 
             return bundle
         }

@@ -73,13 +73,15 @@ class LocalDbRepository(applicationContext: Context) {
             disfunctionEntities.map { disfunctionEntity -> Disfunction(disfunctionEntity) }
         }
 
-    suspend fun getDisfunctionById(disfunctionId: Long): Disfunction? = withContext(Dispatchers.IO) {
-        val disfunctions = localDb.disfunctionDao.getById(disfunctionId).map { disfunctionEntity ->
-            Disfunction(disfunctionEntity)
-        }
+    suspend fun getDisfunctionById(disfunctionId: Long): Disfunction? =
+        withContext(Dispatchers.IO) {
+            val disfunctions =
+                localDb.disfunctionDao.getById(disfunctionId).map { disfunctionEntity ->
+                    Disfunction(disfunctionEntity)
+                }
 
-        return@withContext disfunctions.firstOrNull()
-    }
+            return@withContext disfunctions.firstOrNull()
+        }
 
     suspend fun insertDisfunction(disfunction: Disfunction): Long = withContext(Dispatchers.IO) {
         Log.d("OsteoApp", "OsteoDbRepository: insertDisfunction")
@@ -87,33 +89,34 @@ class LocalDbRepository(applicationContext: Context) {
     }
 
     fun getSessionsWithDisfunctionsByCustomerIdAsFlow(customerId: Long): Flow<List<Session>> =
-        localDb.sessionDao.getSessionsWithDisfunctionsByCustomerId(customerId).map {
-            sessionsWithDisfunction ->
+        localDb.sessionDao.getSessionsWithDisfunctionsByCustomerId(customerId)
+            .map { sessionsWithDisfunction ->
                 sessionsWithDisfunction.map { sessionWithDisfunctions ->
                     Session(sessionWithDisfunctions)
                 }
-        }
+            }
 
     suspend fun getSessionById(sessionId: Long): Session? =
         withContext(Dispatchers.IO) {
-            val sessionsAndDisfunctions = localDb.sessionDao.getSessionsWithDisfunctionsById(sessionId)
+            val sessionsAndDisfunctions =
+                localDb.sessionDao.getSessionsWithDisfunctionsById(sessionId)
             val sessions = sessionsAndDisfunctions.map { sessionAndDisfunction ->
                 Session(sessionAndDisfunction)
             }
             return@withContext sessions.firstOrNull()
-    }
+        }
 
     suspend fun getDisfunctionsByCustomerId(customerId: Long): List<Disfunction> =
         withContext(Dispatchers.IO) {
             return@withContext localDb.disfunctionDao.getByCustomerId(customerId)
                 .map { disfunctionEntity -> Disfunction(disfunctionEntity) }
-    }
+        }
 
     suspend fun getDisfunctionsByIds(disfunctionsIds: List<Long>): List<Disfunction> =
         withContext(Dispatchers.IO) {
             return@withContext localDb.disfunctionDao.getByIds(disfunctionsIds)
                 .map { disfunctionEntity -> Disfunction(disfunctionEntity) }
-    }
+        }
 
     suspend fun insertSession(session: Session): Long = withContext(Dispatchers.IO) {
         val id = localDb.sessionDao.insert(SessionEntity(session))
@@ -128,7 +131,7 @@ class LocalDbRepository(applicationContext: Context) {
 
     fun getAttachmentsByCustomerIdAsFlow(customerId: Long): Flow<List<Attachment>> =
         localDb.attachmentDao.getAllByCustomerIdAsFlow(customerId).map { attachmentsEntities ->
-            attachmentsEntities.map { attachmentEntity-> Attachment(attachmentEntity) }
+            attachmentsEntities.map { attachmentEntity -> Attachment(attachmentEntity) }
         }
 
     suspend fun insertAttachment(attachment: Attachment) = withContext(Dispatchers.IO) {
@@ -188,7 +191,35 @@ class LocalDbRepository(applicationContext: Context) {
     suspend fun updateSessionIsDone(sessionId: Long, isDone: Boolean) =
         withContext(Dispatchers.IO) {
             localDb.sessionDao.updateIsDoneById(sessionId, isDone)
+        }
+
+    private suspend fun sessionsWithDisfunctionsToSessionsAndCustomers(
+        sessionsAndDisfunctions: List<SessionAndDisfunctions>
+    ): List<SessionAndCustomer> {
+        val customerIds = sessionsAndDisfunctions.map { sessionAndDisfunctions ->
+            sessionAndDisfunctions.sessionEntity.customerId
+        }.distinct()
+        val customersMap: Map<Long, Customer?> = customerIds.associateWith { customerId ->
+            getCustomerById(customerId)
+        }
+        return sessionsAndDisfunctions.map { sessionAndDisfunctions ->
+            SessionAndCustomer(
+                session = Session(
+                    sessionAndDisfunctions.sessionEntity,
+                    sessionAndDisfunctions.disfunctionEntities
+                ),
+                customer = customersMap[sessionAndDisfunctions.sessionEntity.customerId] ?:
+                Customer()
+            )
+        }
     }
+
+    fun getUpcomingSessions(fromDateTime: Long): Flow<List<SessionAndCustomer>> =
+        localDb.sessionDao.getSessionsWithDisfunctionsFromDateTime(fromDateTime).map {
+            sessionsAndDisfunctions: List<SessionAndDisfunctions> ->
+            sessionsWithDisfunctionsToSessionsAndCustomers(sessionsAndDisfunctions)
+        }
+
 
     fun close() = LocalDb.close()
 }

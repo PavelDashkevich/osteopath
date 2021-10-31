@@ -1,5 +1,6 @@
 package by.dashkevichpavel.osteopath.model
 
+import by.dashkevichpavel.osteopath.helpers.recyclerviewutils.DiffUtilComparable
 import by.dashkevichpavel.osteopath.repositories.localdb.entity.AttachmentEntity
 import by.dashkevichpavel.osteopath.repositories.localdb.entity.CustomerEntity
 import by.dashkevichpavel.osteopath.repositories.localdb.entity.DisfunctionEntity
@@ -19,7 +20,7 @@ data class Customer(
     var disfunctions: MutableList<Disfunction> = mutableListOf(),
     var sessions: MutableList<Session> = mutableListOf(),
     var attachments: MutableList<Attachment> = mutableListOf()
-) {
+) : DiffUtilComparable {
     constructor(
         customerEntity: CustomerEntity,
         disfunctionEntities: List<DisfunctionEntity>,
@@ -51,5 +52,17 @@ data class Customer(
                 facebook != other.facebook ||
                 customerStatusId != other.customerStatusId ||
                 isArchived != other.isArchived
+    }
+
+    override fun isTheSameItemAs(item: DiffUtilComparable?): Boolean {
+        if (item !is Customer) return false
+
+        return id == item.id
+    }
+
+    override fun contentsTheSameAs(item: DiffUtilComparable?): Boolean {
+        if (item !is Customer) return false
+
+        return !isModified(item)
     }
 }
