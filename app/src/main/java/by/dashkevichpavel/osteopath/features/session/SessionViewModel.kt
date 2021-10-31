@@ -183,7 +183,8 @@ class SessionViewModel(
         }
     }
 
-    override fun isDataModified(): Boolean = initialSession.isModified(session.value)
+    override fun isDataModified(): Boolean =
+        initialSession.isModified(session.value) && session.value?.customerId != 0L
 
     override fun saveData() {
         session.value?.let { session ->

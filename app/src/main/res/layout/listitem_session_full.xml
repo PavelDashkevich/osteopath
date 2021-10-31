@@ -173,7 +173,7 @@
             app:layout_constraintTop_toBottomOf="@id/tvTimeEnd"
             app:layout_constraintStart_toStartOf="@id/vField"
             app:layout_constraintEnd_toEndOf="@id/vField"
-            android:layout_marginBottom="4dp"
+            android:layout_marginBottom="8dp"
             style="@style/ImageButton.Call"/>
 
         <androidx.appcompat.widget.AppCompatImageButton
@@ -183,14 +183,14 @@
             app:layout_constraintTop_toBottomOf="@id/ibCall"
             app:layout_constraintStart_toStartOf="@id/vField"
             app:layout_constraintEnd_toEndOf="@id/vField"
-            android:layout_marginTop="4dp"
-            android:layout_marginBottom="4dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
             style="@style/ImageButton.SendMessage"/>
 
         <View
             android:id="@+id/vBottomHelper"
             android:layout_width="0dp"
-            android:layout_height="4dp"
+            android:layout_height="8dp"
             app:layout_constraintStart_toStartOf="@id/vField"
             app:layout_constraintEnd_toEndOf="@id/vField"
             app:layout_constraintTop_toBottomOf="@id/ibMessage"/>
