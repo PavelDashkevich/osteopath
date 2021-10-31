@@ -27,13 +27,24 @@
             app:layout_constraintGuide_end="16dp"/>
 
         <TextView
-            android:id="@+id/tvDateTime"
+            android:id="@+id/tvDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="@id/glVerticalLeft"
-            tools:text="10.05.2021 10:20"
+            tools:text="10.05.2021"
             android:paddingVertical="12dp"
+            android:textSize="12sp"/>
+
+        <TextView
+            android:id="@+id/tvTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toEndOf="@id/tvDate"
+            tools:text="10:30-11:45"
+            android:paddingVertical="12dp"
+            android:paddingHorizontal="8dp"
             android:textSize="12sp"/>
 
         <TextView
@@ -41,7 +52,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toEndOf="@id/tvDateTime"
+            app:layout_constraintStart_toEndOf="@id/tvTime"
             tools:text="Проведен"
             android:paddingHorizontal="8dp"
             android:paddingVertical="12dp"
@@ -60,7 +71,7 @@
             android:id="@+id/tvHeaderDisfunctions"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/tvDateTime"
+            app:layout_constraintTop_toBottomOf="@id/tvDate"
             app:layout_constraintStart_toStartOf="@id/glVerticalLeft"
             app:layout_constraintEnd_toStartOf="@id/ibContextActions"
             android:gravity="center_vertical"
