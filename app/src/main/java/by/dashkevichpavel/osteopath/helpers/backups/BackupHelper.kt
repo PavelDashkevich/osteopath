@@ -244,7 +244,7 @@ class BackupHelper(
                 return@let
             }
 
-            backupCreateResult = copyDocumentFile(newBackupFile, currentDbFile)
+            backupCreateResult = copyDocumentFile(currentDbFile, newBackupFile)
         }
 
         return backupCreateResult
