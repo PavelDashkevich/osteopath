@@ -56,5 +56,9 @@ class FragmentAllSettings : Fragment(R.layout.fragment_settings_all) {
         binding.vMenuItemRestoreFromBackup.setOnClickListener {
             safelyNavigateTo(R.id.action_fragmentAllSettings_to_fragmentBackupRestore)
         }
+
+        binding.vMenuItemScheduler.setOnClickListener {
+            safelyNavigateTo(R.id.action_fragmentAllSettings_to_fragmentSettingsScheduler)
+        }
     }
 }

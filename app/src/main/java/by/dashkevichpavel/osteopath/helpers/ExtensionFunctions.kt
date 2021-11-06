@@ -9,20 +9,15 @@ import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.util.Log
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
 import androidx.navigation.fragment.findNavController
 import by.dashkevichpavel.osteopath.R
-import by.dashkevichpavel.osteopath.features.dialogs.ItemDeleteConfirmationDialog
 import by.dashkevichpavel.osteopath.model.Attachment
-import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestBuilder
 import com.bumptech.glide.RequestManager
-import java.lang.IllegalArgumentException
 import java.util.*
 
 fun String.toEditable(): Editable =
@@ -47,6 +42,9 @@ fun Date.formatDateAsMonthShortString(): String =
 
 fun Date.formatAsDateTimeStamp(): String =
     android.text.format.DateFormat.format("yyyy_MM_dd_HH_mm", this).toString()
+
+fun Date.formatAsDayOfWeekName(): String =
+    android.text.format.DateFormat.format("EEEE", this).toString()
 
 fun Date.formatDateAsEditable(): Editable =
     this.formatDateAsString().toEditable()
@@ -181,3 +179,17 @@ fun List<String>.toStringDelimitedByNewLines(): String {
     }
     return result
 }
+
+fun Int.toNameOfWeekDay(): String {
+    val index = this % 7
+    val c = Calendar.getInstance()
+    c.firstDayOfWeek = Calendar.MONDAY
+    c.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY + index)
+
+    return Date(c.timeInMillis).formatAsDayOfWeekName()
+}
+
+fun String.toCapitalized(): String =
+    this.replaceFirstChar { firstChar: Char ->
+        if (firstChar.isLowerCase()) firstChar.uppercase() else firstChar.toString()
+    }

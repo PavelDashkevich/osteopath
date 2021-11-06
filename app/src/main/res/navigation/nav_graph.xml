@@ -85,6 +85,9 @@
         <action
             android:id="@+id/action_fragmentAllSettings_to_fragmentBackupRestore"
             app:destination="@id/fragmentBackupRestore" />
+        <action
+            android:id="@+id/action_fragmentAllSettings_to_fragmentSettingsScheduler"
+            app:destination="@id/fragmentSettingsScheduler" />
     </fragment>
     <fragment
         android:id="@+id/fragmentBackupCreate"
@@ -97,6 +100,21 @@
         android:name="by.dashkevichpavel.osteopath.features.settings.backup.restore.FragmentBackupRestore"
         android:label="FragmentBackupRestore"
         tools:layout="@layout/fragment_backup_restore">
+    </fragment>
+    <fragment
+        android:id="@+id/fragmentSettingsScheduler"
+        android:name="by.dashkevichpavel.osteopath.features.settings.scheduler.FragmentSettingsScheduler"
+        android:label="FragmentSettingsScheduler"
+        tools:layout="@layout/fragment_settings_scheduler">
+        <action
+            android:id="@+id/action_fragmentSettingsScheduler_to_fragmentSettingsWorkingDays"
+            app:destination="@id/fragmentSettingsWorkingDays" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragmentSettingsWorkingDays"
+        android:name="by.dashkevichpavel.osteopath.features.settings.scheduler.workingdays.FragmentSettingsWorkingDays"
+        android:label="FragmentSettingsWorkingDays"
+        tools:layout="@layout/fragment_settings_working_days">
     </fragment>
     <fragment
         android:id="@+id/fragmentSessions"

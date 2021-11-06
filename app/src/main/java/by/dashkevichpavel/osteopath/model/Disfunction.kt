@@ -1,7 +1,7 @@
 package by.dashkevichpavel.osteopath.model
 
 import by.dashkevichpavel.osteopath.helpers.recyclerviewutils.DiffUtilComparable
-import by.dashkevichpavel.osteopath.repositories.localdb.entity.DisfunctionEntity
+import by.dashkevichpavel.osteopath.repositories.data.entity.DisfunctionEntity
 
 data class Disfunction(
     var id: Long = 0,

@@ -6,14 +6,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import by.dashkevichpavel.osteopath.features.dialogs.DialogUserAction
-import by.dashkevichpavel.osteopath.helpers.backups.BackupHelper
-import by.dashkevichpavel.osteopath.helpers.itemdeletion.DeletableInterface
 import by.dashkevichpavel.osteopath.helpers.itemdeletion.ItemDeletionEventsHandler
 import by.dashkevichpavel.osteopath.model.*
-import by.dashkevichpavel.osteopath.repositories.localdb.LocalDbRepository
-import by.dashkevichpavel.osteopath.repositories.localdb.OsteoDbRepositorySingleton
-import by.dashkevichpavel.osteopath.repositories.sharedprefs.CustomerFilterSharedPreferences
-import kotlinx.coroutines.launch
+import by.dashkevichpavel.osteopath.repositories.data.LocalDbRepository
+import by.dashkevichpavel.osteopath.repositories.settings.customerfilter.CustomerFilterSharedPreferences
 
 class CustomerListViewModel(
     applicationContext: Context,

@@ -60,8 +60,8 @@
     <string name="session_status_planned">Запланирован</string>
     <string name="header_date">Дата</string>
     <string name="header_time">Время</string>
-    <string name="header_session_start_time">С</string>
-    <string name="header_session_end_time">По</string>
+    <string name="header_session_start_time">@string/common_time_start</string>
+    <string name="header_session_end_time">@string/common_time_end</string>
     <string name="header_session_customer_name">Клиент</string>
     <string name="header_session_done">Сеанс проведен</string>
     <string name="header_new_session">Новый сеанс</string>
@@ -76,11 +76,7 @@
     <string name="add_attachments_menu_record_audio">записать аудио</string>
     <string name="add_attachments_menu_record_video">записать видео</string>
     <string name="drawer_menu_item_settings">Настройки</string>
-    <string name="settings_header_backup">Резервное копирование базы данных</string>
-    <string name="settings_backup_make">Создание резервных копий</string>
-    <string name="settings_backup_make_hint">Вы можете сохранить базу данных в файл. После переустановки программы на другое устройство можно восстановить базу данных из сохраненного файла. Доступно как ручное, так и автоматическое сохранение копий.</string>
-    <string name="settings_backup_restore">Восстановление базы из резервной копии</string>
-    <string name="settings_backup_restore_hint">Загрузите базу данных из сохраненного ранее файла.</string>
+
     <string name="header_backup_directory">Папка для хранения копий</string>
     <string name="header_backup_file">Файл резервной копии БД</string>
     <string name="backup_create_hint">Выберите папку, в которой будут сохраняться резервные копии базы данных:</string>
@@ -109,6 +105,13 @@
     <string name="common_delete">Удалить</string>
     <string name="common_get_from_archive">Извлечь из архива</string>
     <string name="common_mark_as_done">Отметить проведенным</string>
+    <string name="common_scheduler_settings_description">Здесь вы можете настроить планировщик сеансов так, чтобы быстро и точно находить свободное время для очередного приема.</string>
+    <string name="common_scheduler_parameters">Параметры планировщика сеансов</string>
+    <string name="common_time_start">С</string>
+    <string name="common_time_end">По</string>
+    <string name="common_rest_included">с перерывом</string>
+    <string name="common_duration_extended_hour">ч</string>
+    <string name="common_duration_extended_minutes">мин</string>
 
     <!--  Context menus  -->
     <!--  Customer  -->
@@ -138,4 +141,41 @@
     <string name="screen_sessions_tab_recent_schedule">Расписание</string>
     <string name="screen_sessions_tab_recent_text">Недавние</string>
     <string name="screen_sessions_tab_error_text">Ошибка</string>
+
+    <!--  Settings  -->
+    <!--  All  -->
+    <string name="screen_settings_all_backup_header">Резервное копирование базы данных</string>
+    <string name="screen_settings_all_backup_create">Создание резервных копий</string>
+    <string name="screen_settings_all_backup_create_description">Вы можете сохранить базу данных в файл. После переустановки программы на другое устройство можно восстановить базу данных из сохраненного файла. Доступно как ручное, так и автоматическое сохранение копий.</string>
+    <string name="screen_settings_all_backup_restore">Восстановление базы из резервной копии</string>
+    <string name="screen_settings_all_backup_restore_description">Загрузите базу данных из сохраненного ранее файла.</string>
+    <string name="screen_settings_all_scheduler_header">Планировщик сеансов</string>
+    <string name="screen_settings_all_scheduler">@string/common_scheduler_parameters</string>
+    <string name="screen_settings_all_scheduler_description">@string/common_scheduler_settings_description</string>
+
+    <!--  Scheduler settings: working days  -->
+    <string name="screen_settings_workings_days_toolbar_title">График работы по дням недели</string>
+    <string name="screen_settings_workings_days_time_period_error">Конец периода должен быть больше его начала.</string>
+
+    <!--  Scheduler settings: session durations and pause after session  -->
+    <string name="screen_settings_scheduler_toolbar_title">@string/common_scheduler_parameters</string>
+    <string name="screen_settings_scheduler_intro">@string/common_scheduler_settings_description</string>
+    <string name="screen_settings_scheduler_working_hours_header">График работы по дням недели</string>
+    <string name="screen_settings_scheduler_no_working_days">Все дни недели отмечены как нерабочие.</string>
+    <string name="screen_settings_scheduler_rest_included">@string/common_rest_included</string>
+    <string name="screen_settings_scheduler_working_hours_setup">Настроить</string>
+    <string name="screen_settings_scheduler_pause_after_session_header">Перерыв между сеансами</string>
+    <string name="screen_settings_scheduler_pause_after_session_description">Сколько обычно времени Вам нужно для отдыха между сеансами?</string>
+    <string name="screen_settings_scheduler_pause_after_session_hours">ч</string>
+    <string name="screen_settings_scheduler_pause_after_session_minutes">мин</string>
+    <string name="screen_settings_scheduler_session_durations_header">Длительность сеансов</string>
+    <string name="screen_settings_scheduler_session_durations_description">Добавьте в список обычные для Вашей работы длительности сеансов. Это поможет быстрее находить подходящее свободное время для нового сеанса.</string>
+    <string name="screen_settings_scheduler_session_durations_add">Добавить</string>
+
+    <!--  List items  -->
+    <!--  Working day settings  -->
+    <string name="list_item_working_day_settings_is_working_day">рабочий день</string>
+    <string name="list_item_working_day_settings_rest_included">@string/common_rest_included</string>
+    <string name="list_item_working_day_settings_period_start">@string/common_time_start</string>
+    <string name="list_item_working_day_settings_period_end">@string/common_time_end</string>
 </resources>

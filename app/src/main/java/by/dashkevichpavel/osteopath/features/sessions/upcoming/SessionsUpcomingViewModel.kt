@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import by.dashkevichpavel.osteopath.helpers.jobs.FlowJobController
 import by.dashkevichpavel.osteopath.model.SessionAndCustomer
-import by.dashkevichpavel.osteopath.repositories.localdb.LocalDbRepository
+import by.dashkevichpavel.osteopath.repositories.data.LocalDbRepository
 import kotlinx.coroutines.flow.collect
 import java.util.*
 

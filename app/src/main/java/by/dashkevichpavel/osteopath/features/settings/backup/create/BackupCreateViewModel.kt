@@ -1,11 +1,7 @@
 package by.dashkevichpavel.osteopath.features.settings.backup.create
 
-import android.content.ContentResolver
 import android.content.Context
 import android.net.Uri
-import android.os.ParcelFileDescriptor
-import androidx.core.net.toFile
-import androidx.documentfile.provider.DocumentFile
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -13,13 +9,9 @@ import by.dashkevichpavel.osteopath.helpers.backups.BackupDirCheckResult
 import by.dashkevichpavel.osteopath.helpers.backups.BackupHelper
 import by.dashkevichpavel.osteopath.helpers.formatDateAsString
 import by.dashkevichpavel.osteopath.helpers.formatTimeAsString
-import by.dashkevichpavel.osteopath.repositories.localdb.LocalDbRepository
-import by.dashkevichpavel.osteopath.repositories.sharedprefs.BackupSettingsSharedPreferences
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import java.io.File
-import java.io.FileNotFoundException
 import java.util.*
 
 class BackupCreateViewModel(

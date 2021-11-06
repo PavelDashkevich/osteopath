@@ -1,9 +1,9 @@
 package by.dashkevichpavel.osteopath.model
 
 import by.dashkevichpavel.osteopath.helpers.recyclerviewutils.DiffUtilComparable
-import by.dashkevichpavel.osteopath.repositories.localdb.SessionAndDisfunctions
-import by.dashkevichpavel.osteopath.repositories.localdb.entity.DisfunctionEntity
-import by.dashkevichpavel.osteopath.repositories.localdb.entity.SessionEntity
+import by.dashkevichpavel.osteopath.repositories.data.SessionAndDisfunctions
+import by.dashkevichpavel.osteopath.repositories.data.entity.DisfunctionEntity
+import by.dashkevichpavel.osteopath.repositories.data.entity.SessionEntity
 import java.util.*
 
 data class Session(

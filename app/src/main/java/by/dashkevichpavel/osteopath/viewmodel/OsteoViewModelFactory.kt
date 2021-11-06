@@ -3,7 +3,7 @@ package by.dashkevichpavel.osteopath.viewmodel
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import by.dashkevichpavel.osteopath.repositories.localdb.OsteoDbRepositorySingleton
+import by.dashkevichpavel.osteopath.repositories.data.OsteoDbRepositorySingleton
 import by.dashkevichpavel.osteopath.features.customerlist.CustomerListViewModel
 import by.dashkevichpavel.osteopath.features.customerlistfilter.CustomerListFilterViewModel
 import by.dashkevichpavel.osteopath.features.customerprofile.CustomerProfileViewModel
@@ -15,6 +15,9 @@ import by.dashkevichpavel.osteopath.features.sessions.recent.SessionsRecentViewM
 import by.dashkevichpavel.osteopath.features.sessions.upcoming.SessionsUpcomingViewModel
 import by.dashkevichpavel.osteopath.features.settings.backup.create.BackupCreateViewModel
 import by.dashkevichpavel.osteopath.features.settings.backup.restore.BackupRestoreViewModel
+import by.dashkevichpavel.osteopath.features.settings.scheduler.SchedulerSettingsViewModel
+import by.dashkevichpavel.osteopath.features.settings.scheduler.workingdays.WorkingDaysSettingsViewModel
+import by.dashkevichpavel.osteopath.repositories.settings.scheduler.SchedulerSettingsRepositoryImpl
 
 class OsteoViewModelFactory(
     private val applicationContext: Context
@@ -46,6 +49,10 @@ class OsteoViewModelFactory(
                 BackupCreateViewModel(applicationContext)
             BackupRestoreViewModel::class.java ->
                 BackupRestoreViewModel(applicationContext)
+            SchedulerSettingsViewModel::class.java ->
+                SchedulerSettingsViewModel(SchedulerSettingsRepositoryImpl(applicationContext))
+            WorkingDaysSettingsViewModel::class.java ->
+                WorkingDaysSettingsViewModel(SchedulerSettingsRepositoryImpl(applicationContext))
             SessionsUpcomingViewModel::class.java ->
                 SessionsUpcomingViewModel(OsteoDbRepositorySingleton.getInstance(applicationContext))
             SessionsRecentViewModel::class.java ->

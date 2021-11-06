@@ -4,7 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import by.dashkevichpavel.osteopath.model.Disfunction
-import by.dashkevichpavel.osteopath.repositories.localdb.LocalDbRepository
+import by.dashkevichpavel.osteopath.repositories.data.LocalDbRepository
 import kotlinx.coroutines.launch
 
 class SelectDisfunctionsViewModel(

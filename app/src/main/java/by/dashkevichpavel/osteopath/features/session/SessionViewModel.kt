@@ -10,7 +10,7 @@ import by.dashkevichpavel.osteopath.helpers.savechanges.SaveChangesViewModelHelp
 import by.dashkevichpavel.osteopath.helpers.setDatePartFromTimeInMillis
 import by.dashkevichpavel.osteopath.helpers.setTimePartFromTimeInMillis
 import by.dashkevichpavel.osteopath.model.*
-import by.dashkevichpavel.osteopath.repositories.localdb.LocalDbRepository
+import by.dashkevichpavel.osteopath.repositories.data.LocalDbRepository
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import java.util.*

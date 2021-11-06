@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".features.settings.scheduler.FragmentSettingsScheduler">
+
+    <include
+        android:id="@+id/lToolbar"
+        layout="@layout/toolbar"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/lToolbar">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tilPauseAfterSession"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/tvPauseAfterSessionDescription"
+                app:layout_constraintStart_toStartOf="@id/glVerticalStart"
+                app:layout_constraintEnd_toEndOf="@id/glVerticalEnd"
+                app:boxBackgroundColor="@android:color/transparent"
+                android:layout_marginEnd="8dp">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etPauseAfterSession"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/screen_settings_scheduler_pause_after_session_header"
+                    android:focusable="false"
+                    android:clickable="true"
+                    android:longClickable="false"
+                    android:layout_marginTop="8dp"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/glVerticalStart"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                app:layout_constraintGuide_begin="16dp" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/glVerticalEnd"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                app:layout_constraintGuide_end="16dp" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/glVerticalMiddle"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.5"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvSessionDurations"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="@id/glVerticalEnd"
+                app:layout_constraintStart_toStartOf="@id/glVerticalStart"
+                app:layout_constraintTop_toBottomOf="@id/btnAddSessionDuration" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnAddSessionDuration"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/screen_settings_scheduler_session_durations_add"
+                app:layout_constraintStart_toStartOf="@id/glVerticalStart"
+                app:layout_constraintTop_toBottomOf="@id/tvSessionDurationsDescription" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tvIntro"
+                style="@style/TextAppearance.AppCompat.Body1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/screen_settings_scheduler_intro"
+                app:layout_constraintEnd_toEndOf="@id/glVerticalEnd"
+                app:layout_constraintStart_toStartOf="@id/glVerticalStart"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tvWorkingHoursHeader"
+                style="@style/TextAppearance.AppCompat.Caption"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/screen_settings_scheduler_working_hours_header"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="@id/glVerticalEnd"
+                app:layout_constraintStart_toStartOf="@id/glVerticalStart"
+                app:layout_constraintTop_toBottomOf="@id/tvIntro" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tvWorkingHours"
+                style="@style/TextAppearance.AppCompat.Body1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:layout_constraintEnd_toEndOf="@id/glVerticalEnd"
+                app:layout_constraintStart_toStartOf="@id/glVerticalStart"
+                app:layout_constraintTop_toBottomOf="@id/tvWorkingHoursHeader" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnSetupWorkingDays"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/tvWorkingHours"
+                app:layout_constraintStart_toStartOf="@id/glVerticalStart"
+                android:layout_marginTop="8dp"
+                android:text="@string/screen_settings_scheduler_working_hours_setup"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tvPauseAfterSessionHeader"
+                style="@style/TextAppearance.AppCompat.Caption"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/screen_settings_scheduler_pause_after_session_header"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="@id/glVerticalEnd"
+                app:layout_constraintStart_toStartOf="@id/glVerticalStart"
+                app:layout_constraintTop_toBottomOf="@id/btnSetupWorkingDays" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tvPauseAfterSessionDescription"
+                style="@style/TextAppearance.AppCompat.Body1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/screen_settings_scheduler_pause_after_session_description"
+                app:layout_constraintEnd_toEndOf="@id/glVerticalEnd"
+                app:layout_constraintStart_toStartOf="@id/glVerticalStart"
+                app:layout_constraintTop_toBottomOf="@id/tvPauseAfterSessionHeader" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tvSessionDurationsHeader"
+                style="@style/TextAppearance.AppCompat.Caption"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/screen_settings_scheduler_session_durations_header"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="@id/glVerticalEnd"
+                app:layout_constraintStart_toStartOf="@id/glVerticalStart"
+                app:layout_constraintTop_toBottomOf="@id/tilPauseAfterSession" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tvSessionDurationsDescription"
+                style="@style/TextAppearance.AppCompat.Body1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/screen_settings_scheduler_session_durations_description"
+                app:layout_constraintEnd_toEndOf="@id/glVerticalEnd"
+                app:layout_constraintStart_toStartOf="@id/glVerticalStart"
+                app:layout_constraintTop_toBottomOf="@id/tvSessionDurationsHeader" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

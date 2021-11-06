@@ -5,12 +5,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import by.dashkevichpavel.osteopath.features.dialogs.DialogUserAction
-import by.dashkevichpavel.osteopath.helpers.itemdeletion.DeletableInterface
 import by.dashkevichpavel.osteopath.helpers.itemdeletion.ItemDeletionEventsHandler
 import by.dashkevichpavel.osteopath.helpers.savechanges.SavableInterface
 import by.dashkevichpavel.osteopath.helpers.savechanges.SaveChangesViewModelHelper
 import by.dashkevichpavel.osteopath.model.Disfunction
-import by.dashkevichpavel.osteopath.repositories.localdb.LocalDbRepository
+import by.dashkevichpavel.osteopath.repositories.data.LocalDbRepository
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 

@@ -2,12 +2,9 @@ package by.dashkevichpavel.osteopath.features.customerlist
 
 import by.dashkevichpavel.osteopath.helpers.jobs.FlowJobController
 import by.dashkevichpavel.osteopath.model.*
-import by.dashkevichpavel.osteopath.repositories.localdb.LocalDbRepository
+import by.dashkevichpavel.osteopath.repositories.data.LocalDbRepository
 import kotlinx.coroutines.*
-import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
-import java.util.*
 
 class CustomerListLoader(
     private val customerListLoaderSubscriber: CustomerListLoaderSubscriber,

@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cvCard"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    style="@style/CardView.Default">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingVertical="8dp">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/glVerticalStart"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="16dp"/>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/glVerticalEnd"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            app:layout_constraintGuide_end="16dp"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tvDayName"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:paddingVertical="8dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintStart_toStartOf="@id/glVerticalStart"
+            app:layout_constraintEnd_toStartOf="@id/cbIsWorkingDay"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/cbIsWorkingDay"
+            tools:text="Понедельник"
+            android:gravity="center_vertical"
+            style="@style/TextAppearance.AppCompat.Body2"/>
+
+        <com.google.android.material.checkbox.MaterialCheckBox
+            android:id="@+id/cbIsWorkingDay"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toEndOf="@id/tvDayName"
+            app:layout_constraintEnd_toEndOf="@id/glVerticalEnd"
+            app:layout_constraintTop_toTopOf="@id/tvDayName"
+            android:gravity="end|center_vertical"
+            android:button="@null"
+            android:drawableEnd="?android:attr/listChoiceIndicatorMultiple"
+            android:text="@string/list_item_working_day_settings_is_working_day"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilDayStartTime"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/cbIsWorkingDay"
+            app:layout_constraintStart_toStartOf="@id/glVerticalStart"
+            app:layout_constraintEnd_toStartOf="@id/tilDayEndTime"
+            app:boxBackgroundColor="@android:color/transparent"
+            android:layout_marginEnd="8dp">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etDayStartTime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/list_item_working_day_settings_period_start"
+                android:focusable="false"
+                android:clickable="true"
+                android:longClickable="false"
+                android:layout_marginTop="8dp"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilDayEndTime"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/cbIsWorkingDay"
+            app:layout_constraintStart_toEndOf="@id/tilDayStartTime"
+            app:layout_constraintEnd_toEndOf="@id/glVerticalEnd"
+            app:boxBackgroundColor="@android:color/transparent"
+            android:layout_marginStart="8dp">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etDayEndTime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/list_item_working_day_settings_period_end"
+                android:focusable="false"
+                android:clickable="true"
+                android:longClickable="false"
+                android:layout_marginTop="8dp"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.checkbox.MaterialCheckBox
+            android:id="@+id/cbRestIncluded"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="@id/glVerticalStart"
+            app:layout_constraintEnd_toEndOf="@id/glVerticalEnd"
+            app:layout_constraintTop_toBottomOf="@id/tilDayStartTime"
+            android:gravity="end|center_vertical"
+            android:button="@null"
+            android:drawableEnd="?android:attr/listChoiceIndicatorMultiple"
+            android:text="@string/list_item_working_day_settings_rest_included"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilRestStartTime"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/cbRestIncluded"
+            app:layout_constraintStart_toStartOf="@id/glVerticalStart"
+            app:layout_constraintEnd_toStartOf="@id/tilRestEndTime"
+            app:boxBackgroundColor="@android:color/transparent"
+            android:layout_marginEnd="8dp">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etRestStartTime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/list_item_working_day_settings_period_start"
+                android:focusable="false"
+                android:clickable="true"
+                android:longClickable="false"
+                android:layout_marginTop="8dp"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilRestEndTime"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/cbRestIncluded"
+            app:layout_constraintStart_toEndOf="@id/tilRestStartTime"
+            app:layout_constraintEnd_toEndOf="@id/glVerticalEnd"
+            app:boxBackgroundColor="@android:color/transparent"
+            android:layout_marginStart="8dp">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etRestEndTime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/list_item_working_day_settings_period_end"
+                android:focusable="false"
+                android:clickable="true"
+                android:longClickable="false"
+                android:layout_marginTop="8dp"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>

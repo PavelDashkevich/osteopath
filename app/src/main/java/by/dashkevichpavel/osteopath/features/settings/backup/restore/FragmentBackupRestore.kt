@@ -65,7 +65,7 @@ class FragmentBackupRestore :
     private fun setupViews(view: View) {
         fragmentBackupRestoreBinding = FragmentBackupRestoreBinding.bind(view)
         setupToolbar(binding.lToolbar.tbActions)
-        binding.lToolbar.tbActions.title = getString(R.string.settings_backup_restore)
+        binding.lToolbar.tbActions.title = getString(R.string.screen_settings_all_backup_restore)
     }
 
     private fun setupEventListeners() {

@@ -6,10 +6,10 @@ import android.util.Log
 import androidx.documentfile.provider.DocumentFile
 import by.dashkevichpavel.osteopath.helpers.formatAsDateTimeStamp
 import by.dashkevichpavel.osteopath.helpers.operationresult.OperationResult
-import by.dashkevichpavel.osteopath.repositories.localdb.DbContract
-import by.dashkevichpavel.osteopath.repositories.localdb.LocalDb
-import by.dashkevichpavel.osteopath.repositories.localdb.OsteoDbRepositorySingleton
-import by.dashkevichpavel.osteopath.repositories.sharedprefs.BackupSettingsSharedPreferences
+import by.dashkevichpavel.osteopath.repositories.data.DbContract
+import by.dashkevichpavel.osteopath.repositories.data.LocalDb
+import by.dashkevichpavel.osteopath.repositories.data.OsteoDbRepositorySingleton
+import by.dashkevichpavel.osteopath.repositories.settings.backup.BackupSettingsSharedPreferences
 import java.io.*
 import java.lang.Exception
 import java.util.*

@@ -1,6 +1,5 @@
 package by.dashkevichpavel.osteopath.features.settings.backup.create
 
-import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -23,7 +22,6 @@ import by.dashkevichpavel.osteopath.viewmodel.OsteoViewModelFactory
 
 class FragmentBackupCreate :
     Fragment(R.layout.fragment_backup_create),
-    PermissionsGrantedListener,
     BackClickListener {
     private val viewModel: BackupCreateViewModel by viewModels(
         factoryProducer = { OsteoViewModelFactory(requireContext().applicationContext) }
@@ -68,7 +66,7 @@ class FragmentBackupCreate :
     private fun setupViews(view: View) {
         fragmentBackupCreateBinding = FragmentBackupCreateBinding.bind(view)
         setupToolbar(binding.lToolbar.tbActions)
-        binding.lToolbar.tbActions.title = getString(R.string.settings_backup_make)
+        binding.lToolbar.tbActions.title = getString(R.string.screen_settings_all_backup_create)
         binding.tvMaxBackups.text = getString(
             R.string.backup_create_max_copies,
             BackupHelper.MAX_BACKUPS_NUMBER,
@@ -201,10 +199,6 @@ class FragmentBackupCreate :
         uriDir.takePersistableReadWritePermissions(requireContext())
         viewModel.pickDirectory(uriDir)
         viewModel.checkSettings()
-    }
-
-    override fun onPermissionsGranted() {
-
     }
 
     override fun onBackClick(): Boolean {
