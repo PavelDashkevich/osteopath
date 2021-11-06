@@ -127,7 +127,7 @@ class FragmentCustomerProfile :
     }
 
     private fun onChangeToolbarTitle(newName: String?) {
-        binding.tbActions.title = newName ?: getString(R.string.customer_profile_new_customer)
+        requireActivity().title = newName ?: getString(R.string.customer_profile_new_customer)
     }
 
     private fun onChangeCustomerId(customerId: Long) {

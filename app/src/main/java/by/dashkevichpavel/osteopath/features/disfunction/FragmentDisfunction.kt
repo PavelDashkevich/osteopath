@@ -125,7 +125,7 @@ class FragmentDisfunction :
         newDisfunction?.let { disfunction ->
             binding.etDescription.text = disfunction.description.toEditable()
             binding.rgCategory.check(mapStatusIdToResId[disfunction.disfunctionStatusId] ?: -1)
-            binding.lToolbar.tbActions.title =
+            requireActivity().title =
                 if (disfunction.id != 0L) {
                     ""
                 } else {

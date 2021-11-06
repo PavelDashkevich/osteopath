@@ -66,7 +66,7 @@ class FragmentBackupCreate :
     private fun setupViews(view: View) {
         fragmentBackupCreateBinding = FragmentBackupCreateBinding.bind(view)
         setupToolbar(binding.lToolbar.tbActions)
-        binding.lToolbar.tbActions.title = getString(R.string.screen_settings_all_backup_create)
+        requireActivity().title = getString(R.string.screen_settings_all_backup_create)
         binding.tvMaxBackups.text = getString(
             R.string.backup_create_max_copies,
             BackupHelper.MAX_BACKUPS_NUMBER,

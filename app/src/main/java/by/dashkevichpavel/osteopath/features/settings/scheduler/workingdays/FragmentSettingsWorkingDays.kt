@@ -66,7 +66,7 @@ class FragmentSettingsWorkingDays :
     private fun setupViews(view: View) {
         fragmentSettingsWorkingDaysBinding = FragmentSettingsWorkingDaysBinding.bind(view)
         setupToolbar(binding.lToolbar.tbActions)
-        binding.lToolbar.tbActions.title = getString(R.string.screen_settings_workings_days_toolbar_title)
+        requireActivity().title = getString(R.string.screen_settings_workings_days_toolbar_title)
         binding.rvWorkingDays.layoutManager = LinearLayoutManager(requireContext())
         binding.rvWorkingDays.addItemDecoration(SpaceItemDecoration())
         binding.rvWorkingDays.adapter = workingDaySettingsAdapter

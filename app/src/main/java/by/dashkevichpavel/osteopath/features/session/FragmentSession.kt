@@ -220,7 +220,7 @@ class FragmentSession :
     }
 
     private fun onChangeSession(session: Session) {
-        binding.lToolbar.tbActions.title = if (session.id == 0L) getString(R.string.header_new_session) else ""
+        requireActivity().title = if (session.id == 0L) getString(R.string.header_new_session) else ""
         binding.etPlan.text = session.plan.toEditable()
         binding.etBodyConditions.text = session.bodyCondition.toEditable()
         binding.smDone.isChecked = session.isDone

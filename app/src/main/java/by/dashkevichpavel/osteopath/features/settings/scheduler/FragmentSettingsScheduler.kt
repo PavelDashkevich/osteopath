@@ -64,7 +64,7 @@ class FragmentSettingsScheduler :
         fragmentSettingsSchedulerBinding = FragmentSettingsSchedulerBinding.bind(view)
 
         setupToolbar(binding.lToolbar.tbActions)
-        binding.lToolbar.tbActions.title = getString(R.string.screen_settings_scheduler_toolbar_title)
+        requireActivity().title = getString(R.string.screen_settings_scheduler_toolbar_title)
 
         binding.rvSessionDurations.adapter = sessionDurationsAdapter
         binding.rvSessionDurations.layoutManager = LinearLayoutManager(requireContext())
