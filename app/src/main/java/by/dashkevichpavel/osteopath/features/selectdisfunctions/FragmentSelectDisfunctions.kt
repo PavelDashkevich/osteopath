@@ -70,9 +70,12 @@ class FragmentSelectDisfunctions :
     private fun setupViews(view: View) {
         fragmentSelectDisfunctionsBinding = FragmentSelectDisfunctionsBinding.bind(view)
         setupToolbar(binding.lToolbar.tbActions)
+
         binding.rvDisfunctions.layoutManager = LinearLayoutManager(requireContext())
         binding.rvDisfunctions.addItemDecoration(SpaceItemDecoration())
         binding.rvDisfunctions.adapter = adapter
+
+        requireActivity().title = getString(R.string.screen_select_disfunctions_title)
     }
 
     private fun setupObservers() {

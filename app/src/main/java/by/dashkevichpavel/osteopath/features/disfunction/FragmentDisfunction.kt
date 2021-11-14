@@ -6,14 +6,10 @@ import android.view.*
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import by.dashkevichpavel.osteopath.R
 import by.dashkevichpavel.osteopath.databinding.FragmentDisfunctionBinding
 import by.dashkevichpavel.osteopath.BackClickHandler
 import by.dashkevichpavel.osteopath.BackClickListener
-import by.dashkevichpavel.osteopath.features.customerprofile.FragmentCustomerProfile
-import by.dashkevichpavel.osteopath.features.dialogs.DialogUserAction
-import by.dashkevichpavel.osteopath.features.dialogs.ItemDeleteConfirmationDialog
 import by.dashkevichpavel.osteopath.helpers.itemdeletion.ItemDeletionFragmentHelper
 import by.dashkevichpavel.osteopath.helpers.savechanges.SaveChangesFragmentHelper
 import by.dashkevichpavel.osteopath.helpers.setupToolbar
@@ -125,12 +121,12 @@ class FragmentDisfunction :
         newDisfunction?.let { disfunction ->
             binding.etDescription.text = disfunction.description.toEditable()
             binding.rgCategory.check(mapStatusIdToResId[disfunction.disfunctionStatusId] ?: -1)
-            requireActivity().title =
-                if (disfunction.id != 0L) {
-                    ""
-                } else {
-                    getString(R.string.header_new_disfunction)
-                }
+            requireActivity().title = getString(
+                if (disfunction.id != 0L)
+                    R.string.screen_disfunction_title
+                else
+                    R.string.screen_disfunction_title_new
+            )
         }
     }
 

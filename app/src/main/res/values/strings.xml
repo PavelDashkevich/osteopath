@@ -64,8 +64,6 @@
     <string name="header_session_end_time">@string/common_time_end</string>
     <string name="header_session_customer_name">Клиент</string>
     <string name="header_session_done">Сеанс проведен</string>
-    <string name="header_new_session">Новый сеанс</string>
-    <string name="header_new_disfunction">Новая дисфункция</string>
     <string name="permissions_not_granted">Нельзя использовать эту функцию - не получено разрешений.</string>
     <string name="permissions_explanation_template">Чтобы использовать функцию %1$s, пожалуйста, предоставьте разрешения: %2$s.</string>
     <string name="permissions_function_get_data_from_contact">заполнения имени и телефона из адресной книги</string>
@@ -137,22 +135,28 @@
     <string name="no_sessions_period_delete_dialog_message">Вы действительно хотите удалить этот период?</string>
 
     <!--  Screens  -->
-    <!--  Sessions  -->
+    <!--    Disfunction  -->
+    <string name="screen_disfunction_title_new">Новая дисфункция</string>
+    <string name="screen_disfunction_title">Дисфункция</string>
+    <!--    No sessions period  -->
+    <string name="screen_no_sessions_period_title_new">Новый период</string>
+    <string name="screen_no_sessions_period_title">Время не для сеансов</string>
+    <string name="screen_no_sessions_period_edit_description">Задайте период, который Вы хотите оставить без сеансов (например, это может быть незапланированный выходной или какое-либо важное дело в течение дня, не связанное с сеансами - в обоих случаях, Вам нужно отметить это время как нерабочее, это поможет планировщику сеансов лучше подбирать подходящее время).</string>
+    <!--    Select dusfunctions  -->
+    <string name="screen_select_disfunctions_title">Выберите дисфункции</string>
+    <!--    Session  -->
+    <string name="screen_session_title_new">Новый сеанс</string>
+    <string name="screen_session_title">Сеанс</string>
+    <!--    Sessions  -->
     <string name="screen_sessions_tab_upcoming_text">Предстоящие</string>
     <string name="screen_sessions_tab_recent_schedule">Расписание</string>
     <string name="screen_sessions_tab_recent_text">Недавние</string>
     <string name="screen_sessions_tab_error_text">Ошибка</string>
-
-    <!--  Create/Edit no sessions period  -->
-    <string name="screen_no_sessions_period_edit_title">Новый период</string>
-    <string name="screen_no_sessions_period_edit_description">Задайте период, который Вы хотите оставить без сеансов (например, это может быть незапланированный выходной или какое-либо важное дело в течение дня, не связанное с сеансами - в обоих случаях, Вам нужно отметить это время как нерабочее, это поможет планировщику сеансов лучше подбирать подходящее время).</string>
-
-    <!--  Scheduler  -->
+    <!--    Scheduler  -->
     <string name="screen_scheduler_show_free_time_blocks">показать свободное время</string>
     <string name="screen_scheduler_add_button_content_description">Добавить сеанс или время, в которое сеансов быть не должно</string>
-
-    <!--  Settings  -->
-    <!--  All  -->
+    <!--    Settings  -->
+    <!--        All  -->
     <string name="screen_settings_all_backup_header">Резервное копирование базы данных</string>
     <string name="screen_settings_all_backup_create">Создание резервных копий</string>
     <string name="screen_settings_all_backup_create_description">Вы можете сохранить базу данных в файл. После переустановки программы на другое устройство можно восстановить базу данных из сохраненного файла. Доступно как ручное, так и автоматическое сохранение копий.</string>
@@ -161,12 +165,10 @@
     <string name="screen_settings_all_scheduler_header">Планировщик сеансов</string>
     <string name="screen_settings_all_scheduler">@string/common_scheduler_parameters</string>
     <string name="screen_settings_all_scheduler_description">@string/common_scheduler_settings_description</string>
-
-    <!--  Scheduler settings: working days  -->
+    <!--        Scheduler settings: working days  -->
     <string name="screen_settings_workings_days_toolbar_title">График работы по дням недели</string>
     <string name="screen_settings_workings_days_time_period_error">Конец периода должен быть больше его начала.</string>
-
-    <!--  Scheduler settings: session durations and pause after session  -->
+    <!--        Scheduler settings: session durations and pause after session  -->
     <string name="screen_settings_scheduler_toolbar_title">@string/common_scheduler_parameters</string>
     <string name="screen_settings_scheduler_intro">@string/common_scheduler_settings_description</string>
     <string name="screen_settings_scheduler_working_hours_header">График работы по дням недели</string>

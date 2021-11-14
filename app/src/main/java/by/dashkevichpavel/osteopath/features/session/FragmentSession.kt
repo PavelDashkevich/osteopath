@@ -1,7 +1,6 @@
 package by.dashkevichpavel.osteopath.features.session
 
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
@@ -230,7 +229,12 @@ class FragmentSession :
     }
 
     private fun onChangeSession(session: Session) {
-        requireActivity().title = if (session.id == 0L) getString(R.string.header_new_session) else ""
+        requireActivity().title = getString(
+            if (session.id == 0L)
+                R.string.screen_session_title_new
+            else
+                R.string.screen_session_title
+        )
         binding.etPlan.text = session.plan.toEditable()
         binding.etBodyConditions.text = session.bodyCondition.toEditable()
         binding.smDone.isChecked = session.isDone

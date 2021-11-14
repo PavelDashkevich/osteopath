@@ -10,7 +10,6 @@ import by.dashkevichpavel.osteopath.R
 import by.dashkevichpavel.osteopath.databinding.FragmentNoSessionPeriodBinding
 import by.dashkevichpavel.osteopath.features.pickers.FragmentDatePicker
 import by.dashkevichpavel.osteopath.features.pickers.FragmentTimePicker
-import by.dashkevichpavel.osteopath.features.session.FragmentSession
 import by.dashkevichpavel.osteopath.helpers.formatDateAsEditable
 import by.dashkevichpavel.osteopath.helpers.formatTimeAsEditable
 import by.dashkevichpavel.osteopath.helpers.itemdeletion.ItemDeletionFragmentHelper
@@ -160,11 +159,12 @@ class FragmentNoSessionPeriod :
     }
 
     private fun onChangeNoSessionsPeriod(noSessionsPeriod: NoSessionsPeriod) {
-        requireActivity().title =
+        requireActivity().title = getString(
             if (noSessionsPeriod.id == 0L)
-                getString(R.string.screen_no_sessions_period_edit_title)
+                R.string.screen_no_sessions_period_title_new
             else
-                ""
+                R.string.screen_no_sessions_period_title
+        )
     }
 
     private fun onChangeNoSessionsPeriodId(noSessionsPeriodId: Long) {
