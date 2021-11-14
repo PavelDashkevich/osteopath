@@ -27,6 +27,7 @@ class CustomerProfileViewModel(
     private val repository: LocalDbRepository
 ) : ViewModel(),
     SavableInterface {
+    private var dataInitialized = false
     val customer = MutableLiveData<Customer?>(null)
     private var initialCustomer: Customer = Customer()
     val disfunctions = MutableLiveData<MutableList<Disfunction>>(mutableListOf())
@@ -56,14 +57,17 @@ class CustomerProfileViewModel(
 
     // region general
     fun selectCustomer(customerId: Long) {
+        if (dataInitialized) return
+
         if (customerId == 0L) {
             setCustomer(Customer())
-            return
+        } else {
+            if (customer.value == null) {
+                loadCustomerData(customerId)
+            }
         }
 
-        if (customer.value == null) {
-            loadCustomerData(customerId)
-        }
+        dataInitialized = true
     }
 
     fun swipe(position: Int) {

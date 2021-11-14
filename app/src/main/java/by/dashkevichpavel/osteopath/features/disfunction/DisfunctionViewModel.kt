@@ -16,6 +16,7 @@ import kotlinx.coroutines.launch
 class DisfunctionViewModel(
     private val repository: LocalDbRepository
 ) : ViewModel(), SavableInterface {
+    private var dataInitialized = false
     val disfunction = MutableLiveData<Disfunction?>(null)
     private var initialDisfunction: Disfunction = Disfunction()
     private var jobSave: Job? = null
@@ -24,14 +25,17 @@ class DisfunctionViewModel(
     val disfunctionDeletionHandler = ItemDeletionEventsHandler(this::onDisfunctionDeleteConfirmation)
 
     fun selectDisfunction(customerId: Long, disfunctionId: Long) {
+        if (dataInitialized) return
+
         if (disfunctionId == 0L) {
             setDisfunction(Disfunction(customerId = customerId))
-            return
+        } else {
+            if (disfunction.value == null) {
+                loadDisfunctionData(disfunctionId)
+            }
         }
 
-        if (disfunction.value == null) {
-            loadDisfunctionData(disfunctionId)
-        }
+        dataInitialized = true
     }
 
     fun setDescription(description: String) {
