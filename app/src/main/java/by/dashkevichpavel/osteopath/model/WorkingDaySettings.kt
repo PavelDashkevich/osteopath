@@ -1,4 +1,4 @@
-package by.dashkevichpavel.osteopath.repositories.settings.scheduler
+package by.dashkevichpavel.osteopath.model
 
 import by.dashkevichpavel.osteopath.helpers.recyclerviewutils.DiffUtilComparable
 

@@ -15,7 +15,7 @@ import by.dashkevichpavel.osteopath.features.pickers.FragmentTimePicker
 import by.dashkevichpavel.osteopath.helpers.recyclerviewutils.SpaceItemDecoration
 import by.dashkevichpavel.osteopath.helpers.setupToolbar
 import by.dashkevichpavel.osteopath.repositories.settings.scheduler.WorkingDayItemClickListener
-import by.dashkevichpavel.osteopath.repositories.settings.scheduler.WorkingDaySettings
+import by.dashkevichpavel.osteopath.model.WorkingDaySettings
 import by.dashkevichpavel.osteopath.repositories.settings.scheduler.WorkingDaySettingsTimeField
 import by.dashkevichpavel.osteopath.viewmodel.OsteoViewModelFactory
 import com.google.android.material.snackbar.Snackbar

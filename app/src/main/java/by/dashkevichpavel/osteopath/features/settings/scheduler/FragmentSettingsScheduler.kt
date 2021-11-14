@@ -7,19 +7,14 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import by.dashkevichpavel.osteopath.BackClickHandler
-import by.dashkevichpavel.osteopath.BackClickListener
 import by.dashkevichpavel.osteopath.R
 import by.dashkevichpavel.osteopath.databinding.FragmentSettingsSchedulerBinding
 import by.dashkevichpavel.osteopath.features.pickers.FragmentTimePicker
 import by.dashkevichpavel.osteopath.helpers.*
 import by.dashkevichpavel.osteopath.helpers.datetime.DateTimeUtil
 import by.dashkevichpavel.osteopath.helpers.recyclerviewutils.SpaceItemDecoration
-import by.dashkevichpavel.osteopath.repositories.settings.scheduler.WorkingDaySettings
-import by.dashkevichpavel.osteopath.repositories.settings.scheduler.WorkingDaySettingsTimeField
-import by.dashkevichpavel.osteopath.repositories.settings.scheduler.WorkingDayItemClickListener
+import by.dashkevichpavel.osteopath.model.WorkingDaySettings
 import by.dashkevichpavel.osteopath.viewmodel.OsteoViewModelFactory
-import java.util.*
 
 class FragmentSettingsScheduler :
     Fragment(R.layout.fragment_settings_scheduler),
@@ -127,7 +122,7 @@ class FragmentSettingsScheduler :
             var workingHours = ""
             workingDays.forEach { daySettings ->
                 workingHours += (if (workingHours.isNotBlank()) "\n" else "") +
-                    daySettings.dayOfWeek.toNameOfWeekDay().toCapitalized() + ": " +
+                    DateTimeUtil.getFullNameOfDayOfWeek(daySettings.dayOfWeek) + ": " +
                         DateTimeUtil.durationToTime(daySettings.dayStartInMillis).formatTimeAsString() + "-" +
                         DateTimeUtil.durationToTime(daySettings.dayEndInMillis).formatTimeAsString() +
                         if (daySettings.restIncluded)

@@ -4,7 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import by.dashkevichpavel.osteopath.repositories.settings.scheduler.SchedulerSettingsRepository
-import by.dashkevichpavel.osteopath.repositories.settings.scheduler.WorkingDaySettings
+import by.dashkevichpavel.osteopath.model.WorkingDaySettings
 import by.dashkevichpavel.osteopath.repositories.settings.scheduler.WorkingDaySettingsTimeField
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch

@@ -1,27 +1,30 @@
-package by.dashkevichpavel.osteopath.features.sessions
+package by.dashkevichpavel.osteopath.features.sessions.schedule.timeline
 
 import android.view.View
 import androidx.core.view.isVisible
-import androidx.recyclerview.widget.RecyclerView
 import by.dashkevichpavel.osteopath.databinding.ListitemSessionFullBinding
-import by.dashkevichpavel.osteopath.features.customerprofile.sessions.SessionItemClickListener
+import by.dashkevichpavel.osteopath.features.sessions.TimeIntervalItemAction
+import by.dashkevichpavel.osteopath.features.sessions.TimeIntervalItemActionListener
 import by.dashkevichpavel.osteopath.helpers.contacttocustomer.ContactToCustomerAction
-import by.dashkevichpavel.osteopath.helpers.contacttocustomer.ContactToCustomerActionHandler
 import by.dashkevichpavel.osteopath.helpers.formatDateAsDayOfMonthString
 import by.dashkevichpavel.osteopath.helpers.formatDateAsMonthShortString
 import by.dashkevichpavel.osteopath.helpers.formatTimeAsString
 import by.dashkevichpavel.osteopath.helpers.recyclerviewutils.SessionViewHolderUtil
 import by.dashkevichpavel.osteopath.helpers.toStringDelimitedByNewLines
-import by.dashkevichpavel.osteopath.model.SessionAndCustomer
 
-class SessionFullItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+class TimeIntervalItemSessionViewHolder(
+    itemView: View,
+    private val timeIntervalItemActionListener: TimeIntervalItemActionListener
+) :
+    TimeIntervalItemViewHolder(itemView) {
     private val binding = ListitemSessionFullBinding.bind(itemView)
 
-    fun bind(
-        sessionAndCustomer: SessionAndCustomer,
-        sessionItemClickListener: SessionItemClickListener,
-        contactToCustomerActionHandler: ContactToCustomerActionHandler
-    ) {
+    override fun bind(timeIntervalItem: TimeIntervalItem) {
+        if (timeIntervalItem !is TimeIntervalItemSession) return
+
+        val sessionAndCustomer =
+            (timeIntervalItem.timeInterval as TimeInterval.SessionTime).sessionAndCustomer
+
         binding.tvDayOfMonth.text =
             sessionAndCustomer.session.dateTime.formatDateAsDayOfMonthString()
         binding.tvMonthShort.text =
@@ -46,24 +49,32 @@ class SessionFullItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemVi
 
         if (sessionAndCustomer.customer.phone.isNotBlank()) {
             binding.ibCall.setOnClickListener {
-                contactToCustomerActionHandler.contactToCustomer(
-                    ContactToCustomerAction.Call.Phone(sessionAndCustomer.customer.phone)
+                timeIntervalItemActionListener.onTimeIntervalItemClick(
+                    TimeIntervalItemAction.SessionAction.ContactToCustomer(
+                        ContactToCustomerAction.Call.Phone(sessionAndCustomer.customer.phone)
+                    )
                 )
             }
         }
 
         if (sessionAndCustomer.customer.instagram.isNotBlank()) {
             binding.ibMessage.setOnClickListener {
-                contactToCustomerActionHandler.contactToCustomer(
-                    ContactToCustomerAction.Message.Instagram(sessionAndCustomer.customer.instagram)
+                timeIntervalItemActionListener.onTimeIntervalItemClick(
+                    TimeIntervalItemAction.SessionAction.ContactToCustomer(
+                        ContactToCustomerAction.Message.Instagram(
+                            sessionAndCustomer.customer.instagram
+                        )
+                    )
                 )
             }
         }
 
         binding.cvCard.setOnClickListener {
-            sessionItemClickListener.onSessionItemClick(
-                customerId = sessionAndCustomer.customer.id,
-                sessionId = sessionAndCustomer.session.id
+            timeIntervalItemActionListener.onTimeIntervalItemClick(
+                TimeIntervalItemAction.SessionAction.Open(
+                    sessionAndCustomer.customer.id,
+                    sessionAndCustomer.session.id
+                )
             )
         }
     }

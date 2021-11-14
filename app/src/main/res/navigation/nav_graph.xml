@@ -124,5 +124,14 @@
         <action
             android:id="@+id/action_fragmentSessions_to_fragmentSession"
             app:destination="@id/fragmentSession" />
+        <action
+            android:id="@+id/action_fragmentSessions_to_fragmentNoSessionsPeriod"
+            app:destination="@id/fragmentNoSessionsPeriod" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragmentNoSessionsPeriod"
+        android:name="by.dashkevichpavel.osteopath.features.nosessionperiod.FragmentNoSessionPeriod"
+        android:label="FragmentNoSessionPeriod"
+        tools:layout="@layout/fragment_no_session_period">
     </fragment>
 </navigation>

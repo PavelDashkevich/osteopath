@@ -8,10 +8,12 @@ import by.dashkevichpavel.osteopath.features.customerlist.CustomerListViewModel
 import by.dashkevichpavel.osteopath.features.customerlistfilter.CustomerListFilterViewModel
 import by.dashkevichpavel.osteopath.features.customerprofile.CustomerProfileViewModel
 import by.dashkevichpavel.osteopath.features.disfunction.DisfunctionViewModel
+import by.dashkevichpavel.osteopath.features.nosessionperiod.NoSessionPeriodViewModel
 import by.dashkevichpavel.osteopath.features.selectdisfunctions.SelectDisfunctionsViewModel
 import by.dashkevichpavel.osteopath.features.session.SessionViewModel
 import by.dashkevichpavel.osteopath.features.sessions.SessionsViewModel
 import by.dashkevichpavel.osteopath.features.sessions.recent.SessionsRecentViewModel
+import by.dashkevichpavel.osteopath.features.sessions.schedule.SessionsScheduleViewModel
 import by.dashkevichpavel.osteopath.features.sessions.upcoming.SessionsUpcomingViewModel
 import by.dashkevichpavel.osteopath.features.settings.backup.create.BackupCreateViewModel
 import by.dashkevichpavel.osteopath.features.settings.backup.restore.BackupRestoreViewModel
@@ -57,6 +59,13 @@ class OsteoViewModelFactory(
                 SessionsUpcomingViewModel(OsteoDbRepositorySingleton.getInstance(applicationContext))
             SessionsRecentViewModel::class.java ->
                 SessionsRecentViewModel(OsteoDbRepositorySingleton.getInstance(applicationContext))
+            SessionsScheduleViewModel::class.java ->
+                SessionsScheduleViewModel(
+                    OsteoDbRepositorySingleton.getInstance(applicationContext),
+                    SchedulerSettingsRepositoryImpl(applicationContext)
+                )
+            NoSessionPeriodViewModel::class.java ->
+                NoSessionPeriodViewModel(OsteoDbRepositorySingleton.getInstance(applicationContext))
             else ->
                 throw IllegalArgumentException("$modelClass is not registered ViewModel")
         } as T

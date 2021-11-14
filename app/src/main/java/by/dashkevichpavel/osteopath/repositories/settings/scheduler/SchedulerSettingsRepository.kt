@@ -1,5 +1,7 @@
 package by.dashkevichpavel.osteopath.repositories.settings.scheduler
 
+import by.dashkevichpavel.osteopath.model.WorkingDaySettings
+
 interface SchedulerSettingsRepository {
     fun getPauseAfterSessionInMillis(): Long
     fun savePauseAfterSession(millis: Long)

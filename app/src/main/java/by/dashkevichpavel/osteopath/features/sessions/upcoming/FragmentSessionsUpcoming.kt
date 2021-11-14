@@ -1,7 +1,6 @@
 package by.dashkevichpavel.osteopath.features.sessions.upcoming
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.View
 import androidx.core.view.isVisible
@@ -9,22 +8,21 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import by.dashkevichpavel.osteopath.R
 import by.dashkevichpavel.osteopath.databinding.FragmentSessionsUpcomingBinding
-import by.dashkevichpavel.osteopath.features.customerprofile.sessions.SessionItemClickListener
+import by.dashkevichpavel.osteopath.features.sessions.TimeIntervalItemActionListener
 import by.dashkevichpavel.osteopath.features.session.FragmentSession
-import by.dashkevichpavel.osteopath.features.sessions.SessionFullItemAdapter
+import by.dashkevichpavel.osteopath.features.sessions.TimeIntervalItemAction
+import by.dashkevichpavel.osteopath.features.sessions.schedule.timeline.TimeIntervalItemAdapter
+import by.dashkevichpavel.osteopath.features.sessions.schedule.timeline.TimeIntervalItemSession
 import by.dashkevichpavel.osteopath.helpers.actionCallPhoneNumber
 import by.dashkevichpavel.osteopath.helpers.actionOpenInstagram
 import by.dashkevichpavel.osteopath.helpers.contacttocustomer.ContactToCustomerAction
-import by.dashkevichpavel.osteopath.helpers.contacttocustomer.ContactToCustomerActionHandler
 import by.dashkevichpavel.osteopath.helpers.recyclerviewutils.SpaceItemDecoration
 import by.dashkevichpavel.osteopath.helpers.safelyNavigateTo
-import by.dashkevichpavel.osteopath.model.SessionAndCustomer
 import by.dashkevichpavel.osteopath.viewmodel.OsteoViewModelFactory
 
 class FragmentSessionsUpcoming :
     Fragment(R.layout.fragment_sessions_upcoming),
-    ContactToCustomerActionHandler,
-    SessionItemClickListener {
+    TimeIntervalItemActionListener {
     private val viewModel: SessionsUpcomingViewModel by viewModels(
         factoryProducer = { OsteoViewModelFactory(requireContext().applicationContext) }
     )
@@ -32,10 +30,7 @@ class FragmentSessionsUpcoming :
     private var fragmentSessionsUpcomingBinding: FragmentSessionsUpcomingBinding? = null
     private val binding get() = fragmentSessionsUpcomingBinding!!
 
-    private val adapter = SessionFullItemAdapter(
-        this,
-        this
-    )
+    private val adapter = TimeIntervalItemAdapter(this)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         setupViews(view)
@@ -79,7 +74,7 @@ class FragmentSessionsUpcoming :
         binding.fabAddSession.setOnClickListener { openSessionScreen(0L, 0L) }
     }
 
-    private fun updateSessionsList(newSessions: List<SessionAndCustomer>) {
+    private fun updateSessionsList(newSessions: List<TimeIntervalItemSession>) {
         adapter.setItems(newSessions)
         setEmptyScreenHintVisibility(newSessions.isEmpty())
     }
@@ -96,14 +91,21 @@ class FragmentSessionsUpcoming :
         )
     }
 
-    override fun contactToCustomer(action: ContactToCustomerAction) {
-        when (action) {
-            is ContactToCustomerAction.Call.Phone -> actionCallPhoneNumber(action.phoneNumber)
-            is ContactToCustomerAction.Message.Instagram -> actionOpenInstagram(action.userId)
+    override fun onTimeIntervalItemClick(timeIntervalItemAction: TimeIntervalItemAction) {
+        when (timeIntervalItemAction) {
+            is TimeIntervalItemAction.SessionAction.ContactToCustomer ->
+                when (timeIntervalItemAction.contactToCustomerAction) {
+                    is ContactToCustomerAction.Call.Phone ->
+                        actionCallPhoneNumber(timeIntervalItemAction.contactToCustomerAction.phoneNumber)
+                    is ContactToCustomerAction.Message.Instagram ->
+                        actionOpenInstagram(timeIntervalItemAction.contactToCustomerAction.userId)
+                }
+            is TimeIntervalItemAction.SessionAction.Open ->
+                openSessionScreen(
+                    timeIntervalItemAction.customerId,
+                    timeIntervalItemAction.sessionId
+                )
+            else -> { }
         }
-    }
-
-    override fun onSessionItemClick(customerId: Long, sessionId: Long) {
-        openSessionScreen(customerId, sessionId)
     }
 }

@@ -134,6 +134,7 @@
     <string name="customer_delete_dialog_button_neutral">@string/dialog_button_archive</string>
     <string name="disfunction_delete_dialog_message">Вы действительно хотите удалить эту дисфункцию? Она будет также удалена из сеансов. Удалить?</string>
     <string name="session_delete_dialog_message">Вы действительно хотите удалить этот сеанс?</string>
+    <string name="no_sessions_period_delete_dialog_message">Вы действительно хотите удалить этот период?</string>
 
     <!--  Screens  -->
     <!--  Sessions  -->
@@ -141,6 +142,14 @@
     <string name="screen_sessions_tab_recent_schedule">Расписание</string>
     <string name="screen_sessions_tab_recent_text">Недавние</string>
     <string name="screen_sessions_tab_error_text">Ошибка</string>
+
+    <!--  Create/Edit no sessions period  -->
+    <string name="screen_no_sessions_period_edit_title">Новый период</string>
+    <string name="screen_no_sessions_period_edit_description">Задайте период, который Вы хотите оставить без сеансов (например, это может быть незапланированный выходной или какое-либо важное дело в течение дня, не связанное с сеансами - в обоих случаях, Вам нужно отметить это время как нерабочее, это поможет планировщику сеансов лучше подбирать подходящее время).</string>
+
+    <!--  Scheduler  -->
+    <string name="screen_scheduler_show_free_time_blocks">показать свободное время</string>
+    <string name="screen_scheduler_add_button_content_description">Добавить сеанс или время, в которое сеансов быть не должно</string>
 
     <!--  Settings  -->
     <!--  All  -->
@@ -178,4 +187,19 @@
     <string name="list_item_working_day_settings_rest_included">@string/common_rest_included</string>
     <string name="list_item_working_day_settings_period_start">@string/common_time_start</string>
     <string name="list_item_working_day_settings_period_end">@string/common_time_end</string>
+
+    <!--  Scheduler time line  -->
+    <string name="list_item_time_interval_no_sessions_auto_day_start">Начало дня</string>
+    <string name="list_item_time_interval_no_sessions_auto_day_end">Конец дня</string>
+    <string name="list_item_time_interval_no_sessions_auto_day_rest">Перерыв</string>
+    <string name="list_item_time_interval_no_sessions_auto_day_off">Выходной день</string>
+    <string name="list_item_time_interval_no_sessions_period">Сеансы не планируются.\nЗарезервировано для других задач.</string>
+    <string name="list_item_time_interval_available_to_schedule">Запланировать время</string>
+    <string name="list_item_time_interval_add_session">на сеанс</string>
+    <string name="list_item_time_interval_add_no_session_period">на иные задачи</string>
+
+    <!--  Menus  -->
+    <!--  Scheduler  -->
+    <string name="scheduler_add_session">сеанс</string>
+    <string name="scheduler_add_no_sessions_period">время не для сеансов</string>
 </resources>

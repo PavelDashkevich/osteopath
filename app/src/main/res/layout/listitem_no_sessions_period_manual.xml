@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cvCard"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="8dp"
+    android:padding="4dp"
+    style="@style/CardView.Default">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <View
+            android:id="@+id/vField"
+            android:layout_width="64dp"
+            android:layout_height="0dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:background="?attr/colorPrimaryVariant"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tvDayOfMonth"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="@id/vField"
+            app:layout_constraintEnd_toEndOf="@id/vField"
+            app:layout_constraintTop_toTopOf="@id/vField"
+            tools:text="25"
+            android:textSize="32sp"
+            android:textStyle="bold"
+            android:gravity="center_horizontal"
+            android:textColor="?attr/colorOnSecondary"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tvMonthShort"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="@id/vField"
+            app:layout_constraintEnd_toEndOf="@id/vField"
+            app:layout_constraintTop_toBottomOf="@id/tvDayOfMonth"
+            tools:text="ОКТ"
+            android:gravity="center_horizontal"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginTop="-8dp"
+            android:textColor="?attr/colorOnSecondary"/>
+
+        <TextView
+            android:id="@+id/tvTimeStart"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            tools:text="10:00"
+            app:layout_constraintTop_toBottomOf="@id/tvMonthShort"
+            app:layout_constraintStart_toStartOf="@id/vField"
+            app:layout_constraintEnd_toEndOf="@id/vField"
+            android:gravity="center_horizontal"
+            android:paddingTop="8dp"
+            android:textColor="?attr/colorOnSecondary"/>
+
+        <TextView
+            android:id="@+id/tvTimeEnd"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            tools:text="11:30"
+            app:layout_constraintTop_toBottomOf="@id/tvTimeStart"
+            app:layout_constraintStart_toStartOf="@id/vField"
+            app:layout_constraintEnd_toEndOf="@id/vField"
+            android:gravity="center_horizontal"
+            android:paddingBottom="8dp"
+            android:textColor="?attr/colorOnSecondary"/>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/glVerticalEnd"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            app:layout_constraintGuide_end="8dp"/>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/glVerticalStart"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="72dp"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tvHeader"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toEndOf="@id/glVerticalStart"
+            app:layout_constraintEnd_toStartOf="@id/glVerticalEnd"
+            android:paddingTop="3dp"
+            android:text="@string/list_item_time_interval_no_sessions_period"
+            style="@style/TextAppearance.MaterialComponents.Body1" />
+
+        <View
+            android:id="@+id/vBottomHelper"
+            android:layout_width="0dp"
+            android:layout_height="8dp"
+            app:layout_constraintStart_toStartOf="@id/vField"
+            app:layout_constraintEnd_toEndOf="@id/vField"
+            app:layout_constraintTop_toBottomOf="@id/tvTimeEnd"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>

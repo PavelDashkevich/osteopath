@@ -18,6 +18,7 @@ import java.util.*
 class SessionViewModel(
     private val repository: LocalDbRepository
 ) : ViewModel(), SavableInterface {
+    private var dataInitialized = false
     val session: MutableLiveData<Session> = MutableLiveData(Session())
     private var initialSession: Session = Session()
     val disfunctions: MutableLiveData<MutableList<Disfunction>> =
@@ -32,15 +33,27 @@ class SessionViewModel(
     val sessionDeletionHandler = ItemDeletionEventsHandler(this::onSessionDeleteConfirmation)
     val customerName = MutableLiveData("")
 
-    fun selectSession(sessionId: Long, customerId: Long) {
+    fun selectSession(sessionId: Long, customerId: Long, defaultStartDateTime: Long,
+                      defaultEndDateTime: Long) {
+        if (dataInitialized) return
+
         if (sessionId == 0L) {
-            setSession(Session(customerId = customerId))
+            setSession(
+                Session(
+                    customerId = customerId,
+                    dateTime =
+                        if (defaultStartDateTime == 0L) Date() else Date(defaultStartDateTime),
+                    dateTimeEnd =
+                        if (defaultEndDateTime == 0L) Date() else Date(defaultEndDateTime)
+                )
+            )
         }
 
         viewModelScope.launch {
             if (sessionId != 0L) {
                 onSessionLoaded(
-                    repository.getSessionById(sessionId) ?: Session(customerId = customerId)
+                    repository.getSessionById(sessionId)
+                        ?: Session(customerId = customerId)
                 )
             }
 
@@ -50,6 +63,8 @@ class SessionViewModel(
 
             loadCustomerName(customerId)
         }
+
+        dataInitialized = true
     }
 
     fun deleteDisfunction(disfunctionId: Long) {
@@ -148,8 +163,6 @@ class SessionViewModel(
     private fun onSessionLoaded(newSession: Session) {
         setSession(newSession)
         disfunctions.value = getDisfunctionsFromSession()
-        sessionDateTime.value = newSession.dateTime
-        sessionDateTimeEnd.value = newSession.dateTimeEnd
         setAddDisfunctionActionAccessibility()
     }
 
@@ -165,6 +178,8 @@ class SessionViewModel(
             dateTime = Date(newSession.dateTime.time),
             dateTimeEnd = Date(newSession.dateTimeEnd.time),
         )
+        sessionDateTime.value = newSession.dateTime
+        sessionDateTimeEnd.value = newSession.dateTimeEnd
         initialSession.disfunctions.addAll(newSession.disfunctions)
         updateSessionId()
     }

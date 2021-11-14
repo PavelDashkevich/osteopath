@@ -19,8 +19,11 @@
     <color name="themeDarkSecondaryTextColor">#ffffff</color>
 
     <color name="divider">#FFAAAAAA</color>
+    <color name="disabled">#A6A6A6</color>
 
     <color name="customer_status_work">#FFFFEB3B</color>
     <color name="customer_status_work_done">#FF6DFC56</color>
     <color name="customer_status_no_help">#FFFF4E4E</color>
+
+    <color name="timeIntervalAvailableToSchedule">#7fe8c0</color>
 </resources>

@@ -2,7 +2,7 @@ package by.dashkevichpavel.osteopath.helpers.datetime
 
 import android.content.Context
 import by.dashkevichpavel.osteopath.R
-import by.dashkevichpavel.osteopath.helpers.setTimeComponents
+import by.dashkevichpavel.osteopath.helpers.*
 import java.util.*
 
 class DateTimeUtil {
@@ -40,5 +40,38 @@ class DateTimeUtil {
             val hourOfDay = (time % 60).toInt()
             return hourOfDay to minutes
         }
+
+        fun getFullNameOfDayOfWeek(dayOfWeek: Int): String =
+            getDateByDayOfWeek(dayOfWeek).formatAsDayOfWeekFullName().toCapitalized()
+
+        fun getShortNameOfDayOfWeek(dayOfWeek: Int): String =
+            getDateByDayOfWeek(dayOfWeek).formatAsDayOfWeekShortName().toCapitalized()
+
+        private fun getDateByDayOfWeek(dayOfWeek: Int): Date {
+            val index = dayOfWeek % 7
+            val c = Calendar.getInstance()
+            c.firstDayOfWeek = Calendar.MONDAY
+            c.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY + index)
+
+            return Date(c.timeInMillis)
+        }
+
+        fun formatAsMonthAndYearString(dateTimeInMillis: Long): String =
+            Date(dateTimeInMillis).formatDateAsMonthAndYearString().toCapitalized()
+
+        fun formatAsMonthShortString(dateTimeInMillis: Long): String =
+             android.text.format.DateFormat.format(
+                 "MMMM",
+                 Date(dateTimeInMillis)
+             ).toString().substring(0..2).uppercase()
+
+        fun formatAsDayOfMonthString(dateTimeInMillis: Long): String =
+            android.text.format.DateFormat.format("dd", Date(dateTimeInMillis)).toString()
+
+        fun formatTimeAsString(dateTimeInMillis: Long): String =
+            android.text.format.DateFormat.format(
+                "HH:mm",
+                Date(dateTimeInMillis)
+            ).toString()
     }
 }

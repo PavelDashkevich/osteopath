@@ -2,18 +2,16 @@ package by.dashkevichpavel.osteopath.features.customerprofile.sessions
 
 import android.annotation.SuppressLint
 import android.view.View
-import android.widget.TextView
-import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import by.dashkevichpavel.osteopath.R
 import by.dashkevichpavel.osteopath.databinding.ListitemSessionBinding
+import by.dashkevichpavel.osteopath.features.sessions.TimeIntervalItemAction
+import by.dashkevichpavel.osteopath.features.sessions.TimeIntervalItemActionListener
 import by.dashkevichpavel.osteopath.helpers.formatDateAsString
 import by.dashkevichpavel.osteopath.model.Session
-import by.dashkevichpavel.osteopath.helpers.formatDateTimeAsString
 import by.dashkevichpavel.osteopath.helpers.formatTimeAsString
 import by.dashkevichpavel.osteopath.helpers.recyclerviewutils.SessionViewHolderUtil
 import by.dashkevichpavel.osteopath.helpers.toStringDelimitedByNewLines
-import com.google.android.material.card.MaterialCardView
 
 class SessionItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val binding = ListitemSessionBinding.bind(itemView)
@@ -21,7 +19,7 @@ class SessionItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) 
     @SuppressLint("SetTextI18n")
     fun bind(
         session: Session,
-        sessionItemClickListener: SessionItemClickListener,
+        timeIntervalItemActionListener: TimeIntervalItemActionListener,
         sessionContextMenuClickListener: SessionContextMenuClickListener
     ) {
         binding.tvDate.text = session.dateTime.formatDateAsString()
@@ -46,7 +44,9 @@ class SessionItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) 
             binding.tvBodyCondition, session.bodyCondition)
 
         binding.cvCard.setOnClickListener {
-            sessionItemClickListener.onSessionItemClick(session.customerId, session.id)
+            timeIntervalItemActionListener.onTimeIntervalItemClick(
+                TimeIntervalItemAction.SessionAction.Open(session.customerId, session.id)
+            )
         }
 
         binding.ibContextActions.setOnClickListener {

@@ -46,6 +46,8 @@ class FragmentSession :
     var argSessionId: Long? = null
     var argCustomerId: Long? = null
     var argShowCustomer: Boolean = false
+    var argDefaultStartDateTime: Long? = null
+    var argDefaultEndDateTime: Long? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,8 +55,15 @@ class FragmentSession :
         argSessionId = arguments?.getLong(ARG_KEY_SESSION_ID)
         argCustomerId = arguments?.getLong(ARG_KEY_CUSTOMER_ID)
         argShowCustomer = arguments?.getBoolean(ARG_KEY_SHOW_CUSTOMER) ?: false
+        argDefaultStartDateTime = arguments?.getLong(ARG_KEY_DEFAULT_START_DATETIME)
+        argDefaultEndDateTime = arguments?.getLong(ARG_KEY_DEFAULT_END_DATETIME)
 
-        viewModel.selectSession(argSessionId ?: 0L, argCustomerId ?: 0L)
+        viewModel.selectSession(
+            argSessionId ?: 0L,
+            argCustomerId ?: 0L,
+            argDefaultStartDateTime ?: 0L,
+            argDefaultEndDateTime ?: 0L
+        )
 
         setHasOptionsMenu(true)
     }
@@ -99,6 +108,7 @@ class FragmentSession :
         setupToolbar(binding.lToolbar.tbActions)
         setupRecyclerView()
 
+        binding.tilCustomer.isVisible = argShowCustomer
         binding.etCustomer.isVisible = argShowCustomer
         binding.ibPickCustomer.isVisible = argShowCustomer
     }
@@ -265,19 +275,22 @@ class FragmentSession :
         private const val ARG_KEY_SESSION_ID = "ARG_KEY_SESSION_ID"
         private const val ARG_KEY_CUSTOMER_ID = "ARG_KEY_CUSTOMER_ID"
         private const val ARG_KEY_SHOW_CUSTOMER = "ARG_KEY_SHOW_CUSTOMER"
+        private const val ARG_KEY_DEFAULT_START_DATETIME = "ARG_KEY_DEFAULT_START_DATETIME"
+        private const val ARG_KEY_DEFAULT_END_DATETIME = "ARG_KEY_DEFAULT_END_DATETIME"
 
         private const val KEY_DATE_PICKER_SESSION_DATE = "KEY_DATE_PICKER_SESSION_DATE"
         private const val KEY_TIME_PICKER_SESSION_TIME_START = "KEY_TIME_PICKER_SESSION_TIME_START"
         private const val KEY_TIME_PICKER_SESSION_TIME_END = "KEY_TIME_PICKER_SESSION_TIME_END"
 
-        fun packBundle(customerId: Long, sessionId: Long, showCustomer: Boolean): Bundle {
-            val bundle = Bundle()
-            bundle.putLong(ARG_KEY_CUSTOMER_ID, customerId)
-            bundle.putLong(ARG_KEY_SESSION_ID, sessionId)
-            bundle.putBoolean(ARG_KEY_SHOW_CUSTOMER, showCustomer)
-
-            return bundle
-        }
+        fun packBundle(customerId: Long, sessionId: Long, showCustomer: Boolean,
+                       defaultStartDateTime: Long = 0L, defaultEndDateTime: Long = 0L): Bundle =
+            Bundle().apply {
+                putLong(ARG_KEY_CUSTOMER_ID, customerId)
+                putLong(ARG_KEY_SESSION_ID, sessionId)
+                putBoolean(ARG_KEY_SHOW_CUSTOMER, showCustomer)
+                putLong(ARG_KEY_DEFAULT_START_DATETIME, defaultStartDateTime)
+                putLong(ARG_KEY_DEFAULT_END_DATETIME, defaultEndDateTime)
+            }
     }
 }
 

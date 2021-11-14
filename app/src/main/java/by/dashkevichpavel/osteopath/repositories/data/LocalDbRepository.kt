@@ -226,6 +226,52 @@ class LocalDbRepository(applicationContext: Context) {
             sessionsWithDisfunctionsToSessionsAndCustomers(sessionsAndDisfunctions)
         }
 
+    suspend fun getEarliestSessionTime(): Long? = withContext(Dispatchers.IO) {
+        localDb.sessionDao.getEarliestSessionTime()
+    }
+
+    suspend fun getLatestSessionTime(): Long? = withContext(Dispatchers.IO) {
+        localDb.sessionDao.getLatestSessionTime()
+    }
+
+    suspend fun getSessionsByPeriod(fromDateTime: Long, toDateTime: Long): List<SessionAndCustomer> =
+        withContext(Dispatchers.IO) {
+            sessionsWithDisfunctionsToSessionsAndCustomers(
+                localDb.sessionDao.getSessionsByPeriod(fromDateTime, toDateTime)
+            )
+        }
+
+    fun getSessionsByPeriodAsFlow(fromDateTime: Long, toDateTime: Long): Flow<List<SessionAndCustomer>> =
+        localDb.sessionDao.getSessionsByPeriodAsFlow(fromDateTime, toDateTime).map {
+            sessionsAndDisfunctions ->
+            sessionsWithDisfunctionsToSessionsAndCustomers(sessionsAndDisfunctions)
+        }
+
+    suspend fun deleteNoSessionsPeriodById(noSessionsPeriodId: Long) = withContext(Dispatchers.IO) {
+        localDb.noSessionsPeriodDao.deleteById(noSessionsPeriodId)
+    }
+
+    suspend fun getNoSessionsPeriodById(periodId: Long): NoSessionsPeriod? =
+        withContext(Dispatchers.IO) {
+            val noSessionsPeriods = localDb.noSessionsPeriodDao.getById(periodId).map {
+                    noSessionsPeriodEntity: NoSessionsPeriodEntity ->
+                NoSessionsPeriod(noSessionsPeriodEntity)
+            }
+            return@withContext noSessionsPeriods.firstOrNull()
+        }
+
+    suspend fun insertNoSessionPeriod(noSessionsPeriod: NoSessionsPeriod): Long =
+        withContext(Dispatchers.IO) {
+            localDb.noSessionsPeriodDao.insert(NoSessionsPeriodEntity(noSessionsPeriod))
+        }
+
+    fun getNoSessionPeriodsByPeriodAsFlow(fromDateTime: Long, toDateTime: Long): Flow<List<NoSessionsPeriod>> =
+        localDb.noSessionsPeriodDao.getNoSessionPeriodsByPeriodAsFlow(fromDateTime, toDateTime).map {
+            noSessionsPeriodEntities ->
+            noSessionsPeriodEntities.map { noSessionsPeriodEntity ->
+                NoSessionsPeriod(noSessionsPeriodEntity)
+            }
+        }
 
     fun close() = LocalDb.close()
 }

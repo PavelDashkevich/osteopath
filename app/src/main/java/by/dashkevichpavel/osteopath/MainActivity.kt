@@ -2,17 +2,7 @@ package by.dashkevichpavel.osteopath
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import androidx.work.*
-import by.dashkevichpavel.osteopath.helpers.backups.BackupHelper
-import by.dashkevichpavel.osteopath.helpers.formatAsDateTimeStamp
-import by.dashkevichpavel.osteopath.helpers.formatAsDayOfWeekName
-import by.dashkevichpavel.osteopath.helpers.toCapitalized
-import by.dashkevichpavel.osteopath.helpers.toNameOfWeekDay
 import by.dashkevichpavel.osteopath.services.AutoBackupWorkManager
-import by.dashkevichpavel.osteopath.services.AutoBackupWorker
-import java.util.*
-import java.util.concurrent.TimeUnit
 
 class MainActivity : AppCompatActivity(R.layout.activity_main), BackClickHandler {
     private val backClickListeners = mutableListOf<BackClickListener?>()

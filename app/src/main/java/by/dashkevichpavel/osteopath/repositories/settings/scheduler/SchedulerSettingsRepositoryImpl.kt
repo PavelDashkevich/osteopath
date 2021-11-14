@@ -3,8 +3,7 @@ package by.dashkevichpavel.osteopath.repositories.settings.scheduler
 import android.content.Context
 import android.content.SharedPreferences
 import by.dashkevichpavel.osteopath.helpers.datetime.DateTimeUtil
-import by.dashkevichpavel.osteopath.helpers.setTimeComponents
-import java.util.*
+import by.dashkevichpavel.osteopath.model.WorkingDaySettings
 
 class SchedulerSettingsRepositoryImpl(context: Context) : SchedulerSettingsRepository {
     private val sharedPrefs: SharedPreferences = context.getSharedPreferences(

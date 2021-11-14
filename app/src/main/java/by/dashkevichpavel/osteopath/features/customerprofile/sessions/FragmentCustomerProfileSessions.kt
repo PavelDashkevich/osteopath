@@ -1,13 +1,11 @@
 package by.dashkevichpavel.osteopath.features.customerprofile.sessions
 
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import androidx.appcompat.widget.PopupMenu
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import by.dashkevichpavel.osteopath.R
 import by.dashkevichpavel.osteopath.databinding.FragmentCustomerProfileSessionsBinding
@@ -15,14 +13,15 @@ import by.dashkevichpavel.osteopath.helpers.recyclerviewutils.SpaceItemDecoratio
 import by.dashkevichpavel.osteopath.model.Session
 import by.dashkevichpavel.osteopath.features.customerprofile.CustomerProfileViewModel
 import by.dashkevichpavel.osteopath.features.session.FragmentSession
+import by.dashkevichpavel.osteopath.features.sessions.TimeIntervalItemAction
+import by.dashkevichpavel.osteopath.features.sessions.TimeIntervalItemActionListener
 import by.dashkevichpavel.osteopath.helpers.itemdeletion.ItemDeletionFragmentHelper
 import by.dashkevichpavel.osteopath.helpers.safelyNavigateTo
 import by.dashkevichpavel.osteopath.viewmodel.OsteoViewModelFactory
-import java.lang.IllegalArgumentException
 
 class FragmentCustomerProfileSessions :
     Fragment(R.layout.fragment_customer_profile_sessions),
-    SessionItemClickListener,
+    TimeIntervalItemActionListener,
     SessionContextMenuClickListener {
     private val viewModel: CustomerProfileViewModel by viewModels(
         ownerProducer = { requireParentFragment() },
@@ -121,17 +120,15 @@ class FragmentCustomerProfileSessions :
         return true
     }
 
-    override fun onSessionItemClick(customerId: Long, sessionId: Long) {
-        openSessionScreen(customerId, sessionId)
+    override fun onTimeIntervalItemClick(timeIntervalItemAction: TimeIntervalItemAction) {
+        if (timeIntervalItemAction is TimeIntervalItemAction.SessionAction.Open) {
+            openSessionScreen(timeIntervalItemAction.customerId, timeIntervalItemAction.sessionId)
+        }
     }
 
     override fun onSessionContextMenuClick(session: Session, anchorView: View) {
         showSessionContextMenu(session, anchorView)
     }
-}
-
-interface SessionItemClickListener {
-    fun onSessionItemClick(customerId: Long, sessionId: Long)
 }
 
 interface SessionContextMenuClickListener {

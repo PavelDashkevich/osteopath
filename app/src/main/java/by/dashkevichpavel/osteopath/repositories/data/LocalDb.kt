@@ -11,20 +11,18 @@ import by.dashkevichpavel.osteopath.helpers.backups.BackupHelper
 import by.dashkevichpavel.osteopath.helpers.operationresult.OperationResult
 import by.dashkevichpavel.osteopath.repositories.data.dao.*
 import by.dashkevichpavel.osteopath.repositories.data.entity.*
-import by.dashkevichpavel.osteopath.repositories.data.migrations.Migration_2_3
-import by.dashkevichpavel.osteopath.repositories.data.migrations.Migration_3_4
-import by.dashkevichpavel.osteopath.repositories.data.migrations.Migration_4_5
-import by.dashkevichpavel.osteopath.repositories.data.migrations.Migration_5_6
+import by.dashkevichpavel.osteopath.repositories.data.migrations.*
 
 @Database(
     entities = [
         AttachmentEntity::class,
         CustomerEntity::class,
         DisfunctionEntity::class,
+        NoSessionsPeriodEntity::class,
         SessionEntity::class,
         SessionDisfunctionsEntity::class
     ],
-    version = 6,
+    version = 7,
     exportSchema = true
 )
 @TypeConverters(DbTypeConverters::class)
@@ -32,6 +30,7 @@ abstract class LocalDb : RoomDatabase() {
     abstract val attachmentDao: AttachmentDao
     abstract val customerDao: CustomerDao
     abstract val disfunctionDao: DisfunctionDao
+    abstract val noSessionsPeriodDao: NoSessionsPeriodDao
     abstract val sessionDao: SessionDao
     abstract val sessionDisfunctionDao: SessionDisfunctionDao
     abstract val utilDao: UtilDao
@@ -51,7 +50,8 @@ abstract class LocalDb : RoomDatabase() {
                         Migration_2_3,
                         Migration_3_4,
                         Migration_4_5,
-                        Migration_5_6
+                        Migration_5_6,
+                        Migration_6_7
                     )
                     .setJournalMode(JournalMode.TRUNCATE)
                     .build()

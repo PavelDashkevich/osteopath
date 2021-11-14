@@ -56,4 +56,26 @@ interface SessionDao {
         SET ${DbContract.Sessions.COLUMN_NAME_IS_DONE} = :isDone 
         WHERE ${DbContract.Sessions.COLUMN_NAME_ID} == :sessionId""")
     suspend fun updateIsDoneById(sessionId: Long, isDone: Boolean)
+
+    @Query("""SELECT MIN(${DbContract.Sessions.COLUMN_NAME_DATE_TIME}) 
+        FROM ${DbContract.Sessions.TABLE_NAME}""")
+    suspend fun getEarliestSessionTime(): Long?
+
+    @Query("""SELECT MAX(${DbContract.Sessions.COLUMN_NAME_DATE_TIME}) 
+        FROM ${DbContract.Sessions.TABLE_NAME}""")
+    suspend fun getLatestSessionTime(): Long?
+
+    @Transaction
+    @Query("""SELECT * FROM ${DbContract.Sessions.TABLE_NAME} 
+        WHERE ${DbContract.Sessions.COLUMN_NAME_DATE_TIME} >= :fromDateTime
+        AND ${DbContract.Sessions.COLUMN_NAME_DATE_TIME} <= :toDateTime
+        ORDER BY ${DbContract.Sessions.COLUMN_NAME_DATE_TIME} ASC""")
+    suspend fun getSessionsByPeriod(fromDateTime: Long, toDateTime: Long): List<SessionAndDisfunctions>
+
+    @Transaction
+    @Query("""SELECT * FROM ${DbContract.Sessions.TABLE_NAME} 
+        WHERE ${DbContract.Sessions.COLUMN_NAME_DATE_TIME} >= :fromDateTime
+        AND ${DbContract.Sessions.COLUMN_NAME_DATE_TIME} <= :toDateTime
+        ORDER BY ${DbContract.Sessions.COLUMN_NAME_DATE_TIME} ASC""")
+    fun getSessionsByPeriodAsFlow(fromDateTime: Long, toDateTime: Long): Flow<List<SessionAndDisfunctions>>
 }

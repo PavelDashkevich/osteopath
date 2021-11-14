@@ -56,4 +56,12 @@ object DbContract {
         const val COLUMN_NAME_PATH = "path"
         const val COLUMN_NAME_MIME_TYPE = "mime_type"
     }
+
+    object NoSessionPeriods {
+        const val TABLE_NAME = "no_session_periods"
+
+        const val COLUMN_NAME_ID = BaseColumns._ID
+        const val COLUMN_NAME_DATE_TIME_START = "date_time_start"
+        const val COLUMN_NAME_DATE_TIME_END = "date_time_end"
+    }
 }

@@ -15,6 +15,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import by.dashkevichpavel.osteopath.R
+import by.dashkevichpavel.osteopath.helpers.datetime.DateTimeUtil
 import by.dashkevichpavel.osteopath.model.Attachment
 import com.bumptech.glide.RequestBuilder
 import com.bumptech.glide.RequestManager
@@ -32,19 +33,21 @@ fun Date.formatTimeAsString(): String =
 fun Date.formatDateTimeAsString(): String =
     android.text.format.DateFormat.format("dd.MM.yyyy HH:mm", this).toString()
 
-fun Date.formatDateAsDayOfMonthString(): String =
-    android.text.format.DateFormat.format("dd", this).toString()
+fun Date.formatDateAsDayOfMonthString(): String = DateTimeUtil.formatAsDayOfMonthString(this.time)
 
-fun Date.formatDateAsMonthShortString(): String =
-    android.text.format.DateFormat.format("MMMM", this).toString()
-        .substring(0..2)
-        .uppercase()
+fun Date.formatDateAsMonthShortString(): String = DateTimeUtil.formatAsMonthShortString(this.time)
+
+fun Date.formatDateAsMonthAndYearString(): String =
+    android.text.format.DateFormat.format("LLLL, yyyy", this).toString()
 
 fun Date.formatAsDateTimeStamp(): String =
     android.text.format.DateFormat.format("yyyy_MM_dd_HH_mm", this).toString()
 
-fun Date.formatAsDayOfWeekName(): String =
+fun Date.formatAsDayOfWeekFullName(): String =
     android.text.format.DateFormat.format("EEEE", this).toString()
+
+fun Date.formatAsDayOfWeekShortName(): String =
+    android.text.format.DateFormat.format("EE", this).toString()
 
 fun Date.formatDateAsEditable(): Editable =
     this.formatDateAsString().toEditable()
@@ -178,15 +181,6 @@ fun List<String>.toStringDelimitedByNewLines(): String {
         }
     }
     return result
-}
-
-fun Int.toNameOfWeekDay(): String {
-    val index = this % 7
-    val c = Calendar.getInstance()
-    c.firstDayOfWeek = Calendar.MONDAY
-    c.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY + index)
-
-    return Date(c.timeInMillis).formatAsDayOfWeekName()
 }
 
 fun String.toCapitalized(): String =

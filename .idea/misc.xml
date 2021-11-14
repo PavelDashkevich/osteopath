@@ -9,6 +9,8 @@
         <entry key="..\:/AndroidDev/Projects/Osteopath/app/src/main/res/drawable/button_shape_circle_transparent.xml" value="0.3375" />
         <entry key="..\:/AndroidDev/Projects/Osteopath/app/src/main/res/drawable/ic_baseline_today_24.xml" value="0.3203125" />
         <entry key="..\:/AndroidDev/Projects/Osteopath/app/src/main/res/drawable/ic_launcher_background.xml" value="0.3802083333333333" />
+        <entry key="..\:/AndroidDev/Projects/Osteopath/app/src/main/res/drawable/shape_rounded_corners.xml" value="0.5703125" />
+        <entry key="..\:/AndroidDev/Projects/Osteopath/app/src/main/res/layout-land/fragment_sessions_schedule.xml" value="0.24029982363315697" />
         <entry key="..\:/AndroidDev/Projects/Osteopath/app/src/main/res/layout/activity_main.xml" value="0.2692502532928065" />
         <entry key="..\:/AndroidDev/Projects/Osteopath/app/src/main/res/layout/fragment_all_settings.xml" value="0.25" />
         <entry key="..\:/AndroidDev/Projects/Osteopath/app/src/main/res/layout/fragment_backup_create.xml" value="0.33" />
@@ -21,10 +23,12 @@
         <entry key="..\:/AndroidDev/Projects/Osteopath/app/src/main/res/layout/fragment_customer_profile_disfunctions.xml" value="0.26038500506585616" />
         <entry key="..\:/AndroidDev/Projects/Osteopath/app/src/main/res/layout/fragment_customer_profile_sessions.xml" value="0.26038500506585616" />
         <entry key="..\:/AndroidDev/Projects/Osteopath/app/src/main/res/layout/fragment_disfunction.xml" value="0.26038500506585616" />
+        <entry key="..\:/AndroidDev/Projects/Osteopath/app/src/main/res/layout/fragment_no_session_period.xml" value="0.2695035460992908" />
         <entry key="..\:/AndroidDev/Projects/Osteopath/app/src/main/res/layout/fragment_select_disfunctions.xml" value="0.26038500506585616" />
         <entry key="..\:/AndroidDev/Projects/Osteopath/app/src/main/res/layout/fragment_session.xml" value="0.33" />
         <entry key="..\:/AndroidDev/Projects/Osteopath/app/src/main/res/layout/fragment_session_list.xml" value="0.26038500506585616" />
         <entry key="..\:/AndroidDev/Projects/Osteopath/app/src/main/res/layout/fragment_sessions_recent.xml" value="0.29483695652173914" />
+        <entry key="..\:/AndroidDev/Projects/Osteopath/app/src/main/res/layout/fragment_sessions_schedule.xml" value="0.25" />
         <entry key="..\:/AndroidDev/Projects/Osteopath/app/src/main/res/layout/fragment_sessions_upcoming.xml" value="0.26266464032421477" />
         <entry key="..\:/AndroidDev/Projects/Osteopath/app/src/main/res/layout/fragment_settings_all.xml" value="0.3958333333333333" />
         <entry key="..\:/AndroidDev/Projects/Osteopath/app/src/main/res/layout/fragment_settings_planner.xml" value="0.33" />
@@ -32,16 +36,23 @@
         <entry key="..\:/AndroidDev/Projects/Osteopath/app/src/main/res/layout/fragment_settings_working_days.xml" value="0.29438405797101447" />
         <entry key="..\:/AndroidDev/Projects/Osteopath/app/src/main/res/layout/fragment_splash.xml" value="0.2695035460992908" />
         <entry key="..\:/AndroidDev/Projects/Osteopath/app/src/main/res/layout/listitem_attachment.xml" value="0.5536458333333333" />
+        <entry key="..\:/AndroidDev/Projects/Osteopath/app/src/main/res/layout/listitem_calendar_day.xml" value="0.5" />
+        <entry key="..\:/AndroidDev/Projects/Osteopath/app/src/main/res/layout/listitem_calendar_day_empty.xml" value="0.37228260869565216" />
+        <entry key="..\:/AndroidDev/Projects/Osteopath/app/src/main/res/layout/listitem_calendar_day_of_week.xml" value="0.37228260869565216" />
         <entry key="..\:/AndroidDev/Projects/Osteopath/app/src/main/res/layout/listitem_customer.xml" value="0.26038500506585616" />
         <entry key="..\:/AndroidDev/Projects/Osteopath/app/src/main/res/layout/listitem_disfunction_category.xml" value="0.26038500506585616" />
         <entry key="..\:/AndroidDev/Projects/Osteopath/app/src/main/res/layout/listitem_disfunction_data.xml" value="0.26038500506585616" />
         <entry key="..\:/AndroidDev/Projects/Osteopath/app/src/main/res/layout/listitem_disfunction_selectable.xml" value="0.26038500506585616" />
+        <entry key="..\:/AndroidDev/Projects/Osteopath/app/src/main/res/layout/listitem_no_sessions_period_auto.xml" value="0.5541666666666667" />
+        <entry key="..\:/AndroidDev/Projects/Osteopath/app/src/main/res/layout/listitem_no_sessions_period_manual.xml" value="0.5541666666666667" />
         <entry key="..\:/AndroidDev/Projects/Osteopath/app/src/main/res/layout/listitem_session.xml" value="0.26038500506585616" />
         <entry key="..\:/AndroidDev/Projects/Osteopath/app/src/main/res/layout/listitem_session_disfunction.xml" value="0.26038500506585616" />
         <entry key="..\:/AndroidDev/Projects/Osteopath/app/src/main/res/layout/listitem_session_duration.xml" value="0.29483695652173914" />
         <entry key="..\:/AndroidDev/Projects/Osteopath/app/src/main/res/layout/listitem_session_full.xml" value="0.3769309989701339" />
+        <entry key="..\:/AndroidDev/Projects/Osteopath/app/src/main/res/layout/listitem_time_interval_available_to_schedule.xml" value="0.5541666666666667" />
         <entry key="..\:/AndroidDev/Projects/Osteopath/app/src/main/res/layout/listitem_working_day_settings.xml" value="0.2695035460992908" />
         <entry key="..\:/AndroidDev/Projects/Osteopath/app/src/main/res/layout/navigation_drawer.xml" value="0.401268115942029" />
+        <entry key="..\:/AndroidDev/Projects/Osteopath/app/src/main/res/layout/spinner_item_session_duration.xml" value="0.5541666666666667" />
         <entry key="..\:/AndroidDev/Projects/Osteopath/app/src/main/res/layout/test_layout.xml" value="0.5" />
         <entry key="..\:/AndroidDev/Projects/Osteopath/app/src/main/res/layout/toolbar.xml" value="0.26038500506585616" />
         <entry key="..\:/AndroidDev/Projects/Osteopath/app/src/main/res/menu/add_attachments_menu.xml" value="0.29739583333333336" />
@@ -54,6 +65,7 @@
         <entry key="..\:/AndroidDev/Projects/Osteopath/app/src/main/res/menu/customer_unarchived_context_menu.xml" value="0.2890625" />
         <entry key="..\:/AndroidDev/Projects/Osteopath/app/src/main/res/menu/disfunction_listitem_context_menu.xml" value="0.5541666666666667" />
         <entry key="..\:/AndroidDev/Projects/Osteopath/app/src/main/res/menu/drawer_menu.xml" value="0.5348958333333333" />
+        <entry key="..\:/AndroidDev/Projects/Osteopath/app/src/main/res/menu/scheduler_add.xml" value="0.5456410256410257" />
         <entry key="..\:/AndroidDev/Projects/Osteopath/app/src/main/res/menu/session_listitem_context_menu.xml" value="0.334375" />
         <entry key="..\:/AndroidDev/Projects/Osteopath/app/src/main/res/menu/standard_edit_screen_menu.xml" value="0.36205128205128206" />
         <entry key="..\:/AndroidDev/Projects/Osteopath/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.3802083333333333" />

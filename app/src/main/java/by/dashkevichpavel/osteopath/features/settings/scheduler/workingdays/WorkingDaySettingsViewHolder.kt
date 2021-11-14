@@ -7,11 +7,9 @@ import by.dashkevichpavel.osteopath.databinding.ListitemWorkingDaySettingsBindin
 import by.dashkevichpavel.osteopath.helpers.datetime.DateTimeUtil
 import by.dashkevichpavel.osteopath.helpers.formatTimeAsEditable
 import by.dashkevichpavel.osteopath.helpers.toCapitalized
-import by.dashkevichpavel.osteopath.helpers.toNameOfWeekDay
-import by.dashkevichpavel.osteopath.repositories.settings.scheduler.WorkingDaySettings
-import by.dashkevichpavel.osteopath.repositories.settings.scheduler.WorkingDaySettingsTimeField
+import by.dashkevichpavel.osteopath.model.WorkingDaySettings
 import by.dashkevichpavel.osteopath.repositories.settings.scheduler.WorkingDayItemClickListener
-import java.util.*
+import by.dashkevichpavel.osteopath.repositories.settings.scheduler.WorkingDaySettingsTimeField
 
 class WorkingDaySettingsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     val binding = ListitemWorkingDaySettingsBinding.bind(itemView)
@@ -23,7 +21,8 @@ class WorkingDaySettingsViewHolder(itemView: View) : RecyclerView.ViewHolder(ite
     }
 
     private fun setupValues(daySettings: WorkingDaySettings) {
-        binding.tvDayName.text = daySettings.dayOfWeek.toNameOfWeekDay().toCapitalized()
+        binding.tvDayName.text =
+            DateTimeUtil.getFullNameOfDayOfWeek(daySettings.dayOfWeek)
         binding.cbIsWorkingDay.isChecked = daySettings.isWorkingDay
         binding.cbRestIncluded.isChecked = daySettings.restIncluded
         binding.etDayStartTime.text =

@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import by.dashkevichpavel.osteopath.R
 import by.dashkevichpavel.osteopath.helpers.recyclerviewutils.DefaultDiffUtil
-import by.dashkevichpavel.osteopath.repositories.settings.scheduler.WorkingDaySettings
+import by.dashkevichpavel.osteopath.model.WorkingDaySettings
 import by.dashkevichpavel.osteopath.repositories.settings.scheduler.WorkingDayItemClickListener
 
 class WorkingDaySettingsAdapter(
