@@ -33,3 +33,18 @@ This screen looks similar as "Upcoming sessions" but has descend by time sorting
 #### Customers list and filter
 
 It is a list of customers. User can add, edit, delete or archive any customer. Also user can filter customers by category or use search by name.
+
+![Customers](https://s10.gifyu.com/images/Customers.gif)
+
+#### Customer profile
+
+Customer profile contains 3 tabs: 
+1) contact information; 
+2) list of disfunctions;
+3) list of sessions.
+
+User can: 
+1) fill contact info (name and phone number) from device's contacts;
+2) call customer;
+3) message to customer.
+
