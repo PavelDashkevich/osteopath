@@ -48,3 +48,10 @@ User can:
 2) call customer;
 3) message to customer.
 
+![Customer profile](https://s10.gifyu.com/images/Customer-profile.gif)
+
+#### Create database backup
+
+#### Restore database from backup
+
+#### Settings of sessions scheduler
