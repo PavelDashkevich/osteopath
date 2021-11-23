@@ -55,3 +55,4 @@ User can:
 #### Restore database from backup
 
 #### Settings of sessions scheduler
+ 
