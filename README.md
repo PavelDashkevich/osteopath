@@ -18,13 +18,13 @@ Scheduling of sessions includes settings of working days, possibilities to plan 
 
 Start screen. Used to prepare to nearest sessions and to ask the customer for confirmation of visit (user can call or message to customer). User can shift date of session if it is necessary.
 
-![Upcoming sessions](https://s10.gifyu.com/images/Sessions---Upcoming_.gif)
+![Upcoming sessions](https://github.com/PavelDashkevich/osteopath/blob/main/demo%20gifs/Sessions%20-%20Upcoming.gif?raw=true)
 
 #### Sessions scheduler
 
 This screen helps to find suitable time for new session.
 
-![Sessions scheduler](https://s10.gifyu.com/images/Sessions---Scheduler.gif)
+![Sessions scheduler](https://github.com/PavelDashkevich/osteopath/blob/main/demo%20gifs/Sessions%20-%20Scheduler.gif?raw=true)
 
 #### Recent sessions
 
@@ -34,7 +34,7 @@ This screen looks similar as "Upcoming sessions" but has descend by time sorting
 
 It is a list of customers. User can add, edit, delete or archive any customer. Also user can filter customers by category or use search by name.
 
-![Customers](https://s10.gifyu.com/images/Customers.gif)
+![Customers](https://github.com/PavelDashkevich/osteopath/blob/main/demo%20gifs/Customers.gif?raw=true)
 
 #### Customer profile
 
@@ -49,14 +49,13 @@ User can:
 * add/edit/delete disfunctions;
 * add/edit/delete sessions.
 
-![Customer profile](https://s10.gifyu.com/images/Customer-profilefe895fcc91f725bc.gif)
+![Customer profile](https://github.com/PavelDashkevich/osteopath/blob/main/demo%20gifs/Customer%20profile.gif?raw=true)
 
 #### Backup and restore database
 
 This feature allows user to save database backup (manually or automatically) and restore database from backup (for example, when user have changed device).
 
-[Backups](https://s10.gifyu.com/images/Backups.gif)
-![Customer profile](https://s10.gifyu.com/images/Customer-profilefe895fcc91f725bc.gif)
+[Backups](https://github.com/PavelDashkevich/osteopath/blob/main/demo%20gifs/Backups.gif?raw=true)
 
 #### Settings of sessions scheduler
  
@@ -66,4 +65,4 @@ To find free time for session faster and more accurately user can define:
 * typical rest duration after each session;
 * typical sessions durations.
 
-![Session scheduler settings](https://s10.gifyu.com/images/Sessions-scheduler-settings.gif)
+![Session scheduler settings](https://github.com/PavelDashkevich/osteopath/blob/main/demo%20gifs/Sessions%20scheduler%20settings.gif?raw=true)
