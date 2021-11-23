@@ -55,7 +55,8 @@ User can:
 
 This feature allows user to save database backup (manually or automatically) and restore database from backup (for example, when user have changed device).
 
-![Backups](https://s10.gifyu.com/images/Backups.gif)
+[Backups](https://s10.gifyu.com/images/Backups.gif)
+![Customer profile](https://s10.gifyu.com/images/Customer-profilefe895fcc91f725bc.gif)
 
 #### Settings of sessions scheduler
  
