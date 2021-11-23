@@ -55,7 +55,7 @@ User can:
 
 This feature allows user to save database backup (manually or automatically) and restore database from backup (for example, when user have changed device).
 
-![Backups](https://s10.gifyu.com/images/Backups.md.gif)
+![Backups](https://s10.gifyu.com/images/Backups.gif)
 
 #### Settings of sessions scheduler
  
@@ -65,4 +65,4 @@ To find free time for session faster and more accurately user can define:
 * typical rest duration after each session;
 * typical sessions durations.
 
-![Session scheduler settings](https://s10.gifyu.com/images/Sessions-scheduler-settings.md.gif)
+![Session scheduler settings](https://s10.gifyu.com/images/Sessions-scheduler-settings.gif)
