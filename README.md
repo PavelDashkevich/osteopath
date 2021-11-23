@@ -39,21 +39,30 @@ It is a list of customers. User can add, edit, delete or archive any customer. A
 #### Customer profile
 
 Customer profile contains 3 tabs: 
-1) contact information; 
-2) list of disfunctions;
-3) list of sessions.
+* contact information; 
+* list of disfunctions;
+* list of sessions.
 
 User can: 
-1) fill contact info (name and phone number) from device's contacts;
-2) call customer or message to customer;
-3) add/edit/delete disfunctions;
-4) add/edit/delete sessions.
+* fill contact info (name and phone number) from device's contacts;
+* call customer or message to customer;
+* add/edit/delete disfunctions;
+* add/edit/delete sessions.
 
 ![Customer profile](https://s10.gifyu.com/images/Customer-profilefe895fcc91f725bc.gif)
 
-#### Create database backup
+#### Backup and restore database
 
-#### Restore database from backup
+This feature allows user to save database backup (manually or automatically) and restore database from backup (for example, when user have changed device).
+
+![Backups](https://s10.gifyu.com/images/Backups.md.gif)
 
 #### Settings of sessions scheduler
  
+To find free time for session faster and more accurately user can define:
+* working and nonworking weekdays;
+* rest time at the working day;
+* typical rest duration after each session;
+* typical sessions durations.
+
+![Session scheduler settings](https://s10.gifyu.com/images/Sessions-scheduler-settings.md.gif)
