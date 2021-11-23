@@ -120,10 +120,10 @@ class LocalDbRepository(applicationContext: Context) {
 
     suspend fun insertSession(session: Session): Long = withContext(Dispatchers.IO) {
         val id = localDb.sessionDao.insert(SessionEntity(session))
-        localDb.sessionDisfunctionDao.deleteBySessionId(session.id)
+        localDb.sessionDisfunctionDao.deleteBySessionId(id)
         localDb.sessionDisfunctionDao.insert(
             session.disfunctions.map { disfunction ->
-                SessionDisfunctionsEntity(session.id, disfunction.id)
+                SessionDisfunctionsEntity(id, disfunction.id)
             }
         )
         return@withContext id

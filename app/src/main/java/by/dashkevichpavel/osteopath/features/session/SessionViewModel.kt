@@ -131,9 +131,11 @@ class SessionViewModel(
             mapOfDisfunctionsByIds[id]?.let { disfunction ->
                 disfunctions.value?.let { items ->
                     items.add(disfunction)
-                    session.value?.disfunctions = items
                 }
             }
+        }
+        disfunctions.value?.let { items ->
+            session.value?.disfunctions = items
         }
         setAddDisfunctionActionAccessibility()
     }

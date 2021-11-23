@@ -131,16 +131,18 @@ class TimeLineDataController(
             val nextInterval = dayTimeLine[index + 1]
             var interval: Long = nextInterval.startTimeMillis - currentInterval.endTimeMillis
 
-            if (currentInterval is TimeInterval.SessionTime &&
-                nextInterval is TimeInterval.SessionTime
-            ) {
+            if (currentInterval is TimeInterval.SessionTime) {
                 interval -= pauseAfterSession
             }
 
             if (interval >= minSessionDuration) {
                 availableToScheduleIntervals.add(
                     TimeInterval.AvailableToSchedule(
-                        currentInterval.endTimeMillis,
+                        currentInterval.endTimeMillis +
+                                if (currentInterval is TimeInterval.SessionTime)
+                                    pauseAfterSession
+                                else
+                                    0L,
                         currentInterval.endTimeMillis + interval
                     )
                 )
