@@ -45,8 +45,9 @@ Customer profile contains 3 tabs:
 
 User can: 
 1) fill contact info (name and phone number) from device's contacts;
-2) call customer;
-3) message to customer.
+2) call customer or message to customer;
+3) add/edit/delete disfunctions;
+4) add/edit/delete sessions.
 
 ![Customer profile](https://s10.gifyu.com/images/Customer-profilefe895fcc91f725bc.gif)
 
